@@ -10,7 +10,7 @@ export default [
     {
         title: 'Twilio Emergency Notification System',
         imgUrl: '/assets/twilio.webp',
-        stack: ['Excel', 'VBS', 'JavaScript'],
+        stack: ['Excel', 'VBS', 'JavaScript', 'Google Sheets'],
         link: 'https://johnboyes.dev',
         blurb: "Created an Excel/VBS based employee emergency notification system for simplifying the process to call/text employees in case of inclement weather or other emergency company closures.",
 
