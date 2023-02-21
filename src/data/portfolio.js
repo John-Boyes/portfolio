@@ -5,15 +5,13 @@ export default [
         stack: ['Apple Podcasts', 'Spotify', 'YouTube'],
         link: 'https://readyviewerone.buzzsprout.com',
         blurb: "A Movie Podcast with Nick Johnson and John Boyes",
-
     },
     {
         title: 'Twilio Emergency Notification System',
         imgUrl: '/assets/twilio.webp',
         stack: ['Excel', 'VBS', 'JavaScript', 'Google Sheets'],
         link: 'https://johnboyes.dev',
-        blurb: "Created an Excel/VBS based employee emergency notification system for simplifying the process to call/text employees in case of inclement weather or other emergency company closures.",
-
+        blurb: "Created an Excel/VBS based employee emergency notification system for simplifying the process to call/text employees in case of inclement weather or other emergency company closures. Also created a Google Sheets variant to automate Bill Pay reminders for customers that are due soon/past due",
     },
     {
         title: 'Balena.IO Kiosk Signage',
