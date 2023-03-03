@@ -2,7 +2,7 @@ export default [
     {
         title: 'Ready Viewer One: A Movie Podcast',
         imgUrl: '/assets/rvo.jpg',
-        stack: ['Apple Podcasts', 'Spotify', 'YouTube'],
+        stack: ['Apple Podcasts', 'Spotify', 'YouTube', 'OBS'],
         link: 'https://readyviewerone.buzzsprout.com',
         blurb: "A Movie Podcast with Nick Johnson and John Boyes",
     },
