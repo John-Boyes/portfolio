@@ -35,7 +35,7 @@ export default function Navbar(props) {
                 <div className="flex flex-shrink-0 items-center">
                     <a href='#'>
                         <span
-                        className='dark:text-orange-300 text-white font-bold'>
+                        className='dark:text-orange-500 text-white font-bold'>
                             JohnBoyes.dev
                         </span>
                     </a>
