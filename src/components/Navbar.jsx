@@ -116,7 +116,7 @@ export default function Navbar(props) {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                          href="https://www.facebook.com/john.m.boyes"
+                          href="https://twit.social/@JohnBoyes"
                           target="_blank"
                           style={{display: "flex"}}
                           className={classNames(active ? 'bg-gray-900' : '', 'hover:bg-gray-300 dark:hover:bg-gray-600 block px-4 pt-4 pb-2 text-sm ')}
@@ -132,7 +132,7 @@ export default function Navbar(props) {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                          href="https://www.facebook.com/john.m.boyes"
+                          href="https://www.instagram.com/johnboyes.dev"
                           target="_blank"
                           style={{display: "flex"}}
                           className={classNames(active ? 'bg-gray-900' : '', 'hover:bg-gray-300 dark:hover:bg-gray-600 block px-4 py-2 text-sm')}
