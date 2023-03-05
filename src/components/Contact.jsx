@@ -37,7 +37,7 @@ function Contact() {
              px-8 py-3 w-max text-base font-medium 
              rounded-md text-white bg-gradient-to-r 
              from-purple-900 to-orange-500
-             drop-shadow-md'
+             drop-shadow-xl dark:bg-gradient-to-l '
           >
             Contact Me
           </button>
