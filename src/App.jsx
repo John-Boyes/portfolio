@@ -24,8 +24,14 @@ function App() {
             <div id='Timeline' class="section" >
             </div>
           <Timeline />
+            <div id='Timeline' class="section" >
+            </div>
           <Contact />
+            <div id='Timeline' class="section" >
+            </div>
           <Footer />
+            <div id='Timeline' class="section" >
+            </div>
         </div>
       </div>
     </>
