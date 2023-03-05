@@ -15,7 +15,7 @@ function App() {
     <>
       <Navbar />
       
-      <div className="bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-300 min-h-screen font-inter mx-auto ">
+      <div className="bg-stone-100 dark:bg-stone-900 text-stone-900 dark:text-stone-300 min-h-screen font-inter mx-auto ">
         <div className='max-w-5xl w-11/12 mx-auto'>
           <Intro />
             <div id='Portfolio' class="section" >
