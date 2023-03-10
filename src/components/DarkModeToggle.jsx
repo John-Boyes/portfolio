@@ -90,6 +90,7 @@ function DarkModeToggle() {
       {/* <button
         type='button'
         onClick={handleThemeSwitch}
+        aria-hidden='true'
         className='p-2 z-10 right-20 top-4 bg-violet-700 dark:bg-orange-500 text-lg p-1 rounded-md'
       >
         {theme === 'dark' ? sun : moon}
