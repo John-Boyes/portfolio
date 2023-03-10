@@ -50,8 +50,23 @@ function DarkModeToggle() {
     </svg>
   )
 
+  if (window.innerWidth < 730) {
+
   return (
     <>
+      <button
+        type='button'
+        onClick={handleThemeSwitch}
+        aria-hidden='true'
+        className='p-2 z-10 right-20 top-4 bg-violet-700 dark:bg-orange-500 text-lg p-1 rounded-md'
+        >
+        {theme === 'dark' ? sun : moon}
+      </button>
+    </>
+  )}
+  
+    return (
+      <>
       <span class="mr-2 text-sm font-medium text-purple-500">
         {moon}
       </span>
@@ -87,16 +102,10 @@ function DarkModeToggle() {
           {sun}
         </span>
 
-      {/* <button
-        type='button'
-        onClick={handleThemeSwitch}
-        aria-hidden='true'
-        className='p-2 z-10 right-20 top-4 bg-violet-700 dark:bg-orange-500 text-lg p-1 rounded-md'
-      >
-        {theme === 'dark' ? sun : moon}
-      </button> */}
     </>
   )
+
 }
+
 
 export default DarkModeToggle;
