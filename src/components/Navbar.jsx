@@ -80,7 +80,9 @@ export default function Navbar(props) {
 
                 {/* Alight Right Nav */}
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-
+                
+                {/* DarkMode Toggle */}
+                <DarkModeToggle />
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
@@ -96,7 +98,7 @@ export default function Navbar(props) {
                   </div>
                   <Transition
                     as={Fragment}
-                    enter="transition ease-out duration-100"
+                    enter="transition ease-out duration-500"
                     enterFrom="transform opacity-0 scale-95"
                     enterTo="transform opacity-100 scale-100"
                     leave="transition ease-in duration-75"
@@ -106,12 +108,6 @@ export default function Navbar(props) {
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right 
                       rounded-md bg-stone-200 dark:bg-gray-800 dark:text-white shadow-lg shadow-purple-500 dark:shadow-orange-500 ring-1 ring-black ring-opacity-5 
                       focus:outline-none ">
-                      <div className='align-center border-y-2 border-purple-500 shadow-md shadow-purple-500 dark:shadow-orange-500 dark:border-orange-500 py-2 bg-gray-800'>
-                        <div className='flex justify-center '>
-                          {/* DarkMode Toggle */}
-                          <DarkModeToggle />
-                        </div>
-                      </div>
                       
                       <Menu.Item>
                         {({ active }) => (
