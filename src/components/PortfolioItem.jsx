@@ -59,27 +59,27 @@ function PortfolioItem({ title, imgUrl, stack, link, blurb}) {
                     leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                     >
                     <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                        <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div className="bg-white dark:bg-gray-700 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <div className="sm:flex sm:items-start">
                             <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                            <Dialog.Title as="h3" className="text-base dark:text-white font-semibold leading-6 text-gray-900">
                                 {title}
                             </Dialog.Title>
                             <div className="mt-2">
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-gray-500 dark:text-gray-200">
                                 {blurb}
                                 </p>
                             </div>
                             </div>
                         </div>
                         </div>
-                        <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                        <div className="bg-gray-50 dark:bg-gray-600 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                         { link === '#' 
                         ? null
                         : <a
                             href={link}
                             target={ link === '#' ? "_self" : "_blank" }
-                            className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                            className="inline-flex w-full justify-center rounded-md bg-purple-500 dark:bg-orange-500 px-3 py-2 text-sm font-semibold text-white dark:text-black shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                             onClick={() => setOpen(false)} >
                                 Go To Website
                           </a>
