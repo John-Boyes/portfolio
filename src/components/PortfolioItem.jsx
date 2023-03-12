@@ -12,8 +12,8 @@ function PortfolioItem({ title, imgUrl, stack, link, blurb}) {
             onClick={() => setOpen(true) }
             rel="noopener noreferrer"
             className='bg-white dark:bg-black border-2 border-stone-900 
-                dark:border-white rounded-md overflow-hidden shadow-2xl 
-                shadow-violet-900 dark:shadow-orange-500'
+                dark:border-white rounded-md overflow-hidden shadow-md 
+                shadow-purple-500 dark:shadow-orange-500'
             >
         <img 
             src={imgUrl}
