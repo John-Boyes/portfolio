@@ -2,15 +2,15 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 
 function DarkModeToggle() {
-  const [theme, setTheme] = useState(null);
+  const [theme, setTheme] = useState(dark);
 
-  useEffect(() => {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setTheme('dark');
-    } else {
-      setTheme('light');
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  //     setTheme('dark');
+  //   } else {
+  //     setTheme('light');
+  //   }
+  // }, []);
 
   const handleThemeSwitch = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
@@ -71,7 +71,7 @@ function DarkModeToggle() {
         {moon}
       </span>
       <label class="relative inline-flex items-center cursor-pointer">
-        <input type="checkbox" value={ theme === 'dark' ? unchecked : checked } class="sr-only peer" onClick={handleThemeSwitch} />
+        <input type="checkbox" value="" class="sr-only peer" onClick={handleThemeSwitch} />
           <div class="
             w-14 h-7 
             bg-gray-500 
