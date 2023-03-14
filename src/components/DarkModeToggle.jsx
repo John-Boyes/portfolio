@@ -67,7 +67,7 @@ function DarkModeToggle() {
   
     return (
       <>
-      <span class="mr-2 text-sm font-medium text-orange-500">
+      <span class="mr-2 text-sm font-medium text-yellow-500">
         {sun}
       </span>
       <label class="relative inline-flex items-center cursor-pointer">
@@ -85,8 +85,8 @@ function DarkModeToggle() {
             peer-checked:after:border-white 
             after:absolute after:top-0.5 
             after:left-[4px] 
-            after:bg-orange-500 
-            dark:after:bg-purple-500 
+            after:bg-yellow-500 
+            dark:after:bg-blue-600 
             after:border-gray-300 
             after:border 
             after:rounded-full 
@@ -98,7 +98,7 @@ function DarkModeToggle() {
             ">
           </div>
       </label>
-        <span class="ml-2 text-sm font-medium text-purple-500">
+        <span class="ml-2 text-sm font-medium text-blue-600">
           {moon}
         </span>
 
