@@ -2,15 +2,24 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 
 function DarkModeToggle() {
-  const [theme, setTheme] = useState(dark);
+  const [theme, setTheme] = useState(null);
 
-  // useEffect(() => {
-  //   if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-  //     setTheme('dark');
-  //   } else {
-  //     setTheme('light');
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      setTheme('dark');
+    } else {
+      setTheme('light');
+    }
+  }, []);
+
+  const isChecked = () => {
+    if ( theme === 'dark') {
+      document.getElementById("toggle").checked = true;
+    } else {
+      document.getElementById("toggle").checked = false;
+
+    }
+  }
 
   const handleThemeSwitch = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
@@ -67,11 +76,11 @@ function DarkModeToggle() {
   
     return (
       <>
-      <span class="mr-2 text-sm font-medium text-purple-500">
-        {moon}
+      <span class="mr-2 text-sm font-medium text-orange-500">
+        {sun}
       </span>
       <label class="relative inline-flex items-center cursor-pointer">
-        <input type="checkbox" value="" class="sr-only peer" onClick={handleThemeSwitch} />
+        <input id="toggle" type="checkbox" value="" class="sr-only peer" onClick={handleThemeSwitch} />
           <div class="
             w-14 h-7 
             bg-gray-500 
@@ -98,8 +107,8 @@ function DarkModeToggle() {
             ">
           </div>
       </label>
-        <span class="ml-2 text-sm font-medium text-orange-500">
-          {sun}
+        <span class="ml-2 text-sm font-medium text-purple-500">
+          {moon}
         </span>
 
     </>
