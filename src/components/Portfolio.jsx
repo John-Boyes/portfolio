@@ -13,7 +13,7 @@ function Portfolio() {
                     stack={project.stack}
                     link={project.link}
                     blurb={project.blurb}
-                    className='shadow-lg shadow-violet-900'
+                    className='shadow-sm shadow-violet-900'
                 />    
             ))}
         </div>
