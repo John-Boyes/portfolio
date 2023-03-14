@@ -17,7 +17,6 @@ function DarkModeToggle() {
       document.getElementById("toggle").checked = true;
     } else {
       document.getElementById("toggle").checked = false;
-
     }
   }
 
@@ -80,7 +79,7 @@ function DarkModeToggle() {
         {sun}
       </span>
       <label class="relative inline-flex items-center cursor-pointer">
-        <input id="toggle" type="checkbox" value="" class="sr-only peer" onClick={handleThemeSwitch} />
+        <input id="toggle" type="checkbox" value={isChecked} class="sr-only peer" onClick={handleThemeSwitch} />
           <div class="
             w-14 h-7 
             bg-gray-500 
