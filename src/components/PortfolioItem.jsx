@@ -11,8 +11,8 @@ function PortfolioItem({ title, imgUrl, stack, link, blurb}) {
         <button
             onClick={() => setOpen(true) }
             rel="noopener noreferrer"
-            className='bg-white dark:bg-black border-2 border-stone-900 
-                dark:border-white rounded-md overflow-hidden shadow-md 
+            className='bg-gray-50 dark:bg-black border-2 border-stone-900 
+                dark:border-white rounded-md overflow-hidden shadow-sm 
                 shadow-purple-500 dark:shadow-orange-500'
             >
         <img 
@@ -25,7 +25,7 @@ function PortfolioItem({ title, imgUrl, stack, link, blurb}) {
             <p className='flex flex-wrap gap-2 flex-row items-center justify-start 
                 text-xs md:text-sm dark:text-white dark:black'>
                 {stack.map(item => (
-                    <span className='inline-block px-2 py-1 font-semibold border-2 border-stone-900 dark:border-white rounded-md'>
+                    <span className='inline-block px-2 py-1 font-semibold border-2 border-stone-900 bg-white dark:bg-black dark:border-white rounded-md'>
                         {item}
                     </span>
                 ))}
