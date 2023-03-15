@@ -21,6 +21,6 @@ export default [
         year: '2013',
         title: 'Laboratory Technician',
         duration: '2 Years',
-        details: 'Ran particle size reduction testing, used Horiba and Malvern Instruments partical size analyzers, wrote test reports and communicated findings with customers. Was also in charge of laboratory supplies procurement and hazardous shipping. Occasional updates to Allen Bradley PLC, HMI, and Drive programming.',
+        details: 'Ran particle size reduction feasibiility testing, used Horiba and Malvern Instruments partical size analyzers, wrote test reports and communicated findings with customers. Was also in charge of laboratory supplies procurement and hazardous shipping. Occasional updates to Allen Bradley PLC, HMI, and Drive programming.',
     },
 ]
