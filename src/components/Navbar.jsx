@@ -10,8 +10,8 @@ const navigation = [
 ]
 
 const passions = [
-  { name: 'TPA', href: 'https://transplantalliance.org', target: '_blank' },
-  { name: 'USA Vehicle Import Laws', href: 'https://transplantalliance.org', target: "_blank" },
+  { name: 'Transplant Alliance 501(c)(3)', href: 'https://transplantalliance.org', target: '_blank' },
+  { name: 'USA Vehicle Import Laws', href: '#', target: "_self" },
   { name: 'Ready Viewer One Podcast', href: 'https://readyviewerone.buzzsprout.com/', target: "_blank" },
 ]
 
@@ -72,64 +72,76 @@ export default function Navbar(props) {
                       </a>
                     ))}
         
-                <Menu as="div" className="relative inline-block text-left">
-                  <div>
-                    <Menu.Button className="text-gray-300 rounded-md px-3 py-2 text-sm font-medium ">
-                      Passions
-                    </Menu.Button>
-                  </div>
-
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md
-                      bg-stone-200 dark:bg-gray-700 dark:text-white shadow-lg shadow-purple-500 dark:shadow-orange-500 ring-1 ring-black ring-opacity-5 
-                      focus:outline-none">
-                      
-                      <div className="py-1">
-                        <Menu.Item>
-                          {({ active }) => (
-                            <a
-                              href="https://transplantalliance.org"
-                              target="_blank"
-                              className={classNames(active ? 'bg-gray-900' : '', 'hover:bg-gray-300 dark:hover:bg-gray-600 block px-4 py-2 text-sm ')}
-                            >
-                              Transplant Alliance 501(c)(3)
-                            </a>
-                          )}
-                        </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => (
-                            <a
-                              href="#"
-                              className={classNames(active ? 'bg-gray-900' : '', 'text-gray-600 hover:bg-gray-300 dark:hover:bg-gray-600 block px-4 py-2 text-sm ')}
-                            >
-                              USA Vehicle Import Laws
-                            </a>
-                          )}
-                        </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => (
-                            <a
-                              href="https://readyviewerone.buzzsprout.com/"
-                              target="_blank"
-                              className={classNames(active ? 'bg-gray-900' : '', 'hover:bg-gray-300 dark:hover:bg-gray-600 block px-4 py-2 text-sm ')}
-                            >
-                              Ready Viewer One Podcast
-                            </a>
-                          )}
-                        </Menu.Item>
-                        
+                    <Menu as="div" className="relative inline-block text-left">
+                      <div>
+                        <Menu.Button className="text-gray-300 rounded-md px-3 py-2 text-sm font-medium ">
+                          Passions
+                        </Menu.Button>
                       </div>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
+
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md
+                          bg-stone-200 dark:bg-gray-700 dark:text-white shadow-lg shadow-purple-500 dark:shadow-orange-500 ring-1 ring-black ring-opacity-5 
+                          focus:outline-none">
+                          
+                          <div className="py-1">
+                            {/* <Menu.Item>
+                              {({ active }) => (
+                                <a
+                                  href="https://transplantalliance.org"
+                                  target="_blank"
+                                  className={classNames(active ? 'bg-gray-900' : '', 'hover:bg-gray-300 dark:hover:bg-gray-600 block px-4 py-2 text-sm ')}
+                                >
+                                  Transplant Alliance 501(c)(3)
+                                </a>
+                              )}
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <a
+                                  href="#"
+                                  className={classNames(active ? 'bg-gray-900' : '', 'text-gray-600 hover:bg-gray-300 dark:hover:bg-gray-600 block px-4 py-2 text-sm ')}
+                                >
+                                  USA Vehicle Import Laws
+                                </a>
+                              )}
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <a
+                                  href="https://readyviewerone.buzzsprout.com/"
+                                  target="_blank"
+                                  className={classNames(active ? 'bg-gray-900' : '', 'hover:bg-gray-300 dark:hover:bg-gray-600 block px-4 py-2 text-sm ')}
+                                >
+                                  Ready Viewer One Podcast
+                                </a>
+                              )}
+                            </Menu.Item> */}
+                            
+                            {passions.map((item) => (
+                      <a
+                        key={item.name}
+                        href={item.href}
+                        target={item.target}
+                        className={classNames(item.current ? 'bg-gray-900' : '', 'hover:bg-gray-300 dark:hover:bg-gray-600 block px-4 py-2 text-sm ')}
+                        aria-current={item.current ? 'page' : undefined}
+                      >
+                        {item.name}
+                      </a>
+                    ))}
+
+                          </div>
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
                   </div>
                 </div>
               </div>
@@ -263,6 +275,23 @@ export default function Navbar(props) {
                   {item.name}
                 </Disclosure.Button>
               ))}
+              
+              {passions.map((item) => (
+                <Disclosure.Button
+                  key={item.name}
+                  as="a"
+                  href={item.href}
+                  className={classNames(
+                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                    'block rounded-md px-3 py-2 text-base font-medium'
+                  )}
+                  aria-current={item.current ? 'page' : undefined}
+                >
+                  {item.name}
+                </Disclosure.Button>
+              ))}
+
+              
             </div>
           </Disclosure.Panel>
         </>
