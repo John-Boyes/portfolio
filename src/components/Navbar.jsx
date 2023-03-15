@@ -15,6 +15,16 @@ const passions = [
   { name: 'Ready Viewer One Podcast', href: 'https://readyviewerone.buzzsprout.com/', target: "_blank" },
 ]
 
+const social = [
+  { name: 'Mastodon', href: 'https://twit.social/@JohnBoyes', target: '_blank' },
+  { name: 'Instagram', href: 'https://www.instagram.com/johnboyes.dev', target: '_blank' },
+  { name: 'LinkedIn', href: 'https://www.linkedin.com/in/john-boyes-9258a652/', target: '_blank' },
+  { name: 'YouTube', href: 'https://www.youtube.com/channel/UCsrLFCXWbkioeStbXK8t1mQ', target: '_blank' },
+  { name: 'Github', href: 'https://github.com/John-Boyes', target: '_blank' },
+  { name: 'Spotify', href: 'https://open.spotify.com/show/5bhUys8UthVfUXZLgOZX7Q', target: '_blank' },
+  // { name: '', href: '#', target: '_blank' },
+]
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
@@ -93,51 +103,17 @@ export default function Navbar(props) {
                           focus:outline-none">
                           
                           <div className="py-1">
-                            {/* <Menu.Item>
-                              {({ active }) => (
-                                <a
-                                  href="https://transplantalliance.org"
-                                  target="_blank"
-                                  className={classNames(active ? 'bg-gray-900' : '', 'hover:bg-gray-300 dark:hover:bg-gray-600 block px-4 py-2 text-sm ')}
-                                >
-                                  Transplant Alliance 501(c)(3)
-                                </a>
-                              )}
-                            </Menu.Item>
-                            <Menu.Item>
-                              {({ active }) => (
-                                <a
-                                  href="#"
-                                  className={classNames(active ? 'bg-gray-900' : '', 'text-gray-600 hover:bg-gray-300 dark:hover:bg-gray-600 block px-4 py-2 text-sm ')}
-                                >
-                                  USA Vehicle Import Laws
-                                </a>
-                              )}
-                            </Menu.Item>
-                            <Menu.Item>
-                              {({ active }) => (
-                                <a
-                                  href="https://readyviewerone.buzzsprout.com/"
-                                  target="_blank"
-                                  className={classNames(active ? 'bg-gray-900' : '', 'hover:bg-gray-300 dark:hover:bg-gray-600 block px-4 py-2 text-sm ')}
-                                >
-                                  Ready Viewer One Podcast
-                                </a>
-                              )}
-                            </Menu.Item> */}
-                            
                             {passions.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        target={item.target}
-                        className={classNames(item.current ? 'bg-gray-900' : '', 'hover:bg-gray-300 dark:hover:bg-gray-600 block px-4 py-2 text-sm ')}
-                        aria-current={item.current ? 'page' : undefined}
-                      >
-                        {item.name}
-                      </a>
-                    ))}
-
+                              <a
+                                key={item.name}
+                                href={item.href}
+                                target={item.target}
+                                className={classNames(item.current ? 'bg-gray-900' : '', 'hover:bg-gray-300 dark:hover:bg-gray-600 block px-4 py-2 text-sm ')}
+                                aria-current={item.current ? 'page' : undefined}
+                              >
+                                {item.name}
+                              </a>
+                            ))}
                           </div>
                         </Menu.Items>
                       </Transition>
@@ -260,38 +236,39 @@ export default function Navbar(props) {
           </div>
 
           <Disclosure.Panel className="sm:hidden">
-            <div className="space-y-1 px-2 pt-2 pb-3">
-              {navigation.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'block rounded-md px-3 py-2 text-base font-medium'
-                  )}
-                  aria-current={item.current ? 'page' : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
-              ))}
-              
-              {passions.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'block rounded-md px-3 py-2 text-base font-medium'
-                  )}
-                  aria-current={item.current ? 'page' : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
-              ))}
-
-              
+            <div className="space-y-1 px-2 pt-2 pb-3 divide-y divide-gray-500">
+              <div className='py-1'>
+                {navigation.map((item) => (
+                  <Disclosure.Button
+                    key={item.name}
+                    as="a"
+                    href={item.href}
+                    className={classNames(
+                      item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                      'block rounded-md px-3 py-2 text-base font-medium'
+                    )}
+                    aria-current={item.current ? 'page' : undefined}
+                  >
+                    {item.name}
+                  </Disclosure.Button>
+                ))}
+              </div>
+              <div className="py-1">
+                {passions.map((item) => (
+                  <Disclosure.Button
+                    key={item.name}
+                    as="a"
+                    href={item.href}
+                    className={classNames(
+                      item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                      'block rounded-md px-3 py-2 text-base font-medium'
+                    )}
+                    aria-current={item.current ? 'page' : undefined}
+                  >
+                    {item.name}
+                  </Disclosure.Button>
+                ))}
+              </div>
             </div>
           </Disclosure.Panel>
         </>
