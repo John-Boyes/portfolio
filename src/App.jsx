@@ -15,7 +15,9 @@ function App() {
     <>
       <Navbar />
       
-      <div className="bg-stone-100 dark:bg-stone-900 text-stone-900 
+      <div className="
+        bg-gradient-to-br from-sky-100 to-sky-50
+        dark:from-stone-800 dark:to-sky-900 text-stone-900 
              dark:text-stone-300 min-h-screen font-inter mx-auto ">
         <div className='max-w-5xl w-11/12 mx-auto'>
           <Intro />
