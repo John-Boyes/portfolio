@@ -35,9 +35,10 @@ function Contact() {
             type='button'
             className='mt-3 text-center inline-block
              px-8 py-3 w-max text-base font-medium 
-             rounded-md text-white bg-gradient-to-r 
-             from-purple-900 to-orange-500
-             drop-shadow-xl dark:bg-gradient-to-l '
+             rounded-md text-white 
+             bg-gradient-to-r from-green-400 via-pink-400 via-red-200 to-sky-500
+             dark:from-slate-900 dark:via-purple-900 dark:to-slate-900
+             '
           >
             Contact Me
           </button>
