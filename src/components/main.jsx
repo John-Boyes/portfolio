@@ -1,20 +1,17 @@
 import React from 'react';
 
-import Intro from './components/Intro';
-import Portfolio from './components/Portfolio';
-import Timeline from './components/Timeline';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
-import Navbar from './components/Navbar';
+import Intro from './Intro';
+import Portfolio from './Portfolio';
+import Timeline from './Timeline';
+import Contact from './Contact';
+import Footer from './Footer';
 
 
-function App() {
+function Main() {
 
 
   return (
     <>
-      <Navbar />
-      
       <div className="
         bg-gradient-to-br from-sky-100 to-sky-50
         dark:from-stone-800 dark:to-sky-900 text-stone-900 
@@ -41,4 +38,4 @@ function App() {
   )
 }
 
-export default App
+export default Main
