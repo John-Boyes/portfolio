@@ -8,6 +8,11 @@ import {
 import ErrorPage from "./error-page";
 import Root from "./routes/root"
 import Main from "./components/main";
+import ImportsUS from "./components/Imports-US";
+import StateItem from "./components/StateItem";
+import Contact from "./routes/contact";
+import Contacts, { loader as rootLoader } from "./components/Contacts";
+import Disclaimer from "./components/Disclaimer"
 
 import './styles/tailwind.css'
 
@@ -21,10 +26,34 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         children: [
           { index:true, element: <Main /> },
-          // {
-          //   path: 'US-Gray-Markey-Laws',
-          //   element: <ImportsUS />,
-          // },
+          {
+            path: '/US-Gray-Market-Laws/',
+            element: <ImportsUS />,
+            children: [
+              {
+                path: '/US-Gray-Market-Laws/:slug',
+                element: <Contact />,
+              },
+            ]
+          },
+        ],
+      },
+      {
+        path: '/contacts/',
+        element: <Contacts />,
+        errorElement: <ErrorPage />,
+        loader: rootLoader,
+        children: [
+          {
+          errorElement: <p>Opps, this content is not available yet. Check back soon!</p> ,
+          children: [
+            { index: true, element: <Disclaimer /> },
+            {
+              path: '/contacts/:contactsID',
+              element: <Contact />,
+            },
+          ],
+        },
         ],
       },
     ],

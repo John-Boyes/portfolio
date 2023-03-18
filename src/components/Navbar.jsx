@@ -4,14 +4,14 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import DarkModeToggle from './DarkModeToggle'
 
 const navigation = [
-  { name: 'Projects', href: '#Portfolio', current: false },
-  { name: 'Work', href: '#Timeline', current: false },
-  { name: 'Contact', href: '#Contact', current: false },
+  { name: 'Projects', href: '/#Portfolio', current: false },
+  { name: 'Work', href: '/#Timeline', current: false },
+  { name: 'Contact', href: '/#Contact', current: false },
 ]
 
 const passions = [
   { name: 'Transplant Alliance 501(c)(3)', href: 'https://transplantalliance.org', target: '_blank' },
-  { name: 'USA Vehicle Import Laws', href: '#', target: "_self" },
+  // { name: 'USA Vehicle Import Laws', href: '/US-Gray-Market-Laws', target: "_self" },
   { name: 'Ready Viewer One Podcast', href: 'https://readyviewerone.buzzsprout.com/', target: "_blank" },
 ]
 
