@@ -1,7 +1,18 @@
 import React, { Component } from 'react'
+import { getContact } from '../contacts';
+import { useLoaderData } from 'react-router-dom';
+
+export async function loader({ params }) {
+    const contact = await getContact(params.contact.slug);
+    return { contact };
+  }
+
+
 
  export default function StateItem () {
-    
+    //const { contact } = useLoaderData();
+    console.log(contact)
+
     const str = JSON.stringify(modified)
     console.log(modified)
     const formattedDate = str.substring(1, 11);

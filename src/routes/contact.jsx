@@ -2,7 +2,7 @@ import { Form, useLoaderData } from "react-router-dom";
 import { getContact } from "../contacts";
 
 export async function loader({ params }) {
-  const contact = await getContact(params.slug);
+  const contact = await getContact(params.contact.slug);
   return { contact };
 }
 
@@ -33,7 +33,7 @@ export default function Contact() {
         <h1 className="flex">
           {contact.first || contact.last ? (
             <>
-              {contact.first} {contact.last}
+              {contact.first}
             </>
           ) : (
             <i>No Name</i>

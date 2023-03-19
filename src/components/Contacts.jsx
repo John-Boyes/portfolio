@@ -1,26 +1,30 @@
-import { Outlet, Link, useLoaderData } from "react-router-dom";
+import { Outlet, Link, useLoaderData, useNavigation, Form, redirect } from "react-router-dom";
 import { getContacts } from "../contacts";
 
-export async function loader() {
-    const contacts = await getContacts();
-    return { contacts };
-  }
+export async function loader({ request }) {
+  const url = new URL(request.url);
+  const q = url.searchParams.get("q");
+  const contacts = await getContacts(q);
+  return { contacts };
+}
 
 export default function Contacts() {
     const { contacts } = useLoaderData();
+    const navigation = useNavigation();
+
 
     return (
       <>
-      <div className="flex bg-gray-100 fixed z-40 h-screen w-screen">
+      <div className="flex bg-gray-100 fixed z-40 w-screen h-[calc(100vh-64px)] ">
         <div id="sidebar" 
-            className="bg-red-100 w-1/3 items-center p-2 text-sm 
-            text-gray-500 hover:bg-gray-100 focus:outline-none 
+            className="overflow-y-auto bg-red-100 w-1/3 items-center p-2 text-sm 
+            text-gray-500 focus:outline-none 
             focus:ring-2 focus:ring-gray-200 dark:text-gray-400 
-            dark:hover:bg-gray-700 dark:focus:ring-gray-600 
+            dark:bg-gray-700 dark:focus:ring-gray-600 
             border-r-2 border-black">
           <h1 className="mb-3 text-lg border-b-2 border-purple-500 dark:border-orange-500 ">React Router Contacts</h1>
           <div>
-            <form id="search-form" role="search" className="flex flex-col w-full ">
+            <Form id="search-form" role="search" className="flex flex-col w-full ">
               <input
                 id="q"
                 aria-label="Search contacts"
@@ -38,18 +42,23 @@ export default function Contacts() {
                 className="sr-only"
                 aria-live="polite"
               ></div>
-            </form>
+            </Form>
           </div>
 
-          <div className="px-3 py-4 my-5 rounded-md overflow-y-auto
+          <div className="px-3 pt-4 mt-5 mb-3 rounded-md self-start overflow-y-auto
            bg-gray-50 dark:bg-gray-800">
-            <nav>
+            <nav className="overflow-visible">
 
             {contacts.length ? (
                 <ul>
                 {contacts.map((contact) => (
-                    <li key={contact.id}>
-                    <Link to={`${contact.slug}`}>
+                    <li key={contact.id}
+                    
+                      className="hover:bg-sky-100 active:bg-sky-100 rounded-md p-1
+                      dark:hover:bg-gray-700"
+                    >
+                    <Link to={`${contact.slug}`}
+                    >
                         {contact.slug ? (
                             <>
                             {contact.slug}
@@ -69,11 +78,13 @@ export default function Contacts() {
             </nav>
           </div>
         </div>
-        <div id="detail" className="flex p-5 w-full bg-gray-200">
-            <div className="flex p-5 scroll-p-8 bg-gray-50 w-full
-             rounded-lg ">
-                <Outlet />
-            </div>
+        <div id="detail" className={
+          navigation.state === "loading" ? "loading" : 
+          "flex p-5 w-full bg-gray-200 " }>
+          <div className="flex p-5 bg-gray-50 w-full
+            rounded-lg">
+              <Outlet />
+          </div>
         </div>
         </div>
     </>

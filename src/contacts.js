@@ -5,9 +5,10 @@ import importsUs from "./data/imports-us";
 
 const url = 'https://johnboyes.dev/posts/wp-json/wp/v2/posts/?_fields[]=id&_fields[]=slug&_fields[]=title&_fields[]=content&_fields[]=modified&per_page=100&order_by=id&order=asc'
 
+const contacts = importsUs
 
 export async function getContacts(url, data = {importsUs}) {
-  const contacts = importsUs
+  //const contacts = importsUs
   console.log(contacts)
   // // Default options are marked with *
   // const contacts = await fetch(url, {
@@ -41,7 +42,7 @@ export async function getContacts(url, data = {importsUs}) {
 // }
 
 export async function getContact(slug) {
-  let contact = contacts.find(contact => contact.slug === slug);
+  let contact = contacts.find(contact => contacts.slug === slug);
   return contact ?? null;
 }
 

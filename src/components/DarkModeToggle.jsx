@@ -71,7 +71,7 @@ function DarkModeToggle() {
         {sun}
       </span>
       <label class="relative inline-flex items-center cursor-pointer">
-        <input id="toggle" type="checkbox" checked={ theme === 'dark' ? true : false } class="sr-only peer" onClick={handleThemeSwitch} />
+        <input id="toggle" type="checkbox" defaultChecked={ theme === 'dark' ? true : false } class="sr-only peer" onClick={handleThemeSwitch} />
           <div class="
             w-14 h-7 
             bg-pink-500

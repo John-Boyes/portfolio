@@ -9,8 +9,8 @@ import ErrorPage from "./error-page";
 import Root from "./routes/root"
 import Main from "./components/main";
 import ImportsUS from "./components/Imports-US";
-import StateItem from "./components/StateItem";
-import Contact from "./routes/contact";
+import StateItem, { loader as stateLoader } from "./components/StateItem";
+import Contact, { loader as contactLoader} from "./routes/contact";
 import Contacts, { loader as rootLoader } from "./components/Contacts";
 import Disclaimer from "./components/Disclaimer"
 
@@ -49,8 +49,9 @@ const router = createBrowserRouter([
           children: [
             { index: true, element: <Disclaimer /> },
             {
-              path: '/contacts/:contactsID',
+              path: '/contacts/:slug',
               element: <Contact />,
+              loader: contactLoader,
             },
           ],
         },
