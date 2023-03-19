@@ -4,14 +4,14 @@ import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import DarkModeToggle from './DarkModeToggle'
 
 const navigation = [
-  { name: 'Projects', href: '/#Portfolio', current: false },
-  { name: 'Work', href: '/#Timeline', current: false },
-  { name: 'Contact', href: '/#Contact', current: false },
+  { name: 'Projects', href: '#Portfolio', current: false },
+  { name: 'Work', href: '#Timeline', current: false },
+  { name: 'Contact', href: '#Contact', current: false },
 ]
 
 const passions = [
   { name: 'Transplant Alliance 501(c)(3)', href: 'https://transplantalliance.org', target: '_blank' },
-  // { name: 'USA Vehicle Import Laws', href: '/US-Gray-Market-Laws', target: "_self" },
+  { name: 'USA Vehicle Import Laws', href: '#', target: "_self" },
   { name: 'Ready Viewer One Podcast', href: 'https://readyviewerone.buzzsprout.com/', target: "_blank" },
 ]
 
@@ -31,7 +31,7 @@ function classNames(...classes) {
 
 export default function Navbar(props) {
   return (
-    <Disclosure as="nav" className="sticky top-0 z-50 bg-gray-800 border-b border-purple-600 dark:border-orange-500">
+    <Disclosure as="nav" className="sticky top-0 z-50 bg-sky-500 dark:bg-gray-800 border-b border-purple-600 dark:border-orange-500">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -51,7 +51,7 @@ export default function Navbar(props) {
                 <div className="flex flex-shrink-0 items-center">
                     <a href='#'>
                         <span
-                        className='dark:text-orange-500 text-white font-bold'>
+                        className='dark:text-orange-500 text-purple-800 font-bold'>
                             JohnBoyes.dev
                         </span>
                     </a>
@@ -73,7 +73,7 @@ export default function Navbar(props) {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                          item.current ? 'bg-gray-900 text-white' : 'text-purple-700 dark:text-gray-300 hover:bg-sky-700 dark:hover:bg-gray-700 hover:text-white',
                           'rounded-md px-3 py-2 text-sm font-medium'
                         )}
                         aria-current={item.current ? 'page' : undefined}
@@ -84,7 +84,7 @@ export default function Navbar(props) {
         
                     <Menu as="div" className="relative inline-block text-left">
                       <div>
-                        <Menu.Button className="text-gray-300 rounded-md px-3 py-2 text-sm font-medium ">
+                        <Menu.Button className="text-purple-700 dark:text-gray-300 hover:bg-sky-700 dark:hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium ">
                           Passions
                         </Menu.Button>
                       </div>
