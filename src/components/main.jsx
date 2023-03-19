@@ -15,7 +15,7 @@ function Main() {
       <div className="
         bg-gradient-to-bl from-sky-50 via-rose-100 to-sky-500
         dark:from-stone-800 dark:to-sky-900 text-stone-900 
-             dark:text-stone-300 min-h-screen font-inter mx-auto ">
+             dark:text-stone-300 min-h-[calc(100vh-16)] font-inter mx-auto ">
         <div className='max-w-5xl w-11/12 mx-auto'>
           <Intro />
             <div id='Portfolio' class="section" >
