@@ -74,11 +74,11 @@ function DarkModeToggle() {
         <input id="toggle" type="checkbox" checked={ theme === 'dark' ? true : false } class="sr-only peer" onClick={handleThemeSwitch} />
           <div class="
             w-14 h-7 
-            bg-gray-500 
+            bg-pink-500
+            ring-2
+            ring-purple-800
+            dark:bg-gray-500 
             peer-focus:outline-none 
-            peer-focus:ring-2 
-            peer-focus:ring-purple-800 
-            dark:peer-focus:ring-orange-800 
             rounded-full 
             peer-dark:bg-gray-700
             peer-checked:after:translate-x-full 
