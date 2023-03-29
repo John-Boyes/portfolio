@@ -31,7 +31,10 @@ function classNames(...classes) {
 
 export default function Navbar(props) {
   return (
-    <Disclosure as="nav" className="sticky top-0 z-50 bg-sky-500 dark:bg-gray-800 border-b border-purple-600 dark:border-orange-500">
+    <Disclosure as="nav" className="sticky top-0 z-50 
+    bg-gradient-to-b from-sky-500 via-sky-500 via-sky-500 to-sky-500/60 
+    dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:to-gray-700/80
+    ">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -73,7 +76,7 @@ export default function Navbar(props) {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-purple-700 dark:text-gray-300 hover:bg-sky-700 dark:hover:bg-gray-700 hover:text-white',
+                          item.current ? 'bg-gray-900 text-white' : 'text-purple-200 dark:text-gray-300 hover:bg-sky-700 dark:hover:bg-gray-700 hover:text-white',
                           'rounded-md px-3 py-2 text-sm font-medium'
                         )}
                         aria-current={item.current ? 'page' : undefined}
@@ -84,7 +87,7 @@ export default function Navbar(props) {
         
                     <Menu as="div" className="relative inline-block text-left">
                       <div>
-                        <Menu.Button className="text-purple-700 dark:text-gray-300 hover:bg-sky-700 dark:hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium ">
+                        <Menu.Button className="text-purple-200 dark:text-gray-300 hover:bg-sky-700 dark:hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium ">
                           Passions
                         </Menu.Button>
                       </div>
