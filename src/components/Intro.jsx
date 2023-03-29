@@ -7,6 +7,9 @@ function Intro() {
       <p className="text-sm max-w-xl mb-6">
       Obsessed with finding solutions to ITs most difficult problems. I use my nearly 10 years of experience and thirst for knowledge to research and develop projects that improve efficiency and ROI.
         </p>
+      <p className="text-sm max-w-xl mb-6">
+        This portfolio website was created using React, Vite, and TailwindCSS. It also utilizes Github Actions for auto-deployment.
+        </p>
     </div>
   )
 }

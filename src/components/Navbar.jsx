@@ -54,7 +54,7 @@ export default function Navbar(props) {
                 <div className="flex flex-shrink-0 items-center">
                     <a href='#'>
                         <span
-                        className='dark:text-orange-500 text-purple-800 font-bold'>
+                        className='dark:text-orange-500 text-stone-100 font-bold'>
                             JohnBoyes.dev
                         </span>
                     </a>
@@ -76,7 +76,7 @@ export default function Navbar(props) {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-purple-200 dark:text-gray-300 hover:bg-sky-700 dark:hover:bg-gray-700 hover:text-white',
+                          item.current ? 'bg-gray-900 text-white' : 'text-purple-100 dark:text-gray-300 hover:bg-sky-700 dark:hover:bg-gray-700 hover:text-white',
                           'rounded-md px-3 py-2 text-sm font-medium'
                         )}
                         aria-current={item.current ? 'page' : undefined}
@@ -87,7 +87,7 @@ export default function Navbar(props) {
         
                     <Menu as="div" className="relative inline-block text-left">
                       <div>
-                        <Menu.Button className="text-purple-200 dark:text-gray-300 hover:bg-sky-700 dark:hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium ">
+                        <Menu.Button className="text-purple-100 dark:text-gray-300 hover:bg-sky-700 dark:hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium ">
                           Passions
                         </Menu.Button>
                       </div>
