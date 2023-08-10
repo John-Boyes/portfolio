@@ -12,7 +12,7 @@ const navigation = [
 const passions = [
   { name: 'Transplant Alliance 501(c)(3)', href: 'https://transplantalliance.org', target: '_blank' },
   // { name: 'USA Vehicle Import Laws', href: '#', target: "_self" },
-  { name: 'Ready Viewer One Podcast', href: 'https://readyviewerone.buzzsprout.com/', target: "_blank" },
+  { name: 'Ready Viewer One Podcast', href: 'https://www.readyviewerone.com', target: "_blank" },
 ]
 
 const social = [
