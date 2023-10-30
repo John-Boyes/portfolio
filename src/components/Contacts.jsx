@@ -22,7 +22,7 @@ export default function Contacts() {
             focus:ring-2 focus:ring-gray-200 dark:text-gray-400 
             dark:bg-gray-700 dark:focus:ring-gray-600 
             border-r-2 border-black">
-          <h1 className="mb-3 text-lg border-b-2 border-purple-500 dark:border-orange-500 ">React Router Contacts</h1>
+          <h1 className="mb-3 text-lg border-b-2 border-purple-500 dark:border-orange-500 ">Find Your State</h1>
           <div>
             <Form id="search-form" role="search" className="flex flex-col w-full ">
               <input
