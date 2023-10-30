@@ -45,25 +45,6 @@ const router = createBrowserRouter([
             },
             ],
           },
-          {
-            path: '/contacts/',
-            element: <Contacts />,
-            errorElement: <ErrorPage />,
-            loader: rootLoader,
-            children: [
-              {
-              errorElement: <p>Opps, this content is not available yet. Check back soon!</p> ,
-              children: [
-                { index: true, element: <Disclaimer /> },
-                {
-                  path: '/contacts/:slug',
-                  element: <Contact />,
-                  loader: contactLoader,
-                },
-              ],
-            },
-            ],
-          },
         ],
       },
     ],
