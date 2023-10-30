@@ -4,12 +4,12 @@ import { getContacts } from "../contacts";
 export async function loader({ request }) {
   const url = new URL(request.url);
   const q = url.searchParams.get("q");
-  const contacts = await getContacts(q);
-  return { contacts };
+  const states = await getContacts(q);
+  return { states };
 }
 
 export default function Contacts() {
-    const { contacts } = useLoaderData();
+    const { states } = useLoaderData();
     const navigation = useNavigation();
 
 
@@ -27,7 +27,7 @@ export default function Contacts() {
             <Form id="search-form" role="search" className="flex flex-col w-full ">
               <input
                 id="q"
-                aria-label="Search contacts"
+                aria-label="Search states"
                 placeholder="Search"
                 type="search"
                 name="q"
@@ -49,19 +49,19 @@ export default function Contacts() {
            bg-gray-50 dark:bg-gray-800">
             <nav className="overflow-visible">
 
-            {contacts.length ? (
+            {states.length ? (
                 <ul>
-                {contacts.map((contact) => (
-                    <li key={contact.id}
+                {states.map((state) => (
+                    <li key={state.id}
                     
                       className="hover:bg-sky-100 active:bg-sky-100 rounded-md p-1
                       dark:hover:bg-gray-700"
                     >
-                    <Link to={`${contact.slug}`}
+                    <Link to={`${state.slug}`}
                     >
-                        {contact.slug ? (
+                        {state.slug ? (
                             <>
-                            {contact.slug}
+                            {state.title.rendered}
                         </>
                         ) : (
                             <i>No Name</i>

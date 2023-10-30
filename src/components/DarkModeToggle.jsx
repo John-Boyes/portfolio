@@ -67,12 +67,12 @@ function DarkModeToggle() {
   
     return (
       <>
-      <span class="mr-2 text-sm font-medium text-yellow-500">
+      <span className="mr-2 text-sm font-medium text-yellow-500">
         {sun}
       </span>
-      <label class="relative inline-flex items-center cursor-pointer">
+      <label className="relative inline-flex items-center cursor-pointer">
         <input id="toggle" type="checkbox" defaultChecked={ theme === 'dark' ? true : false } class="sr-only peer" onClick={handleThemeSwitch} />
-          <div class="
+          <div className="
             w-14 h-7 
             bg-pink-500
             ring-2
@@ -98,7 +98,7 @@ function DarkModeToggle() {
             ">
           </div>
       </label>
-        <span class="ml-2 text-sm font-medium text-blue-600">
+        <span className="ml-2 text-sm font-medium text-blue-600">
           {moon}
         </span>
 

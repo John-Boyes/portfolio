@@ -5,11 +5,11 @@ import importsUs from "./data/imports-us";
 
 const url = 'https://johnboyes.dev/posts/wp-json/wp/v2/posts/?_fields[]=id&_fields[]=slug&_fields[]=title&_fields[]=content&_fields[]=modified&per_page=100&order_by=id&order=asc'
 
-const contacts = importsUs
+const states = importsUs
 
 export async function getContacts(url, data = {importsUs}) {
-  //const contacts = importsUs
-  console.log(contacts)
+  const states = importsUs
+  // console.log(states)
   // // Default options are marked with *
   // const contacts = await fetch(url, {
   //   method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -27,25 +27,18 @@ export async function getContacts(url, data = {importsUs}) {
   // if (data) {
   //   contacts = matchSorter(contacts, data, { keys: "id" });
   // }
-  return contacts; // parses JSON response into native JavaScript objects
+  return states; // parses JSON response into native JavaScript objects
   //return contacts.sort(sortBy("last", "createdAt"));
 }
 
-// export async function getContacts(query) {
-//   await fakeNetwork(`getContacts:${query}`);
-//   let contacts = await localforage.getItem("contacts");
-//   if (!contacts) contacts = [];
-//   if (query) {
-//     contacts = matchSorter(contacts, query, { keys: ["first", "last"] });
-//   }
-//   return contacts.sort(sortBy("last", "createdAt"));
-// }
 
 export async function getContact(slug) {
-  let contact = contacts.find(contact => contacts.slug === slug);
-  return contact ?? null;
+  let states = importsUs
+  let state = states.find(state => state.slug === slug);
+  console.log("state is: ", state)
+  return state ?? null;
 }
 
-function set(contacts) {
-  return importsUs.setItem("contacts", contacts);
+function set(states) {
+  return importsUs.setItem("states", states);
 }

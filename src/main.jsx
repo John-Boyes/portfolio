@@ -9,7 +9,7 @@ import ErrorPage from "./error-page";
 import Root from "./routes/root"
 import Main from "./components/main";
 import ImportsUS from "./components/Imports-US";
-import StateItem, { loader as stateLoader } from "./components/StateItem";
+import StateItem, { loader as stateLoader}  from "./components/StateItem";
 import Contact, { loader as contactLoader} from "./routes/contact";
 import Contacts, { loader as rootLoader } from "./components/Contacts";
 import Disclaimer from "./components/Disclaimer"
@@ -28,33 +28,42 @@ const router = createBrowserRouter([
           { index:true, element: <Main /> },
           {
             path: '/US-Gray-Market-Laws/',
-            element: <ImportsUS />,
+            element: <Contacts />,
+            errorElement: <ErrorPage />,
+            loader: rootLoader,
             children: [
               {
-                path: '/US-Gray-Market-Laws/:slug',
-                element: <Contact />,
-              },
-            ]
-          },
-        ],
-      },
-      {
-        path: '/contacts/',
-        element: <Contacts />,
-        errorElement: <ErrorPage />,
-        loader: rootLoader,
-        children: [
-          {
-          errorElement: <p>Opps, this content is not available yet. Check back soon!</p> ,
-          children: [
-            { index: true, element: <Disclaimer /> },
-            {
-              path: '/contacts/:slug',
-              element: <Contact />,
-              loader: contactLoader,
+              errorElement: <p>Opps, this content is not available yet. Check back soon!</p> ,
+              children: [
+                { index: true, element: <Disclaimer /> },
+                {
+                  path: '/US-Gray-Market-Laws/:slug',
+                  element: <StateItem />,
+                  loader: stateLoader,
+                },
+              ],
             },
-          ],
-        },
+            ],
+          },
+          {
+            path: '/contacts/',
+            element: <Contacts />,
+            errorElement: <ErrorPage />,
+            loader: rootLoader,
+            children: [
+              {
+              errorElement: <p>Opps, this content is not available yet. Check back soon!</p> ,
+              children: [
+                { index: true, element: <Disclaimer /> },
+                {
+                  path: '/contacts/:slug',
+                  element: <Contact />,
+                  loader: contactLoader,
+                },
+              ],
+            },
+            ],
+          },
         ],
       },
     ],

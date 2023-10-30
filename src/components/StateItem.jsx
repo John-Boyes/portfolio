@@ -1,20 +1,21 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { getContact } from '../contacts';
 import { useLoaderData } from 'react-router-dom';
 
+
 export async function loader({ params }) {
-    const contact = await getContact(params.contact.slug);
-    return { contact };
+    const state = await getContact(params.slug);
+    return { state };
+    console.log(state)
   }
 
 
-
  export default function StateItem () {
-    //const { contact } = useLoaderData();
-    console.log(contact)
+    const { state } = useLoaderData();
+    console.log(state)
 
-    const str = JSON.stringify(modified)
-    console.log(modified)
+    const str = JSON.stringify(state.modified)
+    console.log(str)
     const formattedDate = str.substring(1, 11);
 
     return (
@@ -26,14 +27,11 @@ export async function loader({ params }) {
                         {formattedDate}
                     </span>
                     <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
-                        {title}
+                        {state.title.rendered}
                     </h3>
-                    {/* <div className='my-1 text-sm font-normal leading-none text-stone-400 dark:text-stone-500'>
-                        {content}
-                    </div> */}
                 </p>
-                <p className='my-2 text-base font-normal text-stone-500 dark:text-stone-400'
-                    dangerouslySetInnerHTML={{__html: content}}
+                <p className='flex-row my-2 text-base font-normal text-stone-500 dark:text-stone-400 p-5 m-5'
+                    dangerouslySetInnerHTML={{__html: state.content.rendered}}
                 >
                 </p>
             </li>
