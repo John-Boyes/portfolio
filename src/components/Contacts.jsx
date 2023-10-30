@@ -1,17 +1,31 @@
-import { Outlet, Link, useLoaderData, useNavigation, Form, redirect } from "react-router-dom";
+import { Outlet, Link, useLoaderData, useNavigation, Form, useSubmit, redirect } from "react-router-dom";
 import { getContacts } from "../contacts";
+import { useEffect } from "react";
+
 
 export async function loader({ request }) {
   const url = new URL(request.url);
   const q = url.searchParams.get("q");
   const states = await getContacts(q);
-  return { states };
+  return { states, q };
 }
 
 export default function Contacts() {
-    const { states } = useLoaderData();
+    const { states, q } = useLoaderData();
     const navigation = useNavigation();
+    const submit = useSubmit();
 
+
+    useEffect(() => {
+      document.getElementById("q").value = q;
+    }, [q]);
+
+
+    const searching =
+    navigation.location &&
+    new URLSearchParams(navigation.location.search).has(
+      "q"
+    );
 
     return (
       <>
@@ -31,12 +45,18 @@ export default function Contacts() {
                 placeholder="Search"
                 type="search"
                 name="q"
+                defaultValue={q}
+                onChange={(event) => {
+                  const isFirstSearch = q == null;
+                  submit(event.currentTarget.form, {
+                    replace: !isFirstSearch,
+                  });}}
                 className="p-2 bg-white dark:bg-gray-900 border-2 rounded-md focus:outline-none shadow-sm shadow-purple-500 dark:shadow-orange-300"
               />
               <div
                 id="search-spinner"
                 aria-hidden
-                hidden={true}
+                hidden={!searching}
               />
               <div
                 className="sr-only"
