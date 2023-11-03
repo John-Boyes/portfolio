@@ -3,7 +3,7 @@ export default function Disclaimer() {
     return (
       <div id="zero-state">
         <div className="mx-auto mb-5">
-            <img src="https://placekitten.com/g/200/200"
+            <img src="/assets/acty.jpeg"
             className="mx-auto"
             />
         </div>
