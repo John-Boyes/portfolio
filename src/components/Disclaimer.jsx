@@ -3,7 +3,7 @@ export default function Disclaimer() {
     return (
       <div id="zero-state">
         <div className="mx-auto mb-5">
-            <img src="/assets/acty.jpeg"
+            <img src="https://johnboyes.dev/assets/acty.jpeg"
             className="mx-auto"
             />
         </div>
