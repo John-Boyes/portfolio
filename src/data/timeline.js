@@ -2,7 +2,7 @@ export default [
     {
         year: 'Today',
         title: 'Sr Manager of Projects and Technology',
-        duration: '2 Years',
+        duration: '3 Years',
         details: 'Migrated SharePoint apps to Teams as well as created new PowerApps and PowerAutomate flows. Migrated Twilio application from Excel and sheets to a PowerApp. Migrated from SugarCRM to Salesforce. Installed and configured Ubiquity security cameras, NVR, APs, and access control. Managed the transistion to remote work during the pandemic while simutaneously migrating from on-prem to the cloud. Implemented contactless visitor check-in via Balena.IO project. Used the PowerPlatform to create global automation tools for managing the continuous improvement projects and resources.',
     },
     {
