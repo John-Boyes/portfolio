@@ -100,9 +100,11 @@ export default function Contacts() {
         </div>
         <div id="detail" className={
           navigation.state === "loading" ? "loading" : 
-          "flex p-5 w-full bg-gray-200 " }>
-          <div className="flex p-5 bg-gray-50 w-full
-            rounded-lg">
+          "flex p-5 w-full bg-gray-200 dark:bg-gray-700 " }>
+          <div className="flex p-5 
+            bg-gradient-to-tr from-sky-50 via-rose-100 to-sky-200 text-stone-900
+            dark:from-stone-800 dark:to-sky-900 dark:text-gray-400
+            w-full rounded-lg">
               <Outlet />
           </div>
         </div>

@@ -26,11 +26,11 @@ export async function loader({ params }) {
                     <span className="inline-block px-2 py1 font-semibold text-white dark:text-stone-900 bg-stone-900 dark:bg-white rounded-md">
                         {formattedDate}
                     </span>
-                    <h3 className="text-lg font-semibold text-stone-900 dark:text-white">
+                    <h3 className="text-lg font-semibold ">
                         {state.title.rendered}
                     </h3>
                 </p>
-                <p className='flex-row my-2 text-base font-normal text-stone-500 dark:text-stone-400 p-5 m-5'
+                <p className='flex-row my-2 text-base font-normal p-5 m-5'
                     dangerouslySetInnerHTML={{__html: state.content.rendered}}
                 >
                 </p>
