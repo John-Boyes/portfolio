@@ -1,106 +1,147 @@
-import React from "react"
-import { Form, Link, useLoaderData, useNavigation, Outlet } from "react-router-dom"
+import { Outlet, Link, useLoaderData, useNavigation, Form, useSubmit, redirect } from "react-router-dom";
 import { getContacts } from "../contacts";
+import { useEffect, useState, Fragment } from "react";
+import { Disclosure, Menu, Transition } from '@headlessui/react'
 
-// import { matchSorter } from "match-sorter"
-// import sortBy from "sort-by"
 
-// import importsUS from "../data/imports-us"
-// import StateItem from "./StateItem"
 
 export async function loader({ request }) {
   const url = new URL(request.url);
   const q = url.searchParams.get("q");
   const states = await getContacts(q);
-  return { states };
+  return { states, q };
 }
 
-// const data = importsUS
-
-export default function ImportsUS() {
-    // const url ='https://johnboyes.dev/posts/wp-json/wp/v2/posts/?'
-    const { states } = useLoaderData();
+export default function Contacts() {
+    const { states, q } = useLoaderData();
     const navigation = useNavigation();
-    console.log(states)
+    const submit = useSubmit();
 
-    
+
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const filteredStates = states.filter((state) =>
+      state.title.rendered.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    // useEffect(() => {
+    //   document.getElementById("q").value = q;
+    // }, [q]);
+
+
+    const searching =
+    navigation.location &&
+    new URLSearchParams(navigation.location.search).has(
+      "q"
+    );
 
     return (
-        <>
-        <div className="flex bg-gray-100 fixed z-40 w-screen h-[calc(100vh-64px)] ">
+      <>
+      <div className=" flex flex-col bg-gray-100 w-screen h-[calc(100vh-64px)] overflow-y-auto ">
 
-        <div id="sidebar" className="flex flex-col md:flex-row justify-center my-10">
-        <h1>Importing Vehicles - US State</h1>
-        <div className="flex flex-col md:flex-row justify-center my-10">
-          <Form id="search-form" role="search">
-            <input
-              id="q"
-              aria-label="Search states"
-              placeholder="Search"
-              type="search"
-              name="q"
-              className='p-2 bg-white dark:bg-gray-900 border-2 rounded-md focus:outline-none shadow-sm shadow-purple-500 dark:shadow-orange-300'
-            />
-            <div
-              id="search-spinner"
-              aria-hidden
-              hidden={true}
-            />
-            <div
-              className="sr-only"
-              aria-live="polite"
-            ></div>
-          </Form>
+      <Menu as="div" className="static flex z-40 inline-block text-left 
+            justify-center bg-gray-200 items-center pt-7 pb-2 text-sm 
+            text-gray-500 focus:outline-none 
+            focus:ring-2 focus:ring-gray-200 dark:text-gray-400 
+            dark:bg-gray-700 dark:focus:ring-gray-600 
+            border-r-2 border-black
+        ">
+        <div className="absolute mx-auto p-4 m-4">
+
+          <Menu.Button
+            type="button"
+            className="mx-auto justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 
+            bg-white text-sm font-medium text-gray-700 focus:outline-none
+            focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 
+            focus:ring-indigo-500"
+            id="options-menu"
+            aria-haspopup="true"
+            aria-expanded="true"
+            >
+            Select a State or Topic
+          </Menu.Button>
         </div>
-        <nav className="overflow-visible">
+
+        <Transition
+          as={Fragment}
+          enter="transition ease-out duration-100"
+          enterFrom="transform opacity-0 scale-95"
+          enterTo="transform opacity-100 scale-100"
+          leave="transition ease-in duration-75"
+          leaveFrom="transform opacity-100 scale-100"
+          leaveTo="transform opacity-0 scale-95"
+        >
           
-        {states.length ? (
-            <ul>
-              {states.map((state) => (
-                <li key={state.slug}
-                  className='active:bg-gray-900 active:text-white text-gray-300 hover:bg-gray-700 hover:text-white
-                      rounded-md px-3 py-2 text-sm font-medium'
-                      >
-                  <Link to={`/US-Gray-Market-Laws/${state.slug}`}>
-                        {state.title.rendered}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>
-              <i>Error loading data</i>
-            </p>
-          )}
-        </nav>
-      </div>
+        <Menu.Items className="h-56 mt-2 rounded-md
+          bg-stone-200 overflow-y-auto origin-top
+          dark:bg-gray-700 dark:text-white dark:shadow-orange-500 
+          ring-1 ring-black ring-opacity-5 
+          shadow-lg shadow-purple-500 
+          focus:outline-none
+          sm:static sm:inset-auto sm:ml-6 sm:pr-0
+          ">
 
-      <div id="detail" className={
-          navigation.state === "loading" ? "loading" : 
-          "flex p-5 w-full bg-gray-200 " }>
-        <div className="flex p-5 bg-gray-50 w-full
-          rounded-lg">
-            <Outlet />
-        </div>
-      </div>
-      {/* <div id="detail" className="flex column">
-        <div className="flex flex-col md:flex-row justify-center my-10 ">
-        <div className="w-full md:w-7/12">
-            
-            {states.map(state => (
-            <StateItem 
-                modified={state.modified}
-                title={state.title.rendered}
-                content={state.content.rendered}
-                id={state.id}
-                key={state.slug}
+        <div className="p-2">
+          <input
+            id="q"
+            aria-label="Search for your state"
+            name="q"
+            defaultValue={q}
+            type="text"
+            className="w-full border rounded-md p-2 text-black"
+            placeholder="Search..."
+            onChange={(e) => {
+              setSearchTerm(e.target.value)
+
+              const isFirstSearch = q == null;
+              submit(e.currentTarget.form, {
+                replace: !isFirstSearch,
+              });
+            }}
             />
-            ))}
+        </div>
+        <div className="py-1">
+          {filteredStates.map((state) => (
+            <Link
+              to={state.slug}
+              key={state.id}
+              className="hover:bg-gray-300 dark:hover:bg-gray-600 block px-4 py-2 text-sm"
+              role="menuitem"
+              >
+                {state.title.rendered}
+            </Link>
+          ))}
+        </div>
+        <div
+          id="search-spinner"
+          aria-hidden
+          hidden={!searching}
+          />
+        <div
+          className="sr-only"
+          aria-live="polite"
+          >
+
+        </div>
+            </Menu.Items>
+        </Transition>
+      </Menu>
+
+
+
+        {/* Render menu selection */}
+        
+        <div id="detail" className={
+          navigation.state === "loading" ? "loading" : 
+          "flex p-5 z-10 w-full bg-gray-200 dark:bg-gray-700" }>
+          <div className="flex p-5
+            bg-gradient-to-tr from-sky-50 via-rose-100 to-sky-200 text-stone-900
+            dark:from-stone-800 dark:to-sky-900 dark:text-gray-400
+            w-full rounded-lg">
+              <Outlet />
+          </div>
         </div>
         </div>
-      </div> */}
-      </div>
     </>
-    )
-}
-    
+    );
+  }

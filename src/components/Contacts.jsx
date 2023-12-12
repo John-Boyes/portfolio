@@ -31,7 +31,7 @@ export default function Contacts() {
       <>
       <div className="flex bg-gray-100 fixed z-40 w-screen h-[calc(100vh-64px)] ">
         <div id="sidebar" 
-            className="overflow-y-auto bg-gray-200 w-1/3 items-center p-2 text-sm 
+            className="overflow-y-auto bg-gray-200  items-center p-2 text-sm 
             text-gray-500 focus:outline-none 
             focus:ring-2 focus:ring-gray-200 dark:text-gray-400 
             dark:bg-gray-700 dark:focus:ring-gray-600 
