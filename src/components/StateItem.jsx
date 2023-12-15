@@ -19,7 +19,7 @@ export async function loader({ params }) {
     const formattedDate = str.substring(1, 11);
 
     return (
-        <ol className="flex flex-col md:flex-row relative border-l border-stone-200 dark:border-stone-700">
+        <ol className="container flex flex-col relative border-l border-stone-200 dark:border-stone-700">
             <li className="mb-10 ml-4">
                 <div className="absolute w-3 h-3 bg-stone-200 rouded-full mt-1.5 -left-1.5 border border-white dark:border-stone-900 dark:bg-stone-700" />
                 <p className="flex flex-wrap gap-4 flex-row items-center justify-start text-xs md:text-sm">
@@ -30,8 +30,8 @@ export async function loader({ params }) {
                         {state.title.rendered}
                     </h3>
                 </p>
-                <div className='flex p-5 m-5'>
-                    <p className='flex-row my-2 text-base font-normal p-5 m-5'
+                <div className='container p-1 m-1'>
+                    <p className='flex-row my-2 text-base font-normal p-2 m-2 whitespace-pre-wrap'
                         dangerouslySetInnerHTML={{__html: state.content.rendered}}
                         >
                     </p>
