@@ -30,7 +30,7 @@ export async function loader({ params }) {
                         {state.title.rendered}
                     </h3>
                 </p>
-                <div>
+                <div className='flex p-5 m-5'>
                     <p className='flex-row my-2 text-base font-normal p-5 m-5'
                         dangerouslySetInnerHTML={{__html: state.content.rendered}}
                         >
