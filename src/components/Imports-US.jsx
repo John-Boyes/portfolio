@@ -37,10 +37,10 @@ export default function Contacts() {
 
     return (
       <>
-      <div className=" flex flex-col bg-gray-100 w-screen h-[calc(100vh-64px)] overflow-y-auto ">
+      <div className=" flex flex-col bg-gray-300 dark:bg-slate-700 w-screen h-[calc(100vh-64px)] overflow-y-auto ">
 
       <Menu as="div" className="static flex z-40 inline-block text-left 
-            justify-center bg-gray-200 items-center pt-7 pb-2 text-sm 
+            justify-center bg-slate-300 items-center pt-7 pb-2 text-sm 
             text-gray-500 focus:outline-none 
             focus:ring-2 focus:ring-gray-200 dark:text-gray-400 
             dark:bg-gray-700 dark:focus:ring-gray-600 
@@ -51,7 +51,8 @@ export default function Contacts() {
           <Menu.Button
             type="button"
             className="mx-auto justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 
-            bg-white text-sm font-medium text-gray-700 focus:outline-none
+            bg-gray-100 text-sm font-medium text-gray-700 focus:outline-none
+            dark:bg-slate-900 dark:text-slate-200 dark:border-slate-500
             focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 
             focus:ring-indigo-500"
             id="options-menu"
@@ -133,10 +134,10 @@ export default function Contacts() {
         
         <div id="detail" className={
           navigation.state === "loading" ? "loading" : 
-          "flex p-5 z-10 w-full bg-gray-200 dark:bg-gray-700" }>
+          "flex p-5 z-10 w-full bg-slate-300 dark:bg-gray-700" }>
           <div className="flex p-5
-            bg-gradient-to-tr from-sky-50 via-rose-100 to-sky-200 text-stone-900
-            dark:from-stone-800 dark:to-sky-900 dark:text-gray-400
+            bg-gradient-to-b from-gray-100 to-gray-200 text-stone-900
+            ddark:bg-gradient dark:from-gray-800 dark:to-slate-900 dark:text-gray-400
             w-full rounded-lg">
               <Outlet />
           </div>
