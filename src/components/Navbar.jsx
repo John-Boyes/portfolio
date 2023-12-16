@@ -32,7 +32,7 @@ function classNames(...classes) {
 export default function Navbar(props) {
   return (
     <Disclosure as="nav" className="sticky top-0 z-50 
-    bg-gradient-to-b from-sky-500 via-sky-500 via-sky-500 to-sky-500/60 
+    bg-gradient-to-b from-slate-400 via-slate-300 via-slate-300 to-slate-400/80
     dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:to-gray-700/80
     ">
       {({ open }) => (
@@ -41,7 +41,10 @@ export default function Navbar(props) {
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
-                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 
+                    text-slate-600 dark:text-orange-500
+                    hover:bg-slate-500 hover:text-white 
+                    focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   <span className="sr-only">Open main menu</span>
                   {open ? (
                     <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
@@ -54,7 +57,7 @@ export default function Navbar(props) {
                 <div className="flex flex-shrink-0 items-center">
                     <a href='#'>
                         <span
-                        className='dark:text-orange-500 text-stone-100 font-bold'>
+                        className='dark:text-orange-500 text-slate-700 font-bold'>
                             JohnBoyes.dev
                         </span>
                     </a>
@@ -67,7 +70,7 @@ export default function Navbar(props) {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-purple-100 dark:text-gray-300 hover:bg-sky-700 dark:hover:bg-gray-700 hover:text-white',
+                          item.current ? 'bg-gray-900 text-white' : 'text-purple-800 dark:text-gray-300 hover:bg-sky-700 dark:hover:bg-gray-700 hover:text-white',
                           'rounded-md px-3 py-2 text-sm font-medium'
                         )}
                         aria-current={item.current ? 'page' : undefined}
@@ -78,7 +81,7 @@ export default function Navbar(props) {
         
                     <Menu as="div" className="relative inline-block text-left">
                       <div>
-                        <Menu.Button className="text-purple-100 dark:text-gray-300 hover:bg-sky-700 dark:hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium ">
+                        <Menu.Button className="text-purple-800 dark:text-gray-300 hover:bg-sky-700 dark:hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium ">
                           Passions
                         </Menu.Button>
                       </div>
@@ -238,7 +241,7 @@ export default function Navbar(props) {
                     as="a"
                     href={item.href}
                     className={classNames(
-                      item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                      item.current ? 'bg-gray-900 text-white' : 'text-slate-800 dark:text-purple-200 hover:bg-gray-700 hover:text-white',
                       'block rounded-md px-3 py-2 text-base font-medium'
                     )}
                     aria-current={item.current ? 'page' : undefined}
@@ -254,7 +257,7 @@ export default function Navbar(props) {
                     as="a"
                     href={item.href}
                     className={classNames(
-                      item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                      item.current ? 'bg-gray-900 text-white' : 'text-slate-800 dark:text-purple-200 hover:bg-gray-700 hover:text-white',
                       'block rounded-md px-3 py-2 text-base font-medium'
                     )}
                     aria-current={item.current ? 'page' : undefined}
