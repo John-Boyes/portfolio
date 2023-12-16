@@ -107,7 +107,7 @@ Error generating stack: `+o.message+`
             after:content-[''] 
             `})]}),M("span",{className:"ml-2 text-sm font-medium text-blue-600",children:i})]})}const uf=[{name:"Projects",href:"#Portfolio",current:!1},{name:"Work",href:"#Timeline",current:!1},{name:"Contact",href:"#Contact",current:!1}],cf=[{name:"Transplant Alliance 501(c)(3)",href:"https://transplantalliance.org",target:"_blank"},{name:"USA Vehicle Import Laws",href:"/US-Gray-Market-Laws",target:"_self"},{name:"Ready Viewer One Podcast",href:"https://www.readyviewerone.com",target:"_blank"}];function an(...e){return e.filter(Boolean).join(" ")}function P2(e){return M(Pi,{as:"nav",className:`sticky top-0 z-50 
     bg-gradient-to-b from-slate-400 via-slate-300 via-slate-300 to-slate-400/80
-    dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:to-gray-700/80
+    dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:via-gray-700 dark:to-gray-700/80
     `,children:({open:t})=>te(ur,{children:[M("div",{className:"mx-auto max-w-7xl px-2 sm:px-6 lg:px-8",children:te("div",{className:"relative flex h-16 items-center justify-between",children:[M("div",{className:"absolute inset-y-0 left-0 flex items-center sm:hidden",children:te(Pi.Button,{className:`inline-flex items-center justify-center rounded-md p-2 
                     text-slate-600 dark:text-orange-500
                     hover:bg-slate-500 hover:text-white 
@@ -1955,9 +1955,7 @@ https://www.llctlc.com/packages-pricing
             border-r-2 border-black
         `,children:[M("div",{className:"absolute mx-auto p-4 m-4",children:M(mt.Button,{type:"button",className:`mx-auto justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 
             bg-gray-100 text-sm font-medium text-gray-700 focus:outline-none
-            dark:bg-slate-900 dark:text-slate-200 dark:border-slate-500
-            focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 
-            focus:ring-indigo-500`,id:"options-menu","aria-haspopup":"true","aria-expanded":"true",children:"Select a State or Topic"})}),M(Wr,{as:y.Fragment,enter:"transition ease-out duration-100",enterFrom:"transform opacity-0 scale-95",enterTo:"transform opacity-100 scale-100",leave:"transition ease-in duration-75",leaveFrom:"transform opacity-100 scale-100",leaveTo:"transform opacity-0 scale-95",children:te(mt.Items,{className:`h-56 mt-2 rounded-md
+            dark:bg-slate-900 dark:text-slate-200 dark:border-slate-500`,id:"options-menu","aria-haspopup":"true","aria-expanded":"true",children:"Select a State or Topic"})}),M(Wr,{as:y.Fragment,enter:"transition ease-out duration-100",enterFrom:"transform opacity-0 scale-95",enterTo:"transform opacity-100 scale-100",leave:"transition ease-in duration-75",leaveFrom:"transform opacity-100 scale-100",leaveTo:"transform opacity-0 scale-95",children:te(mt.Items,{className:`h-56 mt-2 rounded-md
           bg-stone-200 overflow-y-auto origin-top
           dark:bg-gray-800 dark:text-white dark:shadow-orange-500 
           ring-1 ring-black ring-opacity-5 
