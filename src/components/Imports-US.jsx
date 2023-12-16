@@ -52,9 +52,7 @@ export default function Contacts() {
             type="button"
             className="mx-auto justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 
             bg-gray-100 text-sm font-medium text-gray-700 focus:outline-none
-            dark:bg-slate-900 dark:text-slate-200 dark:border-slate-500
-            focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 
-            focus:ring-indigo-500"
+            dark:bg-slate-900 dark:text-slate-200 dark:border-slate-500"
             id="options-menu"
             aria-haspopup="true"
             aria-expanded="true"
