@@ -75,7 +75,7 @@ export default function Contacts() {
           
         <Menu.Items className="h-56 mt-2 rounded-md
           bg-stone-200 overflow-y-auto origin-top
-          dark:bg-gray-700 dark:text-white dark:shadow-orange-500 
+          dark:bg-gray-800 dark:text-white dark:shadow-orange-500 
           ring-1 ring-black ring-opacity-5 
           shadow-lg shadow-purple-500 
           focus:outline-none
