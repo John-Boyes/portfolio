@@ -33,7 +33,7 @@ export default function Navbar(props) {
   return (
     <Disclosure as="nav" className="sticky top-0 z-50 
     bg-gradient-to-b from-slate-400 via-slate-300 via-slate-300 to-slate-400/80
-    dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:to-gray-700/80
+    dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:via-gray-700 dark:to-gray-700/80
     ">
       {({ open }) => (
         <>
