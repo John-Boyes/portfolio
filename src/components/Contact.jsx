@@ -36,7 +36,7 @@ function Contact() {
             className='mt-3 text-center inline-block
              px-8 py-3 w-max text-base font-medium 
              rounded-md text-white 
-             bg-gradient-to-r from-green-400 via-pink-400 via-red-200 to-sky-500
+             bg-gradient-to-r from-green-500 via-red-300 via-pink-400 via-red-300 to-green-500
              dark:from-slate-900 dark:via-purple-900 dark:to-slate-900
              '
           >
