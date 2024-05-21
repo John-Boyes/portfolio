@@ -28,7 +28,7 @@ const router = createBrowserRouter([
           { index:true, element: <Main /> },
           {
             path: '/US-Gray-Market-Laws/',
-            element: <ImportsUS />,
+            element: <Contacts />,
             errorElement: <ErrorPage />,
             loader: rootLoader,
             children: [
