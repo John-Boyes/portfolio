@@ -10,9 +10,7 @@ function Intro() {
       <p className="text-sm max-w-xl mb-6">
         This portfolio website was created using React, Vite, and TailwindCSS. It also utilizes Github Actions for auto-deployment.
         </p>
-      <p className="text-sm max-w-xl mb-6">
-        Click on a Project Card below for additional information
-        </p>
+
     </div>
   )
 }
