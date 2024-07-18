@@ -15,11 +15,19 @@ function PortfolioItem({ title, imgUrl, stack, link, blurb}) {
                 dark:border-gray-400 rounded-md overflow-hidden shadow-sm 
                 shadow-purple-500 dark:shadow-orange-500'
             >
-        <img 
-            src={imgUrl}
-            alt="portfolio"
-            className="w-full h-36 md:h-48 object-cover cursor-pointer"
-            />
+        <div class="relative">
+            <img 
+                src={imgUrl}
+                alt="portfolio"
+                title="Show Details"
+                className="w-full md:h-80 object-cover cursor-pointer"
+                />
+           <div class="bg-gray-600 opacity-0 hover:opacity-90 duration-300 
+                absolute inset-0 z-10 flex justify-center items-center 
+                text-4xl font-semibold">
+                    View Details
+                </div>
+        </div>
         <div className="w-full min-h-full p-4
             bg-gradient-to-b from-slate-400 via-slate-300 via-slate-300 to-slate-400/80
             dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:via-gray-700 dark:to-gray-700/80
