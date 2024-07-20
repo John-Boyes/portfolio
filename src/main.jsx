@@ -8,13 +8,14 @@ import {
 import ErrorPage from "./error-page";
 import Root from "./routes/root"
 import Main from "./components/main";
-import ImportsUS from "./components/Imports-US";
 import StateItem, { loader as stateLoader}  from "./components/StateItem";
-import Contact, { loader as contactLoader} from "./routes/contact";
+import Tools from "./components/Tools";
 import Contacts, { loader as rootLoader } from "./components/Contacts";
 import Disclaimer from "./components/Disclaimer"
 
 import './styles/tailwind.css'
+import RandomNumber from "./tools/RandomNumber";
+import WheelOfChoices from "./tools/WheelOfChoices";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,36 @@ const router = createBrowserRouter([
                   path: '/US-Gray-Market-Laws/:slug',
                   element: <StateItem />,
                   loader: stateLoader,
+                },
+              ],
+            },
+            ],
+          },
+        ],
+      },
+      {
+        errorElement: <ErrorPage />,
+        children: [
+          { index:true, element: <Main /> },
+          {
+            path: '/Tools/',
+            element: <Tools />,
+            errorElement: <ErrorPage />,
+            loader: rootLoader,
+            children: [
+              {
+              errorElement: <p>Opps, this content is not available yet. Check back soon!</p> ,
+              children: [
+                { index: true, element: <RandomNumber /> },
+                {
+                  path: '/Tools/Random-Number',
+                  element: <RandomNumber />,
+                  // loader: stateLoader,
+                },
+                {
+                  path: '/Tools/Wheel-of-Choices',
+                  element: <WheelOfChoices />,
+                  // loader: stateLoader,
                 },
               ],
             },
