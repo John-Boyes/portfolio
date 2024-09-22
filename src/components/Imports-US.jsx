@@ -37,7 +37,7 @@ export default function Contacts() {
 
     return (
       <>
-      <div className=" flex flex-col bg-gray-300 dark:bg-slate-700 w-screen h-[calc(100vh-64px)] overflow-y-auto ">
+      <div className=" flex flex-col bg-gray-300 dark:bg-slate-700 w-screen h-[calc(100vh-64px)]">
 
       <Menu as="div" className="static flex z-40 inline-block text-left 
             justify-center bg-slate-300 items-center pt-7 pb-2 text-sm 
@@ -45,6 +45,7 @@ export default function Contacts() {
             focus:ring-2 focus:ring-gray-200 dark:text-gray-400 
             dark:bg-gray-700 dark:focus:ring-gray-600 
             border-r-2 border-black
+            overflow-y-auto text-wrap
         ">
         <div className="absolute mx-auto p-4 m-4">
 
@@ -136,7 +137,7 @@ export default function Contacts() {
           <div className="flex p-5
             bg-gradient-to-b from-gray-100 to-gray-200 text-stone-900
             ddark:bg-gradient dark:from-gray-800 dark:to-slate-900 dark:text-gray-400
-            w-full rounded-lg">
+            w-full rounded-lg text-wrap">
               <Outlet />
           </div>
         </div>
