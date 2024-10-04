@@ -17,7 +17,9 @@ const RandomNumber = () => {
  
     return (
         <div className="wrapper flex flex-col mx-auto">
-            <div className='flex justify-center text-center p-4 text-4xl font-semibold'>Random Number Generator</div>
+            <div className='flex justify-center text-center p-4 text-4xl font-semibold'>
+                Random Choice Generator
+                </div>
             <div className='flex flex-col sm:flex-row justify-center'>
                 <div className='flex flex-col justify-center'>
                     <span>Minimum</span>
