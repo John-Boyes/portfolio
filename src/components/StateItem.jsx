@@ -31,10 +31,39 @@ export async function loader({ params }) {
                         {state.title.rendered}
                     </h3>
                 </p>
+
                 <div className='container p-1 m-1'>
-                    <p className='flex-row my-2 text-base font-normal p-2 m-2 whitespace-pre-wrap text-wrap'
-                        dangerouslySetInnerHTML={{__html: state.content.rendered}}
-                        >
+{/* Render Links section if array is not empty */}
+                {state.link.length > 0 && (
+                    <p className='flex-row p-2 m-2'>
+                        <h4 className='text-md font-semibold '>
+                            Links
+                        </h4>
+                        <ol>
+                            {state.link.map((link) => (
+                                <li>
+                                    <a
+                                    href={link}
+                                    key={state.id}
+                                    target= '_blank'
+                                    className="hover:bg-gray-300 dark:hover:bg-gray-600 block px-4 py-2 text-sm text-blue-700 dark:text-blue-200 rounded-md"
+                                    role="menuitem"
+                                    >
+                                        {link}
+                                    </a>
+                                </li>
+                            ))}
+                        </ol>
+                    </p>
+                    )}
+                <p className='flex-row p-2 m-2'>  
+                <h4 className='text-md font-semibold'>
+                        Information
+                </h4>
+                <p className='flex-row text-base font-normal whitespace-pre-wrap text-wrap'
+                    dangerouslySetInnerHTML={{__html: state.content.rendered}}
+                    >
+                </p>
                     </p>
                 </div>
             </li>
