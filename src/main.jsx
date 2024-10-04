@@ -16,6 +16,7 @@ import Disclaimer from "./components/Disclaimer"
 import './styles/tailwind.css'
 import RandomNumber from "./tools/RandomNumber";
 import WheelOfChoices from "./tools/WheelOfChoices";
+import Conversions from "./tools/Conversions";
 
 const router = createBrowserRouter([
   {
@@ -70,6 +71,11 @@ const router = createBrowserRouter([
                 {
                   path: '/Tools/Wheel-of-Choices',
                   element: <WheelOfChoices />,
+                  // loader: stateLoader,
+                },
+                {
+                  path: '/Tools/Conversions',
+                  element: <Conversions />,
                   // loader: stateLoader,
                 },
               ],

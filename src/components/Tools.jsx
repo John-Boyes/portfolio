@@ -2,6 +2,7 @@ import { Outlet, Link, useNavigation, Form, useSubmit, redirect } from "react-ro
 import { useEffect } from "react";
 import RandomNumber from "../tools/RandomNumber";
 import WheelOfChoices from "../tools/WheelOfChoices";
+import Conversions from "../tools/Conversions";
 
 
 export default function Tools() {
@@ -25,6 +26,14 @@ export default function Tools() {
         },
         "content": <WheelOfChoices />,
       },
+      {
+        "id": 3,
+        "slug": "Conversions",
+        "title": {
+            "rendered": "Conversions"
+        },
+        "content": <Conversions />,
+      },
     ]
 
 
@@ -39,7 +48,7 @@ export default function Tools() {
             border-r-2 border-black">
 
 
-          <div className="px-3 pt-4 mt-5 mb-3 rounded-md self-start overflow-y-auto
+          <div className="px-3 py-4 mt-5 mb-3 rounded-md self-start overflow-y-auto
            bg-gray-50 dark:bg-gray-800">
             <nav className="overflow-visible">
 
