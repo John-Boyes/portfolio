@@ -9,7 +9,7 @@ export default [
     {
         title: 'CRM Migration and Customizations',
         imgUrl: '/assets/Salesforce_Migration.png',
-        stack: ['Salesforce.com', 'Access Database', 'Office Scripts', 'Salesforce Flow', 'SugarCRM', 'SAP CRM'],
+        stack: ['Salesforce.com', 'Access Database', 'Office Scripts', 'Salesforce Flow', 'SugarCRM', 'SAP CRM', 'PHP', 'Javascript'],
         link: '#',
         blurb: "Over the years, I have been involved in numerous CRM migration and customization projects. My most in-depth work has been with SAP CRM, SugarCRM, and Salesforce, though I have also gained experience with ACT, ZOHO, and various smaller solutions while exploring different options.",
     },
@@ -37,21 +37,21 @@ export default [
     {
         title: 'Web Development',
         imgUrl: '/assets/cartoon.png',
-        stack: ['HTML', 'CSS', 'Javascript', 'Typescript', 'React', , 'Node', 'PHP', 'WIX/Squarespace', 'Hosting', 'GitHub'],
+        stack: ['HTML', 'CSS', 'Javascript', 'Typescript', 'React', 'Node', 'PHP', 'WIX/Squarespace', 'Hosting', 'GitHub'],
         link: '#',
         blurb: "Ever since I was a teenager I loved the feeling of creating something from nothing. Over the years I've created websites in C#/.NET, PHP, and React. I've created and customized pages in local intranets, CRM's, SharePoint, Wordpress, and WIX.",
     },
     {
         title: 'Teams / SharePoint Customizations',
         imgUrl: '/assets/powerautomate.png',
-        stack: ['Workflows', 'Power Automate', 'PowerApps', 'Dataverse', 'Approval Workflows', 'Document Libraries'],
+        stack: ['Workflows', 'Power Automate', 'PowerApps', 'Dataverse', 'Approval Workflows', 'Document Libraries','ASP','JavaScript','XML','CSS'],
         link: '#',
         blurb: "My entire career I have been working with customizing SharePoint and Teams focusing on improving and automating offline processes. Projects included: NDA Tracking and Storage, Employee Onboarding Tracking, RMA's, Project Management, Knowledge Bases, Laboratory Test Tracking, Purchase Request Approvals, and many more",
     },
     {
         title: 'Training and Documentation',
         imgUrl: '/assets/training.jpeg',
-        stack: ['Knowledge Base', 'Office 365', 'Processes', 'Standardization', 'LMS', 'Videography', 'DaVinci Resolve', 'Device Capture'],
+        stack: ['Knowledge Base', 'Office 365', 'Processes', 'Standardization', 'LMS', 'Videography', 'DaVinci Resolve', 'Device Capture','Workshops'],
         link: '#',
         blurb: "My passion for technology has provided me with extensive knowledge in videography, audio equipment, capture and broadcasting devices, and image/video editing software. I have created professional-level live streams with both budget and high-end devices. Recently, I worked on a project to set up a hot desk where users can plug in their laptops and start creating training videos at the push of a button. For simple screen recording, users can connect and press Record/Stop on the ATEM ISO. For live streaming or comprehensive training course creation, they can use OBS in conjunction with the ATEM ISO and a stream deck to control audio, video, transitions, images, and more. Additionally, I set up a budget-friendly telestrator using a Wacom Tablet and a virtual whiteboard with an iPad. This modular and versatile setup ensures that anyone, regardless of their skill level, can achieve professional-quality recordings and streams reliably.",
     },
