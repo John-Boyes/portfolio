@@ -1,47 +1,57 @@
-import {React, Fragment, useRef, useState } from 'react'
+import {React, Fragment, useRef, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+
+//animate on scroll
+import AOS from 'aos'
+import "aos/dist/aos.css"
+
 
 function PortfolioItem({ title, imgUrl, stack, link, blurb}) {
     const [open, setOpen] = useState(false)
-
     const cancelButtonRef = useRef(null)
+
+    useEffect(() => {
+        AOS.init({duration:1200})
+    })
 
   return (
     <>
         <button
             onClick={() => setOpen(true) }
             rel="noopener noreferrer"
-            className='bg-gray-50 dark:bg-gray-700 border-2 border-stone-900 
-                dark:border-gray-400 rounded-md overflow-hidden shadow-sm 
-                shadow-purple-500 dark:shadow-orange-500'
+            className='w-full bg-gray-50 dark:bg-gray-700 border-2 border-stone-900 
+            dark:border-gray-400 rounded-md overflow-hidden shadow-sm 
+            shadow-purple-500 dark:shadow-orange-500
+            '
+            data-aos="fade-up"
             >
-        <div class="relative">
-            <img 
-                src={imgUrl}
-                alt="portfolio"
-                title="Show Details"
-                className="w-full md:h-80 object-cover cursor-pointer"
-                />
-           <div class="bg-gray-600 opacity-0 hover:opacity-90 duration-300 
-                absolute inset-0 z-10 flex justify-center items-center 
-                text-4xl font-semibold">
-                    View Details
-                </div>
-        </div>
-        <div className="w-full min-h-full p-4
-            bg-gradient-to-b from-slate-400 via-slate-300 via-slate-300 to-slate-400/80
-            dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:via-gray-700 dark:to-gray-700/80
-        ">
-            <h3 className='text-lg md:text-xl mb-2 md:mb-3 font-semibold' dark:text-white>{title}</h3>
-            <p className='flex flex-wrap gap-2 flex-row items-center justify-start 
-                text-xs md:text-sm dark:text-white dark:black'>
-                {stack.map(item => (
-                    <span className='inline-block px-2 py-1 font-semibold border-2 border-stone-900 bg-white dark:bg-gray-500 dark:border-gray-400 rounded-md'>
-                        {item}
-                    </span>
-                ))}
-            </p>
-        </div>
+            <div class="relative">
+                <img 
+                    src={imgUrl}
+                    alt="portfolio"
+                    title="Show Details"
+                    className="w-full md:h-80 object-cover cursor-pointer"
+                    />
+            <div class="bg-gray-600 opacity-0 hover:opacity-90 duration-300 
+                    absolute inset-0 z-10 flex justify-center items-center 
+                    text-4xl font-semibold">
+                        View Details
+                    </div>
+            </div>
+            <div className="w-full min-h-full p-4
+                bg-gradient-to-b from-slate-400 via-slate-300 via-slate-300 to-slate-400/80
+                dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:via-gray-700 dark:to-gray-700/80
+                ">
+                <h3 className='text-lg md:text-xl mb-2 md:mb-3 font-semibold' dark:text-white>{title}</h3>
+                <p className='flex flex-wrap gap-2 flex-row items-center justify-start 
+                    text-xs md:text-sm dark:text-white dark:black'>
+                    {stack.map(item => (
+                        <span className='inline-block px-2 py-1 font-semibold border-2 border-stone-900 bg-white dark:bg-gray-500 dark:border-gray-400 rounded-md'>
+                            {item}
+                        </span>
+                    ))}
+                </p>
+            </div>
         </button>
 
         <Transition.Root show={open} as={Fragment}>
@@ -88,10 +98,10 @@ function PortfolioItem({ title, imgUrl, stack, link, blurb}) {
                         { link === '#' 
                         ? null
                         : <a
-                            href={link}
-                            target={ link === '#' ? "_self" : "_blank" }
-                            className="inline-flex w-full justify-center rounded-md bg-purple-500 dark:bg-orange-500 px-3 py-2 text-sm font-semibold text-white dark:text-black shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                            onClick={() => setOpen(false)} >
+                        href={link}
+                        target={ link === '#' ? "_self" : "_blank" }
+                        className="inline-flex w-full justify-center rounded-md bg-purple-500 dark:bg-orange-500 px-3 py-2 text-sm font-semibold text-white dark:text-black shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                        onClick={() => setOpen(false)} >
                                 Go To Website
                           </a>
                         }
@@ -101,7 +111,7 @@ function PortfolioItem({ title, imgUrl, stack, link, blurb}) {
                             className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                             onClick={() => setOpen(false)}
                             ref={cancelButtonRef}
-                        >
+                            >
                             Cancel
                         </button>
                         </div>
@@ -111,7 +121,6 @@ function PortfolioItem({ title, imgUrl, stack, link, blurb}) {
                 </div>
             </Dialog>
         </Transition.Root>
-        
     </> 
   )
 }

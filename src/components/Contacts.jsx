@@ -31,8 +31,8 @@ export default function Contacts() {
       <>
       <div className="flex bg-gray-100 fixed z-40 w-screen h-[calc(100vh-64px)] ">
         <div id="sidebar" 
-            className="flex-none w-64 lg:w-max overflow-y-auto bg-gray-200
-            items-center p-2 text-sm text-gray-500 focus:outline-none
+            className="flex-none w-64 lg:w-max bg-gray-200 h-[calc(100vh-64px)] overflow-hidden
+            items-center p-3 text-sm text-gray-500 focus:outline-none
             focus:ring-2 focus:ring-gray-200 dark:text-gray-400 
             dark:bg-gray-700 dark:focus:ring-gray-600 
             border-r-2 border-black">
@@ -65,12 +65,13 @@ export default function Contacts() {
             </Form>
           </div>
 
-          <div className="px-3 pt-4 mt-5 mb-3 rounded-md self-start overflow-y-auto
-           bg-gray-50 dark:bg-gray-800">
-            <nav className="overflow-visible">
+          <div className="flex px-3 py-5 rounded-md self-start
+            bg-gray-50 dark:bg-gray-800  
+            max-h-[calc(100vh-190px)] overflow-hidden">
+            <nav>
 
             {states.length ? (
-                <ul>
+                <ul className="max-h-full overflow-y-auto">
                 {states.map((state) => (
                     <li key={state.id}
                     
