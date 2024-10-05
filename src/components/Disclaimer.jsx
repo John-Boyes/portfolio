@@ -5,7 +5,7 @@ export default function Disclaimer() {
         <div className="container max-h-full overflow-y-auto text-wrap">
         <div className="flex mx-auto mb-5">
             <img src="https://johnboyes.dev/assets/acty.jpeg"
-            className="flex w-1/2 rounded-xl mx-auto "
+            className="flex w-3/5 rounded-xl mx-auto "
             />
         </div>
         <div className="container whitespace-pre-wrap text-wrap">
