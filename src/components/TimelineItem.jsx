@@ -1,10 +1,20 @@
 import React, { Component, useEffect } from 'react'
 
+//animate on scroll
+import AOS from 'aos'
+import "aos/dist/aos.css"
+
+
 function TimelineItem ({ year, title, duration, details }) {
+    useEffect(() => {
+        AOS.init({duration:1200})
+    })
+    
+    
     if ( year === 'Today') {
         
         return (
-            <ol className="flex flex-col md:flex-row relative border-l border-violet-400 dark:border-orange-700">
+            <ol className="flex flex-col md:flex-row relative border-l border-violet-400 dark:border-orange-700" data-aos="fade-up">
             <li className="mb-10 ml-4">
                 <div className="absolute w-3 h-3 bg-violet-200 rouded-full mt-1.5 -left-1.5 border border-white dark:border-stone-900 dark:bg-sky-700" />
                 <p className="flex flex-wrap gap-4 flex-row items-center justify-start text-xs md:text-sm">
@@ -29,7 +39,7 @@ function TimelineItem ({ year, title, duration, details }) {
     }
      else {
         return (
-            <ol className="flex flex-col md:flex-row relative border-l border-violet-400 dark:border-orange-700">
+            <ol className="flex flex-col md:flex-row relative border-l border-violet-400 dark:border-orange-700"  data-aos="fade-up">
                 <li className="mb-10 ml-4">
                     <div className="absolute w-3 h-3 bg-violet-200 rouded-full mt-1.5 -left-1.5 border border-white dark:border-stone-900 dark:bg-sky-700" />
                     <p className="flex flex-wrap gap-4 flex-row items-center justify-start text-xs md:text-sm">
