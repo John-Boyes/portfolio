@@ -72,7 +72,7 @@ export default function Navbar(props) {
                         href={item.href}
                         className={classNames(
                           item.current ? 'bg-gray-900 text-white' : 'text-purple-800 dark:text-gray-300 hover:bg-sky-700 dark:hover:bg-gray-700 hover:text-white',
-                          'rounded-md px-3 py-2 text-sm font-medium'
+                          'hover:animate-pulse rounded-md px-3 py-2 text-sm font-medium'
                         )}
                         aria-current={item.current ? 'page' : undefined}
                       >
@@ -82,7 +82,7 @@ export default function Navbar(props) {
         
                     <Menu as="div" className="relative inline-block text-left">
                       <div>
-                        <Menu.Button className="text-purple-800 dark:text-gray-300 hover:bg-sky-700 dark:hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium ">
+                        <Menu.Button className="hover:animate-pulse text-purple-800 dark:text-gray-300 hover:bg-sky-700 dark:hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium ">
                           Passions
                         </Menu.Button>
                       </div>
