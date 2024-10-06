@@ -17,7 +17,7 @@ jobs:
         run: npm install
         
       - name: Build
-        run: npm run build # The Build command of your project
+        run: npm-run-all build copy-index # The Build command of your project and copy index.html
         
       - name: Push
         uses: s0/git-publish-subdir-action@develop
