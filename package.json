@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "copy-index": "cp portfolio/index.html portfolio/US-Gray-Market-Laws/index.html && cp portfolio/index.html portfolio/Tools/index.html"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.12",
