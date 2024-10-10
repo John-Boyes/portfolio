@@ -27,3 +27,11 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+[data-aos="fade-out"] {
+    opacity: 1;
+    transition-property: opacity;
+  }
+  [data-aos="fade-out"].aos-animate {
+    opacity: 0;
+  }

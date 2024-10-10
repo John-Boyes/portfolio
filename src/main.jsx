@@ -9,7 +9,7 @@ import ErrorPage from "./error-page";
 import Root from "./routes/root"
 import Main from "./components/main";
 import StateItem, { loader as stateLoader}  from "./components/StateItem";
-import Contacts, { loader as rootLoader } from "./components/Contacts";
+import Imports, { loader as rootLoader } from "./components/Imports-US";
 import Disclaimer from "./components/Disclaimer"
 
 
@@ -20,6 +20,7 @@ import RandomChoice from "./tools/RandomChoice";
 // import Conversions from "./tools/Conversions";
 
 import './styles/tailwind.css'
+import ImportsUs from "./data/imports-us";
 
 const router = createBrowserRouter([
   {
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
           { index:true, element: <Main /> },
           {
             path: '/US-Gray-Market-Laws/',
-            element: <Contacts />,
+            element: <Imports />,
             errorElement: <ErrorPage />,
             loader: rootLoader,
             children: [

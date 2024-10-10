@@ -3,7 +3,6 @@ import React, { useState, useEffect} from 'react';
 import Intro from './Intro';
 import Portfolio from './Portfolio';
 import Timeline from './Timeline';
-// import Contact from './Contact';
 import Footer from './Footer';
 
 
