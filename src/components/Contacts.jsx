@@ -1,4 +1,4 @@
-import { Outlet, Link, useLoaderData, useNavigation, Form, useSubmit, redirect } from "react-router-dom";
+import { Outlet, Link, useLoaderData, useNavigation, Form, useSubmit } from "react-router-dom";
 import { getContacts } from "../contacts";
 import { useEffect } from "react";
 
@@ -81,7 +81,7 @@ export default function Contacts() {
                     <Link to={`${state.slug}`}
                     >
                         {state.slug ? (
-                            <>
+                        <>
                             {state.title.rendered}
                         </>
                         ) : (

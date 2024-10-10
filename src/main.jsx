@@ -9,14 +9,17 @@ import ErrorPage from "./error-page";
 import Root from "./routes/root"
 import Main from "./components/main";
 import StateItem, { loader as stateLoader}  from "./components/StateItem";
-import Tools from "./components/Tools";
 import Contacts, { loader as rootLoader } from "./components/Contacts";
 import Disclaimer from "./components/Disclaimer"
 
-import './styles/tailwind.css'
+
+import Tools from "./components/Tools";
 import RandomNumber from "./tools/RandomNumber";
-import WheelOfChoices from "./tools/WheelOfChoices";
-import Conversions from "./tools/Conversions";
+import RandomChoice from "./tools/RandomChoice";
+// import WheelOfChoices from "./tools/WheelOfChoices";
+// import Conversions from "./tools/Conversions";
+
+import './styles/tailwind.css'
 
 const router = createBrowserRouter([
   {
@@ -65,19 +68,20 @@ const router = createBrowserRouter([
                 { index: true, element: <RandomNumber /> },
                 {
                   path: '/Tools/Random-Number',
-                  element: <RandomNumber />,
-                  // loader: stateLoader,
+                  element: <RandomNumber />
                 },
                 {
-                  path: '/Tools/Wheel-of-Choices',
-                  element: <WheelOfChoices />,
-                  // loader: stateLoader,
+                  path: '/Tools/Random-Choice',
+                  element: <RandomChoice />
                 },
-                {
-                  path: '/Tools/Conversions',
-                  element: <Conversions />,
-                  // loader: stateLoader,
-                },
+                // {
+                //   path: '/Tools/Wheel-of-Choices',
+                //   element: <WheelOfChoices />
+                // },
+                // {
+                //   path: '/Tools/Conversions',
+                //   element: <Conversions />
+                // },
               ],
             },
             ],
