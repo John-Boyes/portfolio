@@ -6,6 +6,7 @@ import DarkModeToggle from './DarkModeToggle'
 const navigation = [
   { name: 'Projects', href: '#Portfolio', current: false },
   { name: 'Work', href: '#Timeline', current: false },
+  { name: 'Tools', href: '/Tools', current: false },
 ]
 
 const passions = [
