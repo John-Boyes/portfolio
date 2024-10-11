@@ -32,7 +32,7 @@ export default function Tools() {
     return (
       <>
 {/* Screen Styling */}
-      <div as="nav" className="flex flex-col md:flex-row bg-gray-200 dark:bg-gray-700 fixed z-40 w-screen h-[calc(100vh-64px)] ">
+      <div as="nav" className="flex flex-col md:flex-row bg-gray-100 dark:bg-gray-700 fixed z-40 w-screen h-[calc(100vh-64px)] ">
 
 {/* Sidebar/Drawer Content */}
       <Disclosure as="nav">
@@ -101,8 +101,10 @@ export default function Tools() {
       </Disclosure>
 
       <div className="w-max ml-5 my-5 p-3 rounded-lg self-start 
-           overflow-y-auto w-full h-[calc(100vh-104px)]
-           bg-gray-100 dark:bg-gray-800 hidden md:flex">
+           overflow-y-auto w-full h-[calc(100vh-104px)] hidden md:flex
+           bg-gradient-to-tr from-rose-200 via-sky-200 to-rose-200 text-stone-900
+            dark:from-sky-900 dark:to-stone-800 dark:text-gray-400
+           ">
             <nav className="overflow-visible">
 
             {tools.length ? (
@@ -137,7 +139,7 @@ export default function Tools() {
 {/* Outlet/Main Window */}
         <div id="detail" className={
           navigation.tool === "loading" ? "loading" : 
-          "flex p-5 w-full bg-gray-200 dark:bg-gray-700 " }>
+          "flex p-5 w-full bg-gray-100 dark:bg-gray-700 " }>
 
           <div className="flex p-3 
             bg-gradient-to-tr from-sky-200 via-rose-200 to-sky-200 text-stone-900
