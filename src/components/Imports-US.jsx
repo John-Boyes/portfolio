@@ -134,7 +134,7 @@ export default function Imports() {
         </Disclosure>
 
 {/* Normal Screen View */}
-      <div className="flex bg-gray-100 z-40 h-fit">
+      <div className="flex bg-gray-100 z-40 h-fit sm:h-[calc(100vh-64px)]">
         <div id="sidebar" 
             className="hidden sm:flex flex-col w-64 lg:w-max bg-white h-[calc(100vh-64px)] overflow-hidden
             items-center p-3 text-sm text-gray-500 focus:outline-none
@@ -208,7 +208,7 @@ export default function Imports() {
 {/* Outlet/Main section */}
         <div id="detail" className={
           navigation.state === "loading" ? "loading" : 
-          "flex p-5 w-screen sm:w-fit bg-white dark:bg-gray-700" }>
+          "flex p-5 w-screen sm:w-full bg-white dark:bg-gray-700" }>
 
           <div className="flex p-5 rounded-lg w-full
             bg-gradient-to-tr from-sky-200 via-rose-200 to-sky-200 text-stone-900
