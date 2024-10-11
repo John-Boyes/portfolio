@@ -20,8 +20,8 @@ jobs:
         run: |
           echo "Building project"
           npm run build # The Build command of your project
-          echo "Copying Index files"
-          npm run copy-index  # and the copy index.html script
+          # echo "Copying Index files"
+          # npm run copy-index  # the copy index.html script
         
       - name: Push
         uses: s0/git-publish-subdir-action@develop
