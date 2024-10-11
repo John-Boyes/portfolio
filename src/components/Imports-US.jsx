@@ -134,15 +134,15 @@ export default function Imports() {
         </Disclosure>
 
 {/* Normal Sidebar Navigation */}
-      <div className="flex bg-gray-100 fixed z-40 w-screen h-[calc(100vh-64px)] ">
+      <div className="flex bg-gray-100 fixed z-40 h-[calc(100vh-64px)] ">
         <div id="sidebar" 
             className="hidden sm:flex flex-col w-64 lg:w-max bg-white h-[calc(100vh-64px)] overflow-hidden
             items-center p-3 text-sm text-gray-500 focus:outline-none
             focus:ring-2 focus:ring-gray-200 dark:text-gray-400 
             dark:bg-gray-700 dark:focus:ring-gray-600 
             border-r-2 border-gray-300 dark:border-black">
-          <h1 className="mb-3 text-lg border-b-2 border-purple-500 dark:border-orange-500 ">Find Your State</h1>
-          <div>
+          <h1 className="w-full mb-3 text-lg border-b-2 border-purple-500 dark:border-orange-500 ">Find Your State</h1>
+          <div className="w-full">
             <Form id="search-form" role="search" className="flex flex-col w-full ">
               <input
                 id="q"
@@ -156,7 +156,7 @@ export default function Imports() {
                   submit(event.currentTarget.form, {
                     replace: !isFirstSearch,
                   });}}
-                className="p-2 bg-white dark:bg-gray-900 border-2 rounded-md focus:outline-none shadow-sm shadow-purple-500 dark:shadow-orange-300"
+                className="w-full p-2 bg-white mx-auto dark:bg-gray-900 border-2 rounded-md focus:outline-none shadow-sm shadow-purple-500 dark:shadow-orange-300"
               />
               <div
                 id="search-spinner"
@@ -208,9 +208,9 @@ export default function Imports() {
 {/* Outlet/Main section */}
         <div id="detail" className={
           navigation.state === "loading" ? "loading" : 
-          "flex p-5 w-full bg-white dark:bg-gray-700 max-h-[calc(100vh-160px)] sm:max-h-screen" }>
+          "flex p-5 w-screen sm:w-fit bg-white dark:bg-gray-700 max-h-[calc(100vh-160px)] sm:max-h-screen" }>
 
-          <div className="flex p-5 w-full rounded-lg
+          <div className="flex p-5 rounded-lg w-full
             bg-gradient-to-tr from-sky-200 via-rose-200 to-sky-200 text-stone-900
             dark:from-stone-800 dark:to-sky-900 dark:text-gray-400
             ">
