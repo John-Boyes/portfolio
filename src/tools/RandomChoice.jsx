@@ -61,7 +61,6 @@ function RandomNumber() {
                             className="p-5 m-2 bg-gray-50 dark:bg-gray-900 border-2 border-slate-400 dark:border-gray-600
                                 rounded-md focus:outline-none"
                             rows="10"
-                            cols="40"
                             placeholder="Enter each choice on a new line"
                             value={choices}
                             onChange={(e) => setChoices(e.target.value)}
