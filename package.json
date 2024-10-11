@@ -5,7 +5,7 @@
   "type": "module",
   "homepage": "https://johnboyes.dev/US-Gray-Market-Laws/",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview",
     "copy-index": "cp dist/index.html dist/US-Gray-Market-Laws/index.html && cp dist/index.html dist/Tools/index.html"

@@ -32,7 +32,7 @@ export default function Tools() {
     return (
       <>
 {/* Screen Styling */}
-      <div as="nav" className="flex flex-col md:flex-row bg-gray-100 dark:bg-gray-700 fixed z-40 w-screen h-[calc(100vh-64px)] ">
+      <div as="nav" className="flex flex-col md:flex-row bg-gray-100 dark:bg-gray-700 z-40 w-screen h-screen sm:h-[calc(100vh-64px)]">
 
 {/* Sidebar/Drawer Content */}
       <Disclosure as="nav">
@@ -71,9 +71,8 @@ export default function Tools() {
                 {tools.map((tool) => (
                   <li key={tool.id}
                   
-                  className=" hover:bg-sky-100 active:bg-sky-100 
-                  rounded-md p-2 text-lg font-semibold
-                  dark:hover:bg-gray-700 dark:text-gray-400"
+                  className="rounded-md p-2 text-lg font-semibold
+                  dark:text-gray-400"
                   >
                     <Link to={`${tool.slug}`}
                       onClick={close}
