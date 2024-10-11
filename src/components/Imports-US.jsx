@@ -37,10 +37,9 @@ export default function Imports() {
 {/* Mobile menu button*/}
       <div className="flex items-center sm:hidden">
         <Disclosure.Button
-            onClick={close}
             className="inline-flex items-center justify-center p-2 
                   text-slate-600 dark:text-orange-500 w-full
-                  bg-gray-200 dark:bg-gray-700">
+                  bg-white dark:bg-gray-700">
                 <span className="sr-only">Open main menu</span>
                 {open ? (
                   <XMarkIcon className="block h-8 w-8 absolute inset-y-20 right-8 font-bold" />
@@ -61,11 +60,11 @@ export default function Imports() {
 {/* Start Mobile Menu */}
         <Disclosure.Panel className='sm:hidden' aria-label="states-menu">
           <div id="sidebar" 
-              className="flex flex-col w-full lg:w-maxh-[calc(100vh-64px)]
+              className="flex flex-col w-full lg:w-max h-[calc(100vh-64px)]
               p-3 text-sm text-gray-500 bg-gray-200 focus:outline-none
               focus:ring-2 focus:ring-gray-200 dark:text-gray-400 
               dark:bg-gray-700 dark:focus:ring-gray-600 
-              border-r-2 border-black">
+              ">
             <h1 className="mb-3 text-xl border-b-2 border-purple-500 dark:border-orange-500 ">Find Your State</h1>
             <div>
               <Form id="search-form" role="search" className="flex flex-col w-full ">
@@ -97,7 +96,7 @@ export default function Imports() {
 
             <div className="flex px-3 py-5 rounded-md
               bg-gray-50 dark:bg-gray-800 
-              max-h-[calc(100vh-190px)] overflow-hidden">
+              max-h-[calc(100vh-210px)] overflow-hidden">
               <nav className="w-full text-lg">
 
               {states.length ? (
@@ -137,11 +136,11 @@ export default function Imports() {
 {/* Normal Sidebar Navigation */}
       <div className="flex bg-gray-100 fixed z-40 w-screen h-[calc(100vh-64px)] ">
         <div id="sidebar" 
-            className="hidden sm:flex flex-col w-64 lg:w-max bg-gray-200 h-[calc(100vh-64px)] overflow-hidden
+            className="hidden sm:flex flex-col w-64 lg:w-max bg-white h-[calc(100vh-64px)] overflow-hidden
             items-center p-3 text-sm text-gray-500 focus:outline-none
             focus:ring-2 focus:ring-gray-200 dark:text-gray-400 
             dark:bg-gray-700 dark:focus:ring-gray-600 
-            border-r-2 border-black">
+            border-r-2 border-gray-300 dark:border-black">
           <h1 className="mb-3 text-lg border-b-2 border-purple-500 dark:border-orange-500 ">Find Your State</h1>
           <div>
             <Form id="search-form" role="search" className="flex flex-col w-full ">
@@ -206,10 +205,12 @@ export default function Imports() {
             </nav>
           </div>
         </div>
+{/* Outlet/Main section */}
         <div id="detail" className={
           navigation.state === "loading" ? "loading" : 
-          "flex p-5 w-full bg-gray-200 dark:bg-gray-700 " }>
-          <div className="flex p-5 w-full h-[calc(100vh-103px)] rounded-lg
+          "flex p-5 w-full bg-white dark:bg-gray-700 max-h-[calc(100vh-160px)] sm:max-h-screen" }>
+
+          <div className="flex p-5 w-full rounded-lg
             bg-gradient-to-tr from-sky-200 via-rose-200 to-sky-200 text-stone-900
             dark:from-stone-800 dark:to-sky-900 dark:text-gray-400
             ">
