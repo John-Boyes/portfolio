@@ -51,15 +51,15 @@ function RandomNumber() {
                     Random Choice Generator
                 </div>
             <div className='flex flex-col sm:flex-row justify-center'>
-                <div className='flex flex-col justify-center'>
+                <div className='flex flex-col justify-center w-full'>
 
             {/* Text Area for Choices */}
                     <label className='text-lg font-semibold'>
                             Enter Choices
                         </label>
                     <textarea
-                            className="p-5 m-2 bg-gray-50 dark:bg-gray-900 border-2 border-slate-400 dark:border-gray-600
-                                rounded-md focus:outline-none"
+                            className="p-3 bg-gray-50 dark:bg-gray-900 border-2 border-slate-400 dark:border-gray-600
+                                rounded-md w-full focus:outline-none"
                             rows="10"
                             placeholder="Enter each choice on a new line"
                             value={choices}

@@ -41,12 +41,14 @@ export async function loader({ params }) {
                         </h4>
                         <ol>
                             {state.link.map((link) => (
-                                <li>
+                                <li className='text-wrap'>
                                     <a
                                     href={link}
                                     key={state.id}
                                     target= '_blank'
-                                    className="hover:bg-gray-300 dark:hover:bg-gray-600 block px-4 py-2 text-sm text-blue-700 dark:text-blue-200 rounded-md"
+                                    className="flex hover:bg-gray-300 dark:hover:bg-gray-600 
+                                        px-4 py-2 text-sm text-wrap 
+                                        text-blue-700 dark:text-blue-200 rounded-md"
                                     role="menuitem"
                                     >
                                         {link}
