@@ -55,6 +55,7 @@ export default function Navbar(props) {
                   )}
                 </Disclosure.Button>
               </div>
+              {/* Begin Nav Bar */}
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                     <a href='#'>
@@ -234,6 +235,7 @@ export default function Navbar(props) {
             </div>
           </div>
 
+{/* Mobile nav bar */}
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pt-2 pb-3 divide-y divide-gray-500">
               <div className='py-1'>
