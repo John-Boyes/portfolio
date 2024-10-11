@@ -1987,7 +1987,7 @@ https://www.llctlc.com/packages-pricing
 `).filter(b=>b.trim()!==""),d=()=>{const k=[...u()].sort(()=>Math.random()-.5);r(k),t(k.join(`
 `))},c=()=>{if(n.length>0){const b=Math.floor(Math.random()*n.length);o(n[b]),l(!0)}},p=()=>{const b=n.filter(k=>k!==i);r(b),t(b.join(`
 `)),l(!1)},S=u().length>=2;return W("div",{className:"wrapper flex flex-col mx-auto",children:[v("div",{className:"flex justify-center text-center p-4 text-4xl font-semibold",children:"Random Choice Generator"}),v("div",{className:"flex flex-col sm:flex-row justify-center",children:W("div",{className:"flex flex-col justify-center",children:[v("label",{className:"text-lg font-semibold",children:"Enter Choices"}),v("textarea",{className:`p-5 m-2 bg-gray-50 dark:bg-gray-900 border-2 border-slate-400 dark:border-gray-600
-                                rounded-md focus:outline-none`,rows:"10",cols:"40",placeholder:"Enter each choice on a new line",value:e,onChange:b=>t(b.target.value)})]})}),v("button",{className:`mt-3 inline-block justify-center text-center py-2 px-4
+                                rounded-md focus:outline-none`,rows:"10",placeholder:"Enter each choice on a new line",value:e,onChange:b=>t(b.target.value)})]})}),v("button",{className:`mt-3 inline-block justify-center text-center py-2 px-4
                     bg-gradient-to-b from-slate-400 via-slate-300 via-slate-300 to-slate-400/80
                     dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:via-gray-700 dark:to-gray-700/80
                     rounded-lg border-2 border-slate-400 dark:border-gray-600 font-semibold
