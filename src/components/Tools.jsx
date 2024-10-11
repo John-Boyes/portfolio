@@ -1,7 +1,7 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Outlet, Link, useNavigation } from "react-router-dom";
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Disclosure } from '@headlessui/react'
+import { XMarkIcon } from '@heroicons/react/24/outline'
 import RandomNumber from "../tools/RandomNumber";
 import RandomChoice from "../tools/RandomChoice";
 
@@ -36,7 +36,7 @@ export default function Tools() {
 
 {/* Sidebar/Drawer Content */}
       <Disclosure as="nav">
-            {({ open }) => (
+            {({ open, close }) => (
         <>
 {/* Mobile menu button*/}
           <div className="flex items-center sm:hidden">
@@ -60,8 +60,8 @@ export default function Tools() {
               )}
             </Disclosure.Button>
           </div>
+{/* Start Mobile Menu */}
         <Disclosure.Panel className='sm:hidden' aria-label="Tool Menu">
-
           <div className="px-3 py-5 m-2 rounded-md self-start overflow-y-auto
            bg-gray-50 dark:bg-gray-800">
             <nav className="overflow-visible">
@@ -76,6 +76,7 @@ export default function Tools() {
                   dark:hover:bg-gray-700 dark:text-gray-400"
                   >
                     <Link to={`${tool.slug}`}
+                      onClick={close}
                     >
                         {tool.slug ? (
                           <>
@@ -100,6 +101,7 @@ export default function Tools() {
       )}
       </Disclosure>
 
+{/* Sidebar Navigation on full screen */}
       <div className="w-max ml-5 my-5 p-3 rounded-lg self-start 
            overflow-y-auto w-full h-[calc(100vh-104px)] hidden md:flex
            bg-gradient-to-tr from-rose-200 via-sky-200 to-rose-200 text-stone-900
