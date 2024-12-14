@@ -16,7 +16,8 @@ import Disclaimer from "./components/Disclaimer"
 import Tools from "./components/Tools";
 import RandomNumber from "./tools/RandomNumber";
 import RandomChoice from "./tools/RandomChoice";
-// import WheelOfChoices from "./tools/WheelOfChoices";
+import SixDegrees from "./tools/SixDegrees";
+import TMDB from "./tools/tmdb";
 // import Conversions from "./tools/Conversions";
 
 import './styles/tailwind.css'
@@ -75,10 +76,14 @@ const router = createBrowserRouter([
                   path: '/Tools/Random-Choice',
                   element: <RandomChoice />
                 },
-                // {
-                //   path: '/Tools/Wheel-of-Choices',
-                //   element: <WheelOfChoices />
-                // },
+                {
+                  path: '/Tools/Six-Degrees',
+                  element: <SixDegrees />
+                },
+                {
+                  path: '/Tools/TMDB',
+                  element: <TMDB />
+                },
                 // {
                 //   path: '/Tools/Conversions',
                 //   element: <Conversions />
