@@ -4,6 +4,8 @@ import { Disclosure } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import RandomNumber from "../tools/RandomNumber";
 import RandomChoice from "../tools/RandomChoice";
+import SixDegrees from "../tools/SixDegrees";
+import TMDB from "../tools/tmdb";
 
 
 export default function Tools() {
@@ -26,6 +28,22 @@ export default function Tools() {
         },
         "content": <RandomChoice />,
       },
+      {
+        "id": 3,
+        "slug": "Six-Degrees",
+        "title": {
+            "rendered": "Six Degrees"
+        },
+        "content": <SixDegrees />,
+      },
+      {
+        "id": 4,
+        "slug": "TMDB",
+        "title": {
+            "rendered": "The Movie Database Test"
+        },
+        "content": <TMDB />,
+      }
     ]
 
 
