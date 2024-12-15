@@ -17,6 +17,15 @@ export default function SixDegrees() {
     'Jack Black', 'Tom Hardy', 'Tom Holland', 'Jessica Biel', 
     'Mark Wahlberg', 'Jeff Bridges', 'Kit Harington', 'Mark Ruffalo', 
     'Tony Danza', 'Tim Allen', 'Selena Gomez', 'Mel Gibson', 
+    'Timothy Olyphant', 'Emile Hirsch', 'Maggie Smith', 'Brad Pitt',
+    'Denzel Washtington', 'Glen Powell', 'Tom Cruise', 'Chris Hemsworth',
+    'Timothee Chalamet', 'Samuel L. Jackson', 'Austin Butler', 'Channing Tatum',
+    'Zendaya', 'Chris Pratt', 'Sydney Sweeney', 'Dave Bautista', 'Willem Dafoe',
+    'Margot Robbie', 'Florence Pugh', 'Jason Stathem', 'Joaquin Phoenix', 
+    'Hugh Grant', 'Colin Farrell', 'Paul Dano', 'Miles Teller', 'Pedro Pascal',
+    'Matt Damon', 'Ben Affleck', 'Rebecca Ferguson', 'Christin Milioti',
+    'Kate Beckinsale', 'Marisa Tomei', 'Alan Ritchson', 'Ali Larter', 'Demi Moore',
+    'Billy Bob Thornton', 'Jon Hamm', 'John Cena', 'Courteney Cox', 'David Arquette',
     'Martin Short', 'Peter Dinklage', 'Sylvester Stallone', 'Steve Martin'
   ];
   const [choices, setChoices] = useState([]);
