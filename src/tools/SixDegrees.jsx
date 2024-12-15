@@ -4,6 +4,7 @@ import axios from 'axios';
 export default function SixDegrees() {
   const Ref = useRef(null);
 
+  const [guessCount, setGuessCount] = useState(0); // Track the number of guesses
   const [timer, setTimer] = useState("00:10:00");
   const [remainingTime, setRemainingTime] = useState(10000); // 10 minutes in milliseconds
   const [isPaused, setIsPaused] = useState(false);
@@ -14,6 +15,7 @@ export default function SixDegrees() {
   const [choices, setChoices] = useState([]);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+
 
   const fetchActorData = async (actorName) => {
     try {
@@ -154,10 +156,6 @@ export default function SixDegrees() {
     }
   };
 
-  useEffect(() => {
-    clearTimer(remainingTime); // Start timer on page load
-    return () => clearInterval(Ref.current); // Cleanup on unmount
-  }, []);
 
   // Validation and UI logic remains unchanged
   const [answers, setAnswers] = useState({
@@ -177,6 +175,8 @@ export default function SixDegrees() {
   };
   
   const checkAnswers = async () => {
+    if (gameOver) return; // Prevent further checks if the game is over
+  
     let currentValidity = {};
     let previousMovies = []; // Tracks the movies of the last valid input
     let connectedActor = null; // Tracks the remaining actor not connected yet
@@ -189,7 +189,7 @@ export default function SixDegrees() {
         if (!actorName) break;
   
         // Fetch the actor's movie credits
-        const response = await axios.get(`http://localhost:5000/api/credits/${actorName}`);
+        const response = await axios.get(`http://localhost:5000/api/search/${actorName}`);
         const actorMovies = response.data.credits || [];
   
         // First degree validation
@@ -244,6 +244,15 @@ export default function SixDegrees() {
         }
       }
   
+      // Increment guess count and check if max guesses are reached
+      setGuessCount((prev) => {
+        if (prev + 1 >= 10) {
+          setGameOver(true);
+          setWinner(false); // Game ends unsuccessfully
+        }
+        return prev + 1;
+      });
+  
       // Update validity and game state
       setValidity(currentValidity);
       if (isGameOver) setGameOver(true);
@@ -251,6 +260,19 @@ export default function SixDegrees() {
       console.error("Error validating answers:", error);
     }
   };
+  
+  useEffect(() => {
+    if (gameOver) return;
+
+    if (timer === "00:00:00") {
+      setGameOver(true);
+      setWinner(false); //Game ends unsuccessfully
+    }
+
+    return () => clearInterval(Ref.current); // Cleanup on unmount
+  }, [timer, gameOver]);
+
+  
 
   return (
     <div className="flex flex-col p-6 m-auto overflow-auto">
