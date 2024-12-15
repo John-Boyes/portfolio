@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import axios from 'axios';
 
 export default function SixDegrees() {
   const Ref = useRef(null);
@@ -7,7 +8,38 @@ export default function SixDegrees() {
   const [remainingTime, setRemainingTime] = useState(10000); // 10 minutes in milliseconds
   const [isPaused, setIsPaused] = useState(false);
   const [hasChecked, setHasChecked] = useState(false);
+  
+  // API for getting Actor Data
+  const [choices, setChoices] = useState(['Jack Black', 'Tom Hardy']);
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
 
+  const fetchActorData = async (actorName) => {
+    try {
+      // const response = await axios.get(`/api/actor`, { params: { name: actorName } });
+      const response = await axios.get(`http://localhost:5000/api/search/${actorName}`);
+      return { name: actorName, data: response.data };
+    } catch (error) {
+      console.error(`Error fetching data for ${actorName}:`, error);
+      return { name: actorName, data: null, error: true };
+    }
+  };
+
+  const handleFetchData = async () => {
+    setLoading(true);
+    setResults([]); // Clear previous results
+    try {
+      const promises = choices.map((actor) => fetchActorData(actor));
+      const results = await Promise.all(promises);
+      setResults(results);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Create timer
   const getTimeRemaining = (time) => {
     const total = time;
     const seconds = Math.floor((total / 1000) % 60);
@@ -111,169 +143,69 @@ export default function SixDegrees() {
   };
 
   return (
-    <div className="flex flex-col min-h-full p-6 m-auto">
+    <div className="flex flex-col p-6 m-auto">
       <div className="flex flex-col items-center justify-center">
         <p className="text-2xl font-bold tracking-wide mb-6">
           Six Degrees of Separation Game
         </p>
       </div>
 
-      {/* Actors to Compare */}
-      <div className="flex flex-col sm:flex-row justify-center items-center gap-12">
-         {/* Actor Card 1 */}
-         <div className="border border-black rounded-xl shadow-sm shadow-gray-600 dark:shadow-gray-900">
+      {/* Display Actors to Solve */}
+      <button onClick={handleFetchData} disabled={loading}>
+        {loading ? 'Loading...' : 'Fetch Actor Data'}
+      </button>
+      
+      <div className="flex flex-col sm:flex-row justify-center gap-12 overflow-hidden">
+      {results.map((result, index) => (
+        <div key={index} className="rounded-xl min-h-fit border border-black md:max-w-xs xl:max-w-md
+            shadow-sm shadow-gray-600 dark:shadow-gray-900">
             <img 
-                // src={imgUrl}
-                src="public\assets\pug.svg"
-                alt="portfolio"
+                src={result.data.image_url}
+                alt={result.name}
                 title="Show Details"
-                className="w-full md:h-80 object-cover cursor-pointer"
+                className="w-full object-cover cursor-pointer rounded-t-xl md:max-h-96"
                 />
-            <div className="w-full min-h-full p-4 rounded-b-xl
+            <div className="w-full p-4 rounded-b-xl
                 bg-gradient-to-b from-slate-400 to-slate-400/80
                 dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:via-gray-700 dark:to-gray-700/80
                 ">
                 <h3 className='text-lg md:text-xl mb-2 md:mb-3 font-semibold' >
-                   {/* {name} */} Name
-                  </h3>
-                <p className='flex flex-wrap gap-2 flex-row items-center justify-start 
-                    text-xs md:text-sm dark:text-white dark:black'>
-                      
-                      {/* Accordian Example */}
-                      <div id="accordionExample" className="min-w-full">
-                        <div
-                          class="rounded-t-lg border border-neutral-200 dark:border-neutral-600 dark:bg-body-dark">
-                          <h2 class="mb-0" id="headingOne">
-                            <button
-                              class="group relative flex w-full items-center rounded-lg border-0 px-5 py-4 text-left text-base text-neutral-800 transition bg-white"
-                              type="button"
+                  {result.name}
+                </h3>
+          {result.error ? (
+            <p style={{ color: 'red' }}>Error fetching data</p>
+          ) : (
+            <div
+              class="min-h-fit rounded-xl border border-neutral-200 dark:border-neutral-600 dark:bg-body-dark">
+                <div>
+                    <button
+                      onClick={(e) => {
+                        const creditsDiv = e.target.nextElementSibling;
+                        creditsDiv.style.display =
+                        creditsDiv.style.display === 'none' ? 'block' : 'none';
+                      }}
+                      className="p-2"
+                      >
+                        Show Acting Credits
+                    </button>
+                    <div style={{ display: 'none' }}>
+                        <ul className="p-2">
+                          {result.data.acting_credits.map((credit, idx) => (
+                            <li 
+                              key={idx}
+                              className="pt-1 px-2"
                               >
-                              Number of Acting Credits
-                              <span
-                                class="-me-1 ms-auto h-5 w-5 shrink-0 rotate-[-180deg] transition-transform duration-200 ease-in-out group-data-[twe-collapse-collapsed]:me-0 
-                                group-data-[twe-collapse-collapsed]:rotate-0 motion-reduce:transition-none [&>svg]:h-6 [&>svg]:w-6">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke-width="1.5"
-                                  stroke="currentColor">
-                                  <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                </svg>
-                              </span>
-                            </button>
-                          </h2>
-                          <div
-                            id="collapseOne"
-                            className="hidden"
-                            data-twe-collapse-item
-                            data-twe-collapse-show
-                            aria-labelledby="headingOne"
-                            data-twe-parent="#accordionExample">
-                            <div class="px-5 py-4">
-                              <strong>This is the first item's accordion body.</strong> It is
-                              shown by default, until the collapse plugin adds the appropriate
-                              classes that we use to style each element. These classes control
-                              the overall appearance, as well as the showing and hiding via CSS
-                              transitions. You can modify any of this with custom CSS or
-                              overriding our default variables. It's also worth noting that just
-                              about any HTML can go within the <code>.accordion-body</code>,
-                              though the transition does limit overflow.
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-
-                    {/* {stack.map(item => (
-                        <span className='inline-block px-2 py-1 font-semibold border-2 border-stone-900 bg-white dark:bg-gray-500 dark:border-gray-400 rounded-md'>
-                        {item}
-                        </span>
-                        ))} */}
-                </p>
-            </div>
+                                  {credit.title} ({credit.release_date}) - {credit.character}
+                              </li>
+                          ))}
+                        </ul>
+                    </div>
+                </div>
+              </div>
+            )}
           </div>
-
-         {/* Actor Card 2 */}
-         <div className="border border-black rounded-xl shadow-sm shadow-gray-600 dark:shadow-gray-900">
-            <img 
-                // src={imgUrl}
-                src="public\assets\pug.svg"
-                alt="portfolio"
-                title="Show Details"
-                className="w-full md:h-80 object-cover cursor-pointer"
-                />
-            <div className="w-full min-h-full p-4 rounded-b-xl
-                bg-gradient-to-b from-slate-400 to-slate-400/80
-                dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:via-gray-700 dark:to-gray-700/80
-                ">
-                <h3 className='text-lg md:text-xl mb-2 md:mb-3 font-semibold'>
-                   {/* {name} */} Name
-                  </h3>
-                <p className='flex flex-wrap gap-2 flex-row items-center justify-start 
-                    text-xs md:text-sm dark:text-white dark:black'>
-                      
-                      {/* Accordian Example */}
-                      <div id="accordionExample" className="min-w-full">
-                        <div
-                          class="rounded-t-lg border border-neutral-200 dark:border-neutral-600 dark:bg-body-dark">
-                          <h2 class="mb-0" id="headingOne">
-                            <button
-                              class="group relative flex w-full items-center rounded-lg border-0 px-5 py-4 text-left text-base text-neutral-800 transition bg-white"
-                              type="button"
-                              >
-                              Number of Acting Credits
-                              <span
-                                class="-me-1 ms-auto h-5 w-5 shrink-0 rotate-[-180deg] transition-transform duration-200 ease-in-out group-data-[twe-collapse-collapsed]:me-0 
-                                group-data-[twe-collapse-collapsed]:rotate-0 motion-reduce:transition-none [&>svg]:h-6 [&>svg]:w-6">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke-width="1.5"
-                                  stroke="currentColor">
-                                  <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                                </svg>
-                              </span>
-                            </button>
-                          </h2>
-                          <div
-                            id="collapseOne"
-                            className="hidden"
-                            data-twe-collapse-item
-                            data-twe-collapse-show
-                            aria-labelledby="headingOne"
-                            data-twe-parent="#accordionExample">
-                            <div class="px-5 py-4">
-                              <strong>This is the first item's accordion body.</strong> It is
-                              shown by default, until the collapse plugin adds the appropriate
-                              classes that we use to style each element. These classes control
-                              the overall appearance, as well as the showing and hiding via CSS
-                              transitions. You can modify any of this with custom CSS or
-                              overriding our default variables. It's also worth noting that just
-                              about any HTML can go within the <code>.accordion-body</code>,
-                              though the transition does limit overflow.
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-
-                    {/* {stack.map(item => (
-                        <span className='inline-block px-2 py-1 font-semibold border-2 border-stone-900 bg-white dark:bg-gray-500 dark:border-gray-400 rounded-md'>
-                        {item}
-                        </span>
-                        ))} */}
-                </p>
-            </div>
-          </div>
-       
+        </div>
+        ))}
       </div>
 
 
@@ -352,29 +284,6 @@ export default function SixDegrees() {
           </div>
         </div>
     </div>
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      {/* <div className='flex flex-col md:flex-row items-center justify-center scroll-p-8'>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-            {movies.map((movie, index) => (
-                <MovieItem
-                    key={index}
-                    imgUrl={movie.imgUrl}
-                    title={movie.title}
-                    actors={movie.actors}
-                    link={movie.link}
-                />    
-            ))}
-        </div>
-      </div> */}
-
 
     </div>
   );
