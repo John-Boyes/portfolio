@@ -480,11 +480,11 @@ export default function SixDegrees() {
           </li>
           <li className="py-2">
             <strong>Example:</strong><br></br>
-             Actor 1 > First Degree > Second Degree > Third Degree > Actor 2
+             Actor 1 &gt; First Degree &gt; Second Degree &gt; Third Degree &gt; Actor 2
           </li>
           <li className="py-2">
             <strong>Example:</strong><br></br> 
-            Actor 2 > First Degree > Second Degree > Actor 1
+            Actor 2 &gt; First Degree &gt; Second Degree &gt; Actor 1
           </li>
         </ol>
       </p>
