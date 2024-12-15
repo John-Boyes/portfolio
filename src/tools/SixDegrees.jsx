@@ -4,6 +4,8 @@ import axios from 'axios';
 export default function SixDegrees() {
   const Ref = useRef(null);
 
+  // State to track if the game has started
+  const [gameStarted, setGameStarted] = useState(false);
   const [guessCount, setGuessCount] = useState(0); // Track the number of guesses
   const [timer, setTimer] = useState("00:10:00");
   const [remainingTime, setRemainingTime] = useState(10000); // 10 minutes in milliseconds
@@ -53,7 +55,7 @@ export default function SixDegrees() {
       let titles1 = [];
       let titles2 = [];
       let attempts = 0;
-      let maxAttempts = 10; // Maximum retry attempts to avoid infinite loop
+      let maxAttempts = 20; // Maximum retry attempts to avoid infinite loop
   
       let actorsSelected = false; // Flag to indicate whether valid actors are selected
   
@@ -331,7 +333,7 @@ export default function SixDegrees() {
       // Update guess count and game state
       setGuessCount((prevGuessCount) => {
         const nextGuessCount = prevGuessCount + 1;
-        if (nextGuessCount >= 10) {
+        if (nextGuessCount >= 20) {
           setGameOver(true);
           setWinner(false);
         }
@@ -344,8 +346,6 @@ export default function SixDegrees() {
       console.error("Error validating answers:", error);
     }
   };
-  
-  
 
   const resetGame = () => {
     setGuessCount(0);
@@ -385,6 +385,119 @@ export default function SixDegrees() {
     return () => clearInterval(timerInterval);
   }, [gameOver, timer]); // Depend on gameOver and timer
 
+
+  const gameForm = (
+    <div className="w-full max-w-xl my-6 mx-auto shadow-sm shadow-gray-600 dark:shadow-gray-900 rounded-xl p-8 pt-6 pb-8 mb-4
+    bg-gradient-to-b from-slate-400 to-slate-400/80 border border-black
+    dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:to-gray-700/80">
+
+      <form className="w-full max-w-xl">
+        {[
+          ["first", "second"],
+          ["third", "fourth"],
+          ["fifth"],
+        ].map((pair, rowIndex) => (
+          <div className="flex flex-wrap -mx-3 mb-6" key={`row-${rowIndex}`}>
+            {pair.map((degree) => (
+              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0" key={degree}>
+                <label
+                  className="tracking-wide block text-sm font-bold mb-2"
+                  htmlFor={degree}
+                >
+                  {degree.charAt(0).toUpperCase() + degree.slice(1)} Degree
+                  {validity[degree] !== undefined && (
+                    validity[degree] ? (
+                      <span style={{ color: "green" }}>&#x2713;</span> // Green check mark
+                    ) : (
+                      <span style={{ color: "red" }}>&#x2717;</span> // Red X mark
+                    )
+                  )}
+                </label>
+                <input
+                  className="shadow appearance-none block border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+                  id={degree}
+                  type="text"
+                  placeholder="Search Actor"
+                  value={answers[degree]}
+                  onChange={handleChange}
+                  disabled={gameOver} // Disable inputs if the game is over
+                />
+              </div>
+            ))}
+          </div>
+        ))}
+
+                {/* Show the timer and controls */}
+                <div className="flex flex-col sm:flex-row justify-between items-center sm:text-lg font-bold tracking-wide mb-4">
+          {!gameOver ? (
+            <>
+              <button
+                className="flex flex-wrap block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
+                  focus:outline-none focus:shadow-outline"
+                type="button"
+                onClick={checkAnswers}
+              >
+                Check Answers
+              </button>
+              <div className="flex items-center space-x-4">
+                <span className="text-lg font-bold">Timer: {timer}s</span>
+                {/* <span className="text-lg font-bold">Guesses: {guessCount}/10</span> */}
+              </div>
+            </>
+          ) : (
+            <div className="text-center">
+              <h2 className={`text-2xl font-bold ${winner ? "text-green-500" : "text-red-500"}`}>
+                {winner ? "You Win!" : "Game Over: You Lose!"}
+              </h2>
+            </div>
+          )}
+        </div>
+      </form>
+    </div>
+  );
+
+  // Handle start game
+  const startGame = () => {
+    setGameStarted(true); // Hide description and show the form
+    resetGame();
+  };
+
+  // Game description
+  const gameDescription = (
+    <div className='game-description mx-auto max-w-lg'>
+      <span className='text-lg font-bold tracking-wide'>Game Description</span>
+      <p className='p-2'>
+        <ol>
+          <li className="py-1">
+            Welcome to the game! Your task is to connect two actors through a series of movie co-stars. 
+          </li>
+          <li className="py-1">
+            The goal is to connect the actors in under six degrees of separation. The first degree must be an actor who was on screen
+            with either Actor 1 or Actor 2, and if they were on screen with both you win the game. 
+          </li>
+          <li className="py-1">
+            Each subsequent degree you use must connect to the previous degree, and game ends when a connection is also made to the actor that was not tied to the first degree.
+          </li>
+          <li className="py-2">
+            <strong>Example:</strong><br></br>
+             Actor 1 > First Degree > Second Degree > Third Degree > Actor 2
+          </li>
+          <li className="py-2">
+            <strong>Example:</strong><br></br> 
+            Actor 2 > First Degree > Second Degree > Actor 1
+          </li>
+        </ol>
+      </p>
+      <button 
+        onClick={startGame} 
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Start Game
+      </button>
+    </div>
+    );
+
+
   return (
     <div className="flex flex-col p-6 m-auto overflow-auto">
       <div className="flex flex-col items-center justify-center">
@@ -394,9 +507,10 @@ export default function SixDegrees() {
       </div>
 
       {/* Display Actors to Solve */}
-      <button className='pb-2' onClick={resetGame} disabled={loading}>
-        {loading ? 'Loading...' : 'Click to Load New Actors'}
-      </button>
+      
+        {!gameStarted ? gameDescription : 
+        <button className='pb-2' onClick={resetGame} disabled={loading}>Click to Load New Actors</button>}
+      
       
       <div className="flex flex-col sm:flex-row justify-center gap-12 overflow-hidden">
       {results.map((actor, index) => (
@@ -452,78 +566,8 @@ export default function SixDegrees() {
 
       </div>
 
-
-      {/* Area to enter answers */}
-        {/* Player enters actor name, API returns photo and accordian with list of movies.
-        If actor has an acting credit that matches previous actor or one of the two 6D actors show green checkmark, else red X  */}
+        { !gameStarted ? null : gameForm }
       
-      <div className="w-full max-w-xl my-6 mx-auto shadow-sm shadow-gray-600 dark:shadow-gray-900 rounded-xl p-8 pt-6 pb-8 mb-4
-          bg-gradient-to-b from-slate-400 to-slate-400/80 border border-black
-          dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:to-gray-700/80">
-
-      <form className="w-full max-w-xl">
-        {[
-          ["first", "second"],
-          ["third", "fourth"],
-          ["fifth"],
-        ].map((pair, rowIndex) => (
-          <div className="flex flex-wrap -mx-3 mb-6" key={`row-${rowIndex}`}>
-            {pair.map((degree) => (
-              <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0" key={degree}>
-                <label
-                  className="tracking-wide block text-sm font-bold mb-2"
-                  htmlFor={degree}
-                >
-                  {degree.charAt(0).toUpperCase() + degree.slice(1)} Degree
-                  {validity[degree] !== undefined && (
-                    validity[degree] ? (
-                      <span style={{ color: "green" }}>&#x2713;</span> // Green check mark
-                    ) : (
-                      <span style={{ color: "red" }}>&#x2717;</span> // Red X mark
-                    )
-                  )}
-                </label>
-                <input
-                  className="shadow appearance-none block border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
-                  id={degree}
-                  type="text"
-                  placeholder="Search Actor"
-                  value={answers[degree]}
-                  onChange={handleChange}
-                  disabled={gameOver} // Disable inputs if the game is over
-                />
-              </div>
-            ))}
-          </div>
-        ))}
-
-                {/* Show the timer and controls */}
-                <div className="flex flex-col sm:flex-row justify-between items-center sm:text-lg font-bold tracking-wide mb-4">
-          {!gameOver ? (
-            <>
-              <button
-                className="flex flex-wrap block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
-                  focus:outline-none focus:shadow-outline"
-                type="button"
-                onClick={checkAnswers}
-              >
-                Check Answers
-              </button>
-              <div className="flex items-center space-x-4">
-                <span className="text-lg font-bold">Timer: {timer}s</span>
-                <span className="text-lg font-bold">Guesses: {guessCount}/10</span>
-              </div>
-            </>
-          ) : (
-            <div className="text-center">
-              <h2 className={`text-2xl font-bold ${winner ? "text-green-500" : "text-red-500"}`}>
-                {winner ? "You Win!" : "Game Over: You Lose!"}
-              </h2>
-            </div>
-          )}
-        </div>
-      </form>
-    </div>
 
     </div>
   );
