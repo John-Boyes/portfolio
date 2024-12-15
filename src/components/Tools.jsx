@@ -158,12 +158,12 @@ export default function Tools() {
 {/* Outlet/Main Window */}
         <div id="detail" className={
           navigation.tool === "loading" ? "loading" : 
-          "flex p-5 w-full bg-gray-100 dark:bg-gray-700 " }>
+          "flex p-5 w-full bg-gray-100 dark:bg-gray-700" }>
 
           <div className="flex p-3 
             bg-gradient-to-tr from-sky-200 via-rose-200 to-sky-200 text-stone-900
             dark:from-stone-800 dark:to-sky-900 dark:text-gray-400
-            w-full rounded-lg">
+            w-full rounded-lg overflow-auto">
               <Outlet />
           </div>
         </div>
