@@ -143,7 +143,7 @@ export default function SixDegrees() {
   };
 
   return (
-    <div className="flex flex-col p-6 m-auto">
+    <div className="flex flex-col p-6 m-auto overflow-auto">
       <div className="flex flex-col items-center justify-center">
         <p className="text-2xl font-bold tracking-wide mb-6">
           Six Degrees of Separation Game
@@ -151,8 +151,8 @@ export default function SixDegrees() {
       </div>
 
       {/* Display Actors to Solve */}
-      <button onClick={handleFetchData} disabled={loading}>
-        {loading ? 'Loading...' : 'Fetch Actor Data'}
+      <button className='pb-2' onClick={handleFetchData} disabled={loading}>
+        {loading ? 'Loading...' : 'Click to Load New Actors'}
       </button>
       
       <div className="flex flex-col sm:flex-row justify-center gap-12 overflow-hidden">
@@ -163,7 +163,7 @@ export default function SixDegrees() {
                 src={result.data.image_url}
                 alt={result.name}
                 title="Show Details"
-                className="w-full object-cover cursor-pointer rounded-t-xl md:max-h-96"
+                className="w-96 object-cover cursor-pointer rounded-t-xl md:max-h-80"
                 />
             <div className="w-full p-4 rounded-b-xl
                 bg-gradient-to-b from-slate-400 to-slate-400/80
@@ -189,7 +189,7 @@ export default function SixDegrees() {
                         Show Acting Credits
                     </button>
                     <div style={{ display: 'none' }}>
-                        <ul className="p-2">
+                        <ul className="p-2 text-sm">
                           {result.data.acting_credits.map((credit, idx) => (
                             <li 
                               key={idx}
