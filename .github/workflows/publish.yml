@@ -13,21 +13,37 @@ jobs:
       - name: git-checkout
         uses: actions/checkout@v3
         
-      - name: Install all dependencies
-        run: npm install
-        
-      - name: Build
-        run: |
+      - name: Connect with VPS
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.PRIVATE_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          mkdir -p apps/portfolio && cd apps/portfolio
+          
+          if [ -d ".git" ]; then
+            git stash
+            git pull origin master
+          else
+            git clone -b master {https://github.com/John-Boyes/portfolio} .
+          fi
+          
+          npm install --force
           echo "Building project"
           npm run build # The Build command of your project
           # echo "Copying Index files"
           # npm run copy-index  # the copy index.html script
-        
-      - name: Push
-        uses: s0/git-publish-subdir-action@develop
-        env:
-          REPO: self
-          BRANCH: build # The branch name where you want to push the assets
-          FOLDER: dist # The directory where your assets are generated
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Github will automatically add this
-          MESSAGE: "Build: ({sha}) {msg}" # The commit message
+
+          pid=$(pm2 pid "portfolio" 2>/dev/null)
+          if [ -n "$pid" ]; then
+            echo "Reloading application"
+            pm2 reload "portfolio"
+            pm2 save
+          else
+            echo "New application"
+            pm2 start npm --name "portfolio" -- start
+            pm2 startup
+            pm2 save
+          fi
