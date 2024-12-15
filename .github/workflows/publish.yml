@@ -27,7 +27,7 @@ jobs:
               git stash
               git pull origin master
             else
-              git clone -b master {https://github.com/John-Boyes/portfolio} .
+              git clone -b master {git@github.com:John-Boyes/portfolio.git} .
             fi
             
             npm install --force
