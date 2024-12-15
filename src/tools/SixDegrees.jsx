@@ -10,7 +10,8 @@ export default function SixDegrees() {
   const [hasChecked, setHasChecked] = useState(false);
   
   // API for getting Actor Data
-  const [choices, setChoices] = useState(['Jack Black', 'Tom Hardy']);
+  const actorList = ['Jack Black', 'Tom Hardy', 'Tom Holland', 'Jessica Biel', 'Mark Wahlberg', 'Jeff Bridges', 'Kit Harington', 'Mark Ruffalo', 'Tony Danza', 'Tim Allen', 'Selena Gomez', 'Mel Gibson', 'Martin Short', 'Peter Dinklage', 'Sylvester Stallone', 'Steve Martin']
+  const [choices, setChoices] = useState([]);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -28,16 +29,69 @@ export default function SixDegrees() {
   const handleFetchData = async () => {
     setLoading(true);
     setResults([]); // Clear previous results
+  
     try {
-      const promises = choices.map((actor) => fetchActorData(actor));
-      const results = await Promise.all(promises);
-      setResults(results);
+      let actor1, actor2;
+      let actor1Credits, actor2Credits;
+  
+      // Continue selecting until two actors with no overlapping movies are found
+      do {
+        // Randomly shuffle and select two actors
+        const shuffledList = [...actorList].sort(() => 0.5 - Math.random());
+        actor1 = shuffledList[0];
+        actor2 = shuffledList[1];
+  
+        // Fetch movie credits for both actors
+        const [actor1Response, actor2Response] = await Promise.all([
+          axios.get(`http://localhost:5000/api/search/${actor1}`), // Replace with actual endpoint
+          axios.get(`http://localhost:5000/api/search/${actor2}`),
+        ]);
+  
+        actor1Credits = actor1Response.data.acting_credits || [];
+        actor2Credits = actor2Response.data.acting_credits || [];
+  
+      } while (actor1Credits.some((movie) => actor2Credits.includes(movie)));
+  
+      // Set the validated choices
+      setChoices([actor1, actor2]);
+  
+      // Add credit counts to the results
+      const actorResults = [
+        {
+          name: actor1,
+          creditsCount: actor1Credits.length,
+          credits: actor1Credits,
+        },
+        {
+          name: actor2,
+          creditsCount: actor2Credits.length,
+          credits: actor2Credits,
+        },
+      ];
+  
+      // Fetch additional actor data for display
+      const promises = [fetchActorData(actor1), fetchActorData(actor2)];
+      const detailedResults = await Promise.all(promises);
+  
+      // Combine credit counts with detailed results
+      const finalResults = detailedResults.map((result, index) => ({
+        ...result,
+        creditsCount: actorResults[index].creditsCount,
+        credits: actorResults[index].credits,
+      }));
+  
+      setResults(finalResults);
+      console.log(finalResults);
+  
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error during actor selection or fetching data:', error);
     } finally {
       setLoading(false);
     }
+
+    onClickReset();
   };
+  
 
   // Create timer
   const getTimeRemaining = (time) => {
@@ -113,33 +167,89 @@ export default function SixDegrees() {
     fourth: "",
     fifth: "",
   });
-
-  const [validity, setValidity] = useState({
-    first: false,
-    second: false,
-    third: false,
-    fourth: false,
-    fifth: false,
-  });
-
-  const validateAnswer = (value) => value.trim() !== ""; // Example validation
-
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-
-    setAnswers((prev) => ({
-      ...prev,
-      [id]: value,
-    }));
+  const [validity, setValidity] = useState({});
+  const [gameOver, setGameOver] = useState(false);
+  const [winner, setWinner] = useState(false); // Indicates if the user succeeded
+  
+  const handleChange = (event) => {
+    const { id, value } = event.target;
+    setAnswers((prev) => ({ ...prev, [id]: value }));
   };
-
-  const checkAnswers = () => {
-    pauseTimer(); // Explicitly pause the timer
-    const newValidity = Object.fromEntries(
-      Object.entries(answers).map(([key, value]) => [key, validateAnswer(value)])
-    );
-    setValidity(newValidity);
-    setHasChecked(true); // Enable validation indicators
+  
+  const checkAnswers = async () => {
+    let currentValidity = {};
+    let previousMovies = []; // Tracks the movies of the last valid input
+    let connectedActor = null; // Tracks the remaining actor not connected yet
+    let isGameOver = false;
+  
+    try {
+      // Iterate through each degree and validate
+      for (const degree of Object.keys(answers)) {
+        const actorName = answers[degree];
+        if (!actorName) break;
+  
+        // Fetch the actor's movie credits
+        const response = await axios.get(`http://localhost:5000/api/credits/${actorName}`);
+        const actorMovies = response.data.credits || [];
+  
+        // First degree validation
+        if (degree === "first" || degree === "second") {
+          const matchesActor1 = actorMovies.some((movie) => actor1Credits.includes(movie));
+          const matchesActor2 = actorMovies.some((movie) => actor2Credits.includes(movie));
+  
+          if (matchesActor1 && matchesActor2) {
+            // Game ends successfully if both actors are connected
+            setGameOver(true);
+            setWinner(true);
+            currentValidity[degree] = true;
+            break;
+          }
+  
+          // Continue the game if only one actor is matched
+          if (matchesActor1 || matchesActor2) {
+            currentValidity[degree] = true;
+            connectedActor = matchesActor1 ? "actor2" : "actor1"; // Track the remaining actor
+            previousMovies = actorMovies; // Update the valid movie list
+          } else {
+            // No connection to either actor ends the game unsuccessfully
+            currentValidity[degree] = false;
+            isGameOver = true;
+            break;
+          }
+        } else {
+          // Subsequent degrees validation
+          const matchesPrevious = actorMovies.some((movie) => previousMovies.includes(movie));
+          const matchesRemainingActor = actorMovies.some((movie) =>
+            connectedActor === "actor1" ? actor1Credits.includes(movie) : actor2Credits.includes(movie)
+          );
+  
+          if (!matchesPrevious) {
+            // No match with the previous degree ends the game
+            currentValidity[degree] = false;
+            isGameOver = true;
+            break;
+          }
+  
+          if (matchesRemainingActor) {
+            // Game ends successfully if the remaining actor is matched
+            currentValidity[degree] = true;
+            setGameOver(true);
+            setWinner(true);
+            break;
+          }
+  
+          // Update for the next iteration
+          currentValidity[degree] = true;
+          previousMovies = actorMovies;
+        }
+      }
+  
+      // Update validity and game state
+      setValidity(currentValidity);
+      if (isGameOver) setGameOver(true);
+    } catch (error) {
+      console.error("Error validating answers:", error);
+    }
   };
 
   return (
@@ -157,7 +267,9 @@ export default function SixDegrees() {
       
       <div className="flex flex-col sm:flex-row justify-center gap-12 overflow-hidden">
       {results.map((result, index) => (
-        <div key={index} className="rounded-xl min-h-fit border border-black md:max-w-xs xl:max-w-md
+        <div key={index} className="rounded-xl border border-black md:max-w-xs xl:max-w-md
+        bg-gradient-to-b from-slate-400 to-slate-400/80 
+        dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:via-gray-700 dark:to-gray-700/80
             shadow-sm shadow-gray-600 dark:shadow-gray-900">
             <img 
                 src={result.data.image_url}
@@ -166,8 +278,7 @@ export default function SixDegrees() {
                 className="w-96 object-cover cursor-pointer rounded-t-xl md:max-h-80"
                 />
             <div className="w-full p-4 rounded-b-xl
-                bg-gradient-to-b from-slate-400 to-slate-400/80
-                dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:via-gray-700 dark:to-gray-700/80
+                
                 ">
                 <h3 className='text-lg md:text-xl mb-2 md:mb-3 font-semibold' >
                   {result.name}
@@ -176,8 +287,8 @@ export default function SixDegrees() {
             <p style={{ color: 'red' }}>Error fetching data</p>
           ) : (
             <div
-              class="min-h-fit rounded-xl border border-neutral-200 dark:border-neutral-600 dark:bg-body-dark">
-                <div>
+              class="rounded-xl border border-neutral-200 dark:border-neutral-600 dark:bg-body-dark">
+                <div className="">
                     <button
                       onClick={(e) => {
                         const creditsDiv = e.target.nextElementSibling;
@@ -186,7 +297,7 @@ export default function SixDegrees() {
                       }}
                       className="p-2"
                       >
-                        Show Acting Credits
+                        Show Acting Credits - {result.data.acting_credits.length}
                     </button>
                     <div style={{ display: 'none' }}>
                         <ul className="p-2 text-sm">
@@ -218,8 +329,6 @@ export default function SixDegrees() {
           dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:to-gray-700/80">
 
       <form className="w-full max-w-xl">
-
-      {/* Map the form fields */}
         {[
           ["first", "second"],
           ["third", "fourth"],
@@ -233,7 +342,7 @@ export default function SixDegrees() {
                   htmlFor={degree}
                 >
                   {degree.charAt(0).toUpperCase() + degree.slice(1)} Degree
-                  {hasChecked && (
+                  {validity[degree] !== undefined && (
                     validity[degree] ? (
                       <span style={{ color: "green" }}>&#x2713;</span> // Green check mark
                     ) : (
@@ -248,25 +357,34 @@ export default function SixDegrees() {
                   placeholder="Search Actor"
                   value={answers[degree]}
                   onChange={handleChange}
+                  disabled={gameOver} // Disable inputs if the game is over
                 />
               </div>
             ))}
           </div>
         ))}
 
-        
         <div className="flex flex-col sm:flex-row justify-between items-center sm:text-lg font-bold tracking-wide mb-4">
-          <button
-            className="flex flex-wrap block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
-              focus:outline-none focus:shadow-outline"
-            type="button"
-            onClick={checkAnswers}
-          >
-            Check Answers
-          </button>
-          <div className="flex ">
-            {timer === "00:00:00" ? <span className=" uppercase text-red-500">Time's up!</span> :
-            <span className="text-lg font-bold">Timer: {timer} seconds</span>}
+          {!gameOver ? (
+            <button
+              className="flex flex-wrap block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
+                focus:outline-none focus:shadow-outline"
+              type="button"
+              onClick={checkAnswers}
+            >
+              Check Answers
+            </button>
+          ) : (
+            <span className={`text-lg font-bold ${winner ? "text-green-500" : "text-red-500"}`}>
+              {winner ? "Game Over: You Win!" : "Game Over: You Lose!"}
+            </span>
+          )}
+          <div className="flex">
+            {timer === "00:00:00" ? (
+              <span className="uppercase text-red-500">Time's up!</span>
+            ) : (
+              <span className="text-lg font-bold">Timer: {timer} seconds</span>
+            )}
           </div>
         </div>
       </form>
