@@ -36,9 +36,9 @@ app.get('/api/search/:name', async (req, res) => {
             params: { api_key: TMDB_API_KEY },
         });
         const actingCredits = creditsResponse.data.cast.map((credit) => ({
-            title: credit.title,
-            release_date: credit.release_date,
-            character: credit.character,
+            // title: credit.title,
+            // release_date: credit.release_date,
+            // character: credit.character,
         }));
 
         res.json({ name: actorName, image_url, acting_credits: actingCredits });

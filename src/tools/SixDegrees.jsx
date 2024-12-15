@@ -9,17 +9,22 @@ export default function SixDegrees() {
   const [remainingTime, setRemainingTime] = useState(10000); // 10 minutes in milliseconds
   const [isPaused, setIsPaused] = useState(false);
   const [hasChecked, setHasChecked] = useState(false);
-  
+  const [actor1Credits, setActor1Credits] = useState([]);
+  const [actor2Credits, setActor2Credits] = useState([]);
+
   // API for getting Actor Data
-  const actorList = ['Jack Black', 'Tom Hardy', 'Tom Holland', 'Jessica Biel', 'Mark Wahlberg', 'Jeff Bridges', 'Kit Harington', 'Mark Ruffalo', 'Tony Danza', 'Tim Allen', 'Selena Gomez', 'Mel Gibson', 'Martin Short', 'Peter Dinklage', 'Sylvester Stallone', 'Steve Martin']
+  const actorList = [
+    'Jack Black', 'Tom Hardy', 'Tom Holland', 'Jessica Biel', 
+    'Mark Wahlberg', 'Jeff Bridges', 'Kit Harington', 'Mark Ruffalo', 
+    'Tony Danza', 'Tim Allen', 'Selena Gomez', 'Mel Gibson', 
+    'Martin Short', 'Peter Dinklage', 'Sylvester Stallone', 'Steve Martin'
+  ];
   const [choices, setChoices] = useState([]);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
-
   const fetchActorData = async (actorName) => {
     try {
-      // const response = await axios.get(`/api/actor`, { params: { name: actorName } });
       const response = await axios.get(`http://localhost:5000/api/search/${actorName}`);
       return { name: actorName, data: response.data };
     } catch (error) {
@@ -27,75 +32,111 @@ export default function SixDegrees() {
       return { name: actorName, data: null, error: true };
     }
   };
-
+  
   const handleFetchData = async () => {
     setLoading(true);
     setResults([]); // Clear previous results
   
     try {
       let actor1, actor2;
-      let actor1Credits, actor2Credits;
+      let selectedActors = [];
+      let credits1, credits2;
+      let titles1 = [];
+      let titles2 = [];
+      let attempts = 0;
+      let maxAttempts = 10; // Maximum retry attempts to avoid infinite loop
   
-      // Continue selecting until two actors with no overlapping movies are found
-      do {
-        // Randomly shuffle and select two actors
+      let actorsSelected = false; // Flag to indicate whether valid actors are selected
+  
+      while (!actorsSelected && attempts < maxAttempts) {
+        // Randomly shuffle the actor list and select two actors
         const shuffledList = [...actorList].sort(() => 0.5 - Math.random());
         actor1 = shuffledList[0];
         actor2 = shuffledList[1];
   
-        // Fetch movie credits for both actors
-        const [actor1Response, actor2Response] = await Promise.all([
-          axios.get(`http://localhost:5000/api/search/${actor1}`), // Replace with actual endpoint
-          axios.get(`http://localhost:5000/api/search/${actor2}`),
-        ]);
+        console.log("Selected Actors:", actor1, actor2);
   
-        actor1Credits = actor1Response.data.acting_credits || [];
-        actor2Credits = actor2Response.data.acting_credits || [];
+        if (!actor1 || !actor2) {
+          console.error("Actor selection failed, actor1 or actor2 is undefined:", actor1, actor2);
+          return;
+        }
   
-      } while (actor1Credits.some((movie) => actor2Credits.includes(movie)));
+        // Fetch data for both actors
+        try {
+          const [actor1Response, actor2Response] = await Promise.all([
+            fetchActorData(actor1),
+            fetchActorData(actor2)
+          ]);
   
-      // Set the validated choices
-      setChoices([actor1, actor2]);
+          console.log("Actor 1 Response:", actor1Response.data);
+          console.log("Actor 2 Response:", actor2Response.data);
   
-      // Add credit counts to the results
-      const actorResults = [
-        {
-          name: actor1,
-          creditsCount: actor1Credits.length,
-          credits: actor1Credits,
-        },
-        {
-          name: actor2,
-          creditsCount: actor2Credits.length,
-          credits: actor2Credits,
-        },
-      ];
+          // Check if the data exists for both actors
+          if (!actor1Response.data || !actor2Response.data) {
+            console.error("API response is missing for one or both actors.");
+            return;
+          }
   
-      // Fetch additional actor data for display
-      const promises = [fetchActorData(actor1), fetchActorData(actor2)];
-      const detailedResults = await Promise.all(promises);
-  
-      // Combine credit counts with detailed results
-      const finalResults = detailedResults.map((result, index) => ({
-        ...result,
-        creditsCount: actorResults[index].creditsCount,
-        credits: actorResults[index].credits,
-      }));
-  
-      setResults(finalResults);
-      console.log(finalResults);
-  
-    } catch (error) {
-      console.error('Error during actor selection or fetching data:', error);
-    } finally {
-      setLoading(false);
-    }
+          credits1 = actor1Response.data.acting_credits || [];
+          credits2 = actor2Response.data.acting_credits || [];
 
-    onClickReset();
+          // Set the credits into state for future validation
+          setActor1Credits(credits1);
+          setActor2Credits(credits2);
+  
+          if (!credits1 || !credits2) {
+            console.error("Actor credits not found for", actor1, actor2);
+            return;
+          }
+  
+          // Extract movie titles from credits
+          titles1 = credits1.map((movie) => movie.title.toLowerCase());
+          titles2 = credits2.map((movie) => movie.title.toLowerCase());
+  
+          console.log("Actor 1 Titles:", titles1);
+          console.log("Actor 2 Titles:", titles2);
+  
+          // Check if there are overlapping movies
+          let overlapMovies = titles1.filter((title) => titles2.includes(title));
+  
+          if (overlapMovies.length > 0) {
+            console.log(`Overlap found between ${actor1} and ${actor2}:`, overlapMovies);
+            attempts++; // Increment attempts if overlap is found
+            console.log("Overlap found. Retrying...");
+          } else {
+            // If no overlap, select the actors and exit the loop
+            const actor1Data = actor1Response.data || {};
+            const actor2Data = actor2Response.data || {};
+  
+            // Get the image URL if it exists, or use a default value
+            const actor1ImageUrl = actor1Data.image_url || 'default_image_url';
+            const actor2ImageUrl = actor2Data.image_url || 'default_image_url';
+  
+            // Add the actors to the respective degree arrays
+            selectedActors.push({ name: actor1, credits: credits1, imageUrl: actor1ImageUrl });
+            selectedActors.push({ name: actor2, credits: credits2, imageUrl: actor2ImageUrl });
+  
+            actorsSelected = true; // Set actors as selected
+          }
+        } catch (error) {
+          console.error("Error during actor data fetching:", error);
+          return;
+        }
+      }
+  
+      // Set results into state to map to components
+      setResults(selectedActors); // For example, setting selected actors to the results
+  
+      setLoading(false); // End loading
+    } catch (error) {
+      console.error("Error in fetching actor data:", error);
+      setLoading(false); // End loading if an error occurs
+    }
   };
   
+  
 
-  // Create timer
+  // Timer logic remains unchanged
   const getTimeRemaining = (time) => {
     const total = time;
     const seconds = Math.floor((total / 1000) % 60);
@@ -121,12 +162,12 @@ export default function SixDegrees() {
     const id = setInterval(() => {
       setRemainingTime((prev) => {
         if (prev <= 0) {
-          clearInterval(id); // Ensure the timer stops exactly at 0
-          setTimer("00:00:00"); // Set display to zero
+          clearInterval(id);
+          setTimer("00:00:00");
           return 0;
         }
         const updatedTime = prev - 1000;
-        startTimer(updatedTime); // Update the displayed time
+        startTimer(updatedTime);
         return updatedTime;
       });
     }, 1000);
@@ -156,8 +197,6 @@ export default function SixDegrees() {
     }
   };
 
-
-  // Validation and UI logic remains unchanged
   const [answers, setAnswers] = useState({
     first: "",
     second: "",
@@ -167,93 +206,129 @@ export default function SixDegrees() {
   });
   const [validity, setValidity] = useState({});
   const [gameOver, setGameOver] = useState(false);
-  const [winner, setWinner] = useState(false); // Indicates if the user succeeded
-  
-  const handleChange = (event) => {
-    const { id, value } = event.target;
-    setAnswers((prev) => ({ ...prev, [id]: value }));
+  const [winner, setWinner] = useState(false);
+
+  // Handle changes in the input fields
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      [id]: value
+    }));
   };
-  
+
+  // Validation during checkAnswers function
   const checkAnswers = async () => {
-    if (gameOver) return; // Prevent further checks if the game is over
+    if (gameOver) return;
   
     let currentValidity = {};
-    let previousMovies = []; // Tracks the movies of the last valid input
-    let connectedActor = null; // Tracks the remaining actor not connected yet
+    let previousMovies = [];
+    let connectedActor = null;
     let isGameOver = false;
   
     try {
-      // Iterate through each degree and validate
       for (const degree of Object.keys(answers)) {
         const actorName = answers[degree];
         if (!actorName) break;
   
-        // Fetch the actor's movie credits
         const response = await axios.get(`http://localhost:5000/api/search/${actorName}`);
-        const actorMovies = response.data.credits || [];
+        const actorMovies = response.data.acting_credits || [];
   
-        // First degree validation
+        // Extract only movie titles for validation
+        const actorMovieTitles = actorMovies.map((movie) => movie.title);
+        const actor1MovieTitles = actor1Credits.map((movie) => movie.title);
+        const actor2MovieTitles = actor2Credits.map((movie) => movie.title);
+        const previousMovieTitles = previousMovies.map((movie) => movie.title);
+  
+        console.log("Actor Movies:", actorMovies);
+        console.log("Actor1 Movie Titles:", actor1MovieTitles);
+        console.log("Actor2 Movie Titles:", actor2MovieTitles);
+        console.log("Previous Movie Titles:", previousMovieTitles);
+  
+        // Validate against actor1Credits and actor2Credits
         if (degree === "first" || degree === "second") {
-          const matchesActor1 = actorMovies.some((movie) => actor1Credits.includes(movie));
-          const matchesActor2 = actorMovies.some((movie) => actor2Credits.includes(movie));
+          const matchesActor1 = actorMovieTitles.some((title) => actor1MovieTitles.includes(title));
+          const matchesActor2 = actorMovieTitles.some((title) => actor2MovieTitles.includes(title));
   
           if (matchesActor1 && matchesActor2) {
-            // Game ends successfully if both actors are connected
+            // Successfully connected both actors
+            currentValidity[degree] = true;
             setGameOver(true);
             setWinner(true);
-            currentValidity[degree] = true;
-            break;
+            return;
           }
   
-          // Continue the game if only one actor is matched
           if (matchesActor1 || matchesActor2) {
             currentValidity[degree] = true;
-            connectedActor = matchesActor1 ? "actor2" : "actor1"; // Track the remaining actor
-            previousMovies = actorMovies; // Update the valid movie list
+            connectedActor = matchesActor1 ? "actor2" : "actor1";
+            previousMovies = actorMovies;
           } else {
-            // No connection to either actor ends the game unsuccessfully
             currentValidity[degree] = false;
-            isGameOver = true;
             break;
           }
         } else {
-          // Subsequent degrees validation
-          const matchesPrevious = actorMovies.some((movie) => previousMovies.includes(movie));
-          const matchesRemainingActor = actorMovies.some((movie) =>
-            connectedActor === "actor1" ? actor1Credits.includes(movie) : actor2Credits.includes(movie)
+          // If the first degree matches actor1
+          if (connectedActor === "actor1") {
+            // Check if the next degree matches actor2 and the last degree
+            const matchesActor2 = actorMovieTitles.some((title) => actor2MovieTitles.includes(title));
+            const matchesLastDegree = actorMovieTitles.some((title) => previousMovieTitles.includes(title));
+  
+            if (matchesActor2 && matchesLastDegree) {
+              currentValidity[degree] = true;
+              setGameOver(true);
+              setWinner(true);
+              return;
+            }
+          }
+  
+          // If the first degree matches actor2
+          if (connectedActor === "actor2") {
+            // Check if the next degree matches actor1 and the previous degree
+            const matchesActor1 = actorMovieTitles.some((title) => actor1MovieTitles.includes(title));
+            const matchesPreviousDegree = actorMovieTitles.some((title) => previousMovieTitles.includes(title));
+  
+            if (matchesActor1 && matchesPreviousDegree) {
+              currentValidity[degree] = true;
+              setGameOver(true);
+              setWinner(true);
+              return;
+            }
+          }
+  
+          // Continue validating against previous degree's movies
+          const matchesPrevious = actorMovieTitles.some((title) => previousMovieTitles.includes(title));
+          const matchesRemainingActor = actorMovieTitles.some((title) =>
+            connectedActor === "actor1" ? actor1MovieTitles.includes(title) : actor2MovieTitles.includes(title)
           );
   
           if (!matchesPrevious) {
-            // No match with the previous degree ends the game
             currentValidity[degree] = false;
             isGameOver = true;
             break;
           }
   
           if (matchesRemainingActor) {
-            // Game ends successfully if the remaining actor is matched
             currentValidity[degree] = true;
             setGameOver(true);
             setWinner(true);
-            break;
+            return;
           }
   
-          // Update for the next iteration
           currentValidity[degree] = true;
           previousMovies = actorMovies;
         }
       }
   
-      // Increment guess count and check if max guesses are reached
-      setGuessCount((prev) => {
-        if (prev + 1 >= 10) {
+      // Update guess count and game state
+      setGuessCount((prevGuessCount) => {
+        const nextGuessCount = prevGuessCount + 1;
+        if (nextGuessCount >= 10) {
           setGameOver(true);
-          setWinner(false); // Game ends unsuccessfully
+          setWinner(false);
         }
-        return prev + 1;
+        return nextGuessCount;
       });
   
-      // Update validity and game state
       setValidity(currentValidity);
       if (isGameOver) setGameOver(true);
     } catch (error) {
@@ -261,18 +336,45 @@ export default function SixDegrees() {
     }
   };
   
-  useEffect(() => {
-    if (gameOver) return;
+  
 
-    if (timer === "00:00:00") {
-      setGameOver(true);
-      setWinner(false); //Game ends unsuccessfully
+  const resetGame = () => {
+    setGuessCount(0);
+    setGameOver(false);
+    setWinner(false);
+    setAnswers({
+      first: "",
+      second: "",
+      third: "",
+      fourth: "",
+      fifth: ""
+    });
+    setValidity({
+      first: undefined,
+      second: undefined,
+      third: undefined,
+      fourth: undefined,
+      fifth: undefined
+    });
+
+    onClickReset();
+    handleFetchData();
+  };
+
+  // Timer effect
+  useEffect(() => {
+    let timerInterval;
+    if (!gameOver && timer > 0) {
+      timerInterval = setInterval(() => {
+        setTimer(prevTimer => prevTimer - 1);
+      }, 1000);
+    } else if (gameOver || timer <= 0) {
+      clearInterval(timerInterval); // Stop the timer when the game ends or timer reaches 0
     }
 
-    return () => clearInterval(Ref.current); // Cleanup on unmount
-  }, [timer, gameOver]);
-
-  
+    // Cleanup interval on component unmount or gameOver change
+    return () => clearInterval(timerInterval);
+  }, [gameOver, timer]); // Depend on gameOver and timer
 
   return (
     <div className="flex flex-col p-6 m-auto overflow-auto">
@@ -283,62 +385,62 @@ export default function SixDegrees() {
       </div>
 
       {/* Display Actors to Solve */}
-      <button className='pb-2' onClick={handleFetchData} disabled={loading}>
+      <button className='pb-2' onClick={resetGame} disabled={loading}>
         {loading ? 'Loading...' : 'Click to Load New Actors'}
       </button>
       
       <div className="flex flex-col sm:flex-row justify-center gap-12 overflow-hidden">
-      {results.map((result, index) => (
-        <div key={index} className="rounded-xl border border-black md:max-w-xs xl:max-w-md
-        bg-gradient-to-b from-slate-400 to-slate-400/80 
-        dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:via-gray-700 dark:to-gray-700/80
+      {results.map((actor, index) => (
+          <div key={index} className="rounded-xl border border-black md:max-w-xs xl:max-w-md
+            bg-gradient-to-b from-slate-400 to-slate-400/80 
+            dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:via-gray-700 dark:to-gray-700/80
             shadow-sm shadow-gray-600 dark:shadow-gray-900">
+            
             <img 
-                src={result.data.image_url}
-                alt={result.name}
-                title="Show Details"
-                className="w-96 object-cover cursor-pointer rounded-t-xl md:max-h-80"
-                />
-            <div className="w-full p-4 rounded-b-xl
-                
-                ">
-                <h3 className='text-lg md:text-xl mb-2 md:mb-3 font-semibold' >
-                  {result.name}
-                </h3>
-          {result.error ? (
-            <p style={{ color: 'red' }}>Error fetching data</p>
-          ) : (
-            <div
-              class="rounded-xl border border-neutral-200 dark:border-neutral-600 dark:bg-body-dark">
-                <div className="">
+              src={actor.imageUrl} 
+              alt={actor.name} 
+              title="Show Details" 
+              className="w-96 object-cover cursor-pointer rounded-t-xl md:max-h-80"
+            />
+            
+            <div className="w-full p-4 rounded-b-xl">
+              <h3 className='text-lg md:text-xl mb-2 md:mb-3 font-semibold'>
+                {actor.name}
+              </h3>
+              
+              {/* Display error message if actor data fetch failed */}
+              {actor.error ? (
+                <p style={{ color: 'red' }}>Error fetching data</p>
+              ) : (
+                <div className="rounded-xl border border-neutral-200 dark:border-neutral-600 dark:bg-body-dark">
+                  <div className="">
                     <button
                       onClick={(e) => {
                         const creditsDiv = e.target.nextElementSibling;
                         creditsDiv.style.display =
-                        creditsDiv.style.display === 'none' ? 'block' : 'none';
+                          creditsDiv.style.display === 'none' ? 'block' : 'none';
                       }}
                       className="p-2"
-                      >
-                        Show Acting Credits - {result.data.acting_credits.length}
+                    >
+                      Show Acting Credits - {actor.credits.length}
                     </button>
+                    
                     <div style={{ display: 'none' }}>
-                        <ul className="p-2 text-sm">
-                          {result.data.acting_credits.map((credit, idx) => (
-                            <li 
-                              key={idx}
-                              className="pt-1 px-2"
-                              >
-                                  {credit.title} ({credit.release_date}) - {credit.character}
-                              </li>
-                          ))}
-                        </ul>
+                      <ul className="p-2 text-sm">
+                        {actor.credits.map((credit, idx) => (
+                          <li key={idx} className="pt-1 px-2">
+                            {credit.title} ({credit.release_date}) - {credit.character}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
-        </div>
         ))}
+
       </div>
 
 
@@ -386,43 +488,32 @@ export default function SixDegrees() {
           </div>
         ))}
 
-        <div className="flex flex-col sm:flex-row justify-between items-center sm:text-lg font-bold tracking-wide mb-4">
+                {/* Show the timer and controls */}
+                <div className="flex flex-col sm:flex-row justify-between items-center sm:text-lg font-bold tracking-wide mb-4">
           {!gameOver ? (
-            <button
-              className="flex flex-wrap block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
-                focus:outline-none focus:shadow-outline"
-              type="button"
-              onClick={checkAnswers}
-            >
-              Check Answers
-            </button>
+            <>
+              <button
+                className="flex flex-wrap block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
+                  focus:outline-none focus:shadow-outline"
+                type="button"
+                onClick={checkAnswers}
+              >
+                Check Answers
+              </button>
+              <div className="flex items-center space-x-4">
+                <span className="text-lg font-bold">Timer: {timer}s</span>
+                <span className="text-lg font-bold">Guesses: {guessCount}/10</span>
+              </div>
+            </>
           ) : (
-            <span className={`text-lg font-bold ${winner ? "text-green-500" : "text-red-500"}`}>
-              {winner ? "Game Over: You Win!" : "Game Over: You Lose!"}
-            </span>
+            <div className="text-center">
+              <h2 className={`text-2xl font-bold ${winner ? "text-green-500" : "text-red-500"}`}>
+                {winner ? "You Win!" : "Game Over: You Lose!"}
+              </h2>
+            </div>
           )}
-          <div className="flex">
-            {timer === "00:00:00" ? (
-              <span className="uppercase text-red-500">Time's up!</span>
-            ) : (
-              <span className="text-lg font-bold">Timer: {timer} seconds</span>
-            )}
-          </div>
         </div>
       </form>
-
-        {/* Show the timer and controls */}
-        <div className="flex flex-col sm:flex-row justify-end sm:text-lg font-bold tracking-wide mb-4">
-
-          <div className="flex gap-6 font-bold tracking-wide">
-            {isPaused ? (
-              <button onClick={resumeTimer}>Resume</button>
-            ) : (
-              <button onClick={pauseTimer}>Pause</button>
-            )}
-            <button onClick={onClickReset}>Reset</button>
-          </div>
-        </div>
     </div>
 
     </div>
