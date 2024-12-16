@@ -36,7 +36,7 @@ export default function SixDegrees() {
 
   const fetchActorData = async (actorName) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/search/${actorName}`);
+      const response = await axios.get(`https://www.johnboyes.dev:5000/api/search/${actorName}`);
       return { name: actorName, data: response.data };
     } catch (error) {
       console.error(`Error fetching data for ${actorName}:`, error);
@@ -242,7 +242,7 @@ export default function SixDegrees() {
         const actorName = answers[degree];
         if (!actorName) break;
   
-        const response = await axios.get(`http://localhost:5000/api/search/${actorName}`);
+        const response = await axios.get(`https://www.johnboyes.dev:5000/api/search/${actorName}`);
         const actorMovies = response.data.acting_credits || [];
   
         // Extract only movie titles for validation

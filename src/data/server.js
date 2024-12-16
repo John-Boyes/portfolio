@@ -1,13 +1,21 @@
-import express from 'express';
-import axios from 'axios';
-import cors from 'cors';
-import dotenv from 'dotenv';
+const express = require('express');
+const axios = require('axios');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const fs = require('fs');
+const https = require('https');
 dotenv.config();
 
 const app = express();
 const PORT = 5000;
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
+// Load SSL certificates (replace with your actual paths)
+const options = {
+  key: fs.readFileSync('/etc/letsencrypt/live/johnboyes.dev/privkey.pem'),  // SSL private key
+  cert: fs.readFileSync('/etc/letsencrypt/live/johnboyes.dev/fullchain.pem'), // SSL certificate
+  ca: fs.readFileSync('/etc/letsencrypt/live/johnboyes.dev/chain.pem')       // Optional: CA certificate chain
+};
 
 app.use(cors());
 app.use(express.json());
@@ -36,9 +44,9 @@ app.get('/api/search/:name', async (req, res) => {
             params: { api_key: TMDB_API_KEY },
         });
         const actingCredits = creditsResponse.data.cast.map((credit) => ({
-            // title: credit.title,
-            // release_date: credit.release_date,
-            // character: credit.character,
+            title: credit.title,
+            release_date: credit.release_date,
+            character: credit.character,
         }));
 
         res.json({ name: actorName, image_url, acting_credits: actingCredits });
@@ -48,6 +56,7 @@ app.get('/api/search/:name', async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+// Create HTTPS server
+https.createServer(options, app).listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on https://localhost:${PORT}`);
 });
