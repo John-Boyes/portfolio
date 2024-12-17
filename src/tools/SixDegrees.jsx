@@ -8,11 +8,22 @@ export default function SixDegrees() {
   const [gameStarted, setGameStarted] = useState(false);
   const [guessCount, setGuessCount] = useState(0); // Track the number of guesses
   const [timer, setTimer] = useState("00:10:00");
-  const [remainingTime, setRemainingTime] = useState(10000); // 10 minutes in milliseconds
+  const [remainingTime, setRemainingTime] = useState(600000); // 10 minutes in milliseconds
+  const [timeUp, setTimeUp] = useState(false); // track if timer === 0
   const [isPaused, setIsPaused] = useState(false);
-  const [hasChecked, setHasChecked] = useState(false);
   const [actor1Credits, setActor1Credits] = useState([]);
   const [actor2Credits, setActor2Credits] = useState([]);
+  const [gameOver, setGameOver] = useState(false);
+  const [validity, setValidity] = useState({});
+  const [winner, setWinner] = useState(false);
+
+  const [answers, setAnswers] = useState({
+    first: "",
+    second: "",
+    third: "",
+    fourth: "",
+    fifth: "",
+  });
 
   // API for getting Actor Data
   const actorList = [
@@ -30,7 +41,6 @@ export default function SixDegrees() {
     'Billy Bob Thornton', 'Jon Hamm', 'John Cena', 'Courteney Cox', 'David Arquette',
     'Martin Short', 'Peter Dinklage', 'Sylvester Stallone', 'Steve Martin'
   ];
-  const [choices, setChoices] = useState([]);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -146,8 +156,52 @@ export default function SixDegrees() {
   };
   
   
+  // Timer Related
+  const formatTime = (time) => {
+    const seconds = Math.floor((time / 1000) % 60);
+    const minutes = Math.floor((time / 1000 / 60) % 60);
+    const hours = Math.floor((time / 1000 / 60 / 60) % 24);
+    return `${hours > 9 ? hours : "0" + hours}:${
+      minutes > 9 ? minutes : "0" + minutes
+    }:${seconds > 9 ? seconds : "0" + seconds}`;
+  };
+  
+  useEffect(() => {
+    setTimer(formatTime(remainingTime));
+  }, [remainingTime]);
+  
 
-  // Timer logic remains unchanged
+  useEffect(() => {
+    if (gameStarted && remainingTime > 0 && !gameOver) {
+      const timerInterval = setInterval(() => {
+        setRemainingTime((prev) => prev - 1000);
+      }, 1000);
+  
+      return () => clearInterval(timerInterval);
+    }
+  
+    if (remainingTime <= 0 && !gameOver) {
+      setGameOver(true);
+      setTimeUp(true);
+    }
+  }, [gameStarted, remainingTime, gameOver]);
+
+  // Use Effect Debugging
+  // useEffect(() => {
+  //   if (gameStarted && remainingTime > 0 && !gameOver) {
+  //     console.log("Setting new interval"); // Debug log
+  //     const timerInterval = setInterval(() => {
+  //       setRemainingTime((prev) => Math.max(0, prev - 1000));
+  //     }, 1000);
+  
+  //     return () => {
+  //       console.log("Clearing interval"); // Debug log
+  //       clearInterval(timerInterval);
+  //     };
+  //   }
+  // }, [gameStarted, remainingTime, gameOver]);
+  
+
   const getTimeRemaining = (time) => {
     const total = time;
     const seconds = Math.floor((total / 1000) % 60);
@@ -156,68 +210,13 @@ export default function SixDegrees() {
     return { total, hours, minutes, seconds };
   };
 
-  const startTimer = (time) => {
-    const { total, hours, minutes, seconds } = getTimeRemaining(time);
-    if (total >= 0) {
-      setTimer(
-        `${hours > 9 ? hours : "0" + hours}:${
-          minutes > 9 ? minutes : "0" + minutes
-        }:${seconds > 9 ? seconds : "0" + seconds}`
-      );
-    }
-  };
-
-  const clearTimer = (time) => {
-    if (Ref.current) clearInterval(Ref.current);
-
-    const id = setInterval(() => {
-      setRemainingTime((prev) => {
-        if (prev <= 0) {
-          clearInterval(id);
-          setTimer("00:00:00");
-          return 0;
-        }
-        const updatedTime = prev - 1000;
-        startTimer(updatedTime);
-        return updatedTime;
-      });
-    }, 1000);
-
-    Ref.current = id;
-  };
 
   const onClickReset = () => {
     setIsPaused(false);
     setRemainingTime(600000); // Reset to 10 minutes
-    clearTimer(600000); // Start fresh timer
+    // setRemainingTime(10000)
+    setTimer(formatTime(remainingTime));
   };
-
-  const pauseTimer = () => {
-    if (Ref.current) {
-      clearInterval(Ref.current);
-      Ref.current = null;
-      setIsPaused(true);
-    }
-  };
-
-  const resumeTimer = () => {
-    if (isPaused && remainingTime > 0) {
-      setIsPaused(false);
-      clearTimer(remainingTime);
-      setHasChecked(false);
-    }
-  };
-
-  const [answers, setAnswers] = useState({
-    first: "",
-    second: "",
-    third: "",
-    fourth: "",
-    fifth: "",
-  });
-  const [validity, setValidity] = useState({});
-  const [gameOver, setGameOver] = useState(false);
-  const [winner, setWinner] = useState(false);
 
   // Handle changes in the input fields
   const handleChange = (e) => {
@@ -333,7 +332,7 @@ export default function SixDegrees() {
       // Update guess count and game state
       setGuessCount((prevGuessCount) => {
         const nextGuessCount = prevGuessCount + 1;
-        if (nextGuessCount >= 20) {
+        if (nextGuessCount >= 10) {
           setGameOver(true);
           setWinner(false);
         }
@@ -351,6 +350,7 @@ export default function SixDegrees() {
     setGuessCount(0);
     setGameOver(false);
     setWinner(false);
+    setTimeUp(false);
     setAnswers({
       first: "",
       second: "",
@@ -368,30 +368,17 @@ export default function SixDegrees() {
 
     onClickReset();
     handleFetchData();
+    setGameStarted(true);
   };
 
-  // Timer effect
-  useEffect(() => {
-    let timerInterval;
-    if (!gameOver && timer > 0) {
-      timerInterval = setInterval(() => {
-        setTimer(prevTimer => prevTimer - 1);
-      }, 1000);
-    } else if (gameOver || timer <= 0) {
-      clearInterval(timerInterval); // Stop the timer when the game ends or timer reaches 0
-    }
 
-    // Cleanup interval on component unmount or gameOver change
-    return () => clearInterval(timerInterval);
-  }, [gameOver, timer]); // Depend on gameOver and timer
-
-
+    // Main Game Screen
   const gameForm = (
-    <div className="w-full max-w-xl my-6 mx-auto shadow-sm shadow-gray-600 dark:shadow-gray-900 rounded-xl p-8 pt-6 pb-8 mb-4
-    bg-gradient-to-b from-slate-400 to-slate-400/80 border border-black
+    <div className="w-full my-6 shadow-sm shadow-gray-600 dark:shadow-gray-900 rounded-xl p-8 pt-6 pb-8 mb-4
+    bg-gradient-to-b from-slate-300 to-slate-300/80 border border-black
     dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:to-gray-700/80">
 
-      <form className="w-full max-w-xl">
+      <form className="w-full mx-auto max-w-xl">
         {[
           ["first", "second"],
           ["third", "fourth"],
@@ -414,7 +401,9 @@ export default function SixDegrees() {
                   )}
                 </label>
                 <input
-                  className="shadow appearance-none block border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+                  className="shadow appearance-none block border rounded w-full py-2 px-3 
+                    leading-tight dark:bg-gray-200 dark:text-black
+                    focus:outline-none focus:shadow-outline"
                   id={degree}
                   type="text"
                   placeholder="Search Actor"
@@ -427,23 +416,27 @@ export default function SixDegrees() {
           </div>
         ))}
 
-                {/* Show the timer and controls */}
-                <div className="flex flex-col sm:flex-row justify-between items-center sm:text-lg font-bold tracking-wide mb-4">
+        {/* Show the timer and controls */}
+        <div className="sm:text-lg font-bold tracking-wide mb-4">
           {!gameOver ? (
-            <>
-              <button
-                className="flex flex-wrap block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded 
-                  focus:outline-none focus:shadow-outline"
-                type="button"
-                onClick={checkAnswers}
-              >
-                Check Answers
-              </button>
-              <div className="flex items-center space-x-4">
-                <span className="text-lg font-bold">Timer: {timer}s</span>
-                {/* <span className="text-lg font-bold">Guesses: {guessCount}/10</span> */}
+            <div className="flex flex-col sm:flex-row w-full">
+              <div className="flex flex-col pb-4 sm:pb-0">
+                  <button
+                    className="bg-blue-500 hover:bg-blue-700 mx-auto
+                      text-white font-bold py-2 px-4 rounded 
+                      focus:outline-none focus:shadow-outline"
+                    type="button"
+                    onClick={checkAnswers}
+                  >
+                    Check Answers
+                  </button>
+                  <span className="text-xs italic text-center">You can check your answers at any time</span>
               </div>
-            </>
+              <div className="flex flex-col mx-auto items-center sm:items-end sm:justify-between sm:w-1/2 ">
+                <span className="text-lg font-bold">Timer: {timer}s</span>
+                <span className="text-xs font-bold">Guesses: {guessCount}/10</span>
+              </div>
+            </div>
           ) : (
             <div className="text-center">
               <h2 className={`text-2xl font-bold ${winner ? "text-green-500" : "text-red-500"}`}>
@@ -464,7 +457,9 @@ export default function SixDegrees() {
 
   // Game description
   const gameDescription = (
-    <div className='game-description mx-auto max-w-lg'>
+    <div className="w-full max-w-xl my-6 mx-auto shadow-sm shadow-gray-600 dark:shadow-gray-900 rounded-xl p-8 pt-6 pb-8 mb-4
+        bg-gradient-to-b from-slate-300 to-slate-300/80 border border-black
+        dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:to-gray-700/80">
       <span className='text-lg font-bold tracking-wide'>Game Description</span>
       <p className='p-2'>
         <ol>
@@ -490,32 +485,51 @@ export default function SixDegrees() {
       </p>
       <button 
         onClick={startGame} 
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        className="my-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
         Start Game
       </button>
     </div>
     );
 
+    
+  // End Game Screen
+  const endGame = (
+    <div className="w-full max-w-xl my-6 mx-auto shadow-sm shadow-gray-600 dark:shadow-gray-900 rounded-xl p-8 pt-6 pb-8 mb-4
+        bg-gradient-to-b from-slate-300 to-slate-300/80 border border-black
+        dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:to-gray-700/80">
+      <span className='text-lg font-bold tracking-wide'>
+        {gameOver || timeUp ? "Game Over" : "You Won"}
+      </span>
+      <p className='p-2'>
+        <ol>
+          <li className="py-1">
+            The game has ended! { winner ? "You Won!" : "You didn't make the connections. Try Again!"}
+          </li>
+          <li className="py-1">
+            Time: { timer }
+          </li>
+          <li className="py-1">
+            Guesses: { guessCount } / 10
+          </li>
+        </ol>
+      </p>
+      <button 
+        onClick={startGame} 
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Restart Game
+      </button>
+    </div>
+    );
 
-  return (
-    <div className="flex flex-col p-6 m-auto overflow-auto">
+  const chosenOnes = (
+    <div className="flex flex-col overflow-auto">
       <div className="flex flex-col items-center justify-center">
-        <p className="text-2xl font-bold tracking-wide mb-6">
-          Six Degrees of Separation Game
-        </p>
-      </div>
-
-      {/* Display Actors to Solve */}
-      
-        {!gameStarted ? gameDescription : 
-        <button className='pb-2' onClick={resetGame} disabled={loading}>Click to Load New Actors</button>}
-      
-      
       <div className="flex flex-col sm:flex-row justify-center gap-12 overflow-hidden">
-      {results.map((actor, index) => (
+        {results.map((actor, index) => (
           <div key={index} className="rounded-xl border border-black md:max-w-xs xl:max-w-md
-            bg-gradient-to-b from-slate-400 to-slate-400/80 
+            bg-gradient-to-b from-slate-300 to-slate-300/80 
             dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:via-gray-700 dark:to-gray-700/80
             shadow-sm shadow-gray-600 dark:shadow-gray-900">
             
@@ -563,12 +577,32 @@ export default function SixDegrees() {
             </div>
           </div>
         ))}
+      </div>
+      <button className='pt-2' onClick={resetGame} disabled={loading}>Click to Load New Actors</button>
+    </div>
+    </div>
+  )
+
+  return (
+    <div className="flex flex-col p-6 mx-auto overflow-auto">
+      <div className="flex flex-col items-center justify-center">
+        <p className="text-2xl font-bold tracking-wide mb-6">
+          Six Degrees of Separation Game
+        </p>
+      </div>
+      <div className="w-full mx-auto">
+
+        {/* Show Game Description */}
+          {!gameStarted ? gameDescription : null }
+
+        {/* Display Actors to Solve */}
+          { gameStarted ? chosenOnes : null}
+          { gameStarted && !gameOver ? gameForm : null }
+          
+        {/* Show Game Over */}
+          { !gameOver ? null : endGame }
 
       </div>
-
-        { !gameStarted ? null : gameForm }
-      
-
     </div>
   );
 }
