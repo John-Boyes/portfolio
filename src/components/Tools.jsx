@@ -36,14 +36,14 @@ export default function Tools() {
         },
         "content": <SixDegrees />,
       },
-      {
-        "id": 4,
-        "slug": "TMDB",
-        "title": {
-            "rendered": "The Movie Database Test"
-        },
-        "content": <TMDB />,
-      }
+      // {
+      //   "id": 4,
+      //   "slug": "TMDB",
+      //   "title": {
+      //       "rendered": "The Movie Database Test"
+      //   },
+      //   "content": <TMDB />,
+      // }
     ]
 
 
@@ -162,7 +162,7 @@ export default function Tools() {
 
           <div className="flex p-3 
             bg-gradient-to-tr from-sky-200 via-rose-200 to-sky-200 text-stone-900
-            dark:from-stone-800 dark:to-sky-900 dark:text-gray-400
+            dark:from-stone-800 dark:to-sky-900 dark:text-gray-300
             w-full rounded-lg overflow-auto">
               <Outlet />
           </div>
