@@ -1,8 +1,25 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from 'axios';
+import Papa from 'papaparse';
 
 export default function SixDegrees() {
   const Ref = useRef(null);
+
+  // Load the CSV file of Actors
+  const [actorList, setActorList] = useState([]);
+
+  useEffect(() => {
+    // Fetch and parse the CSV file
+    const fetchData = async () => {
+      const response = await fetch('/assets/actors.csv');
+      const text = await response.text();
+      const parsedData = Papa.parse(text, { header: false }).data;
+      setActorList(parsedData);
+    };
+
+    console.log(actorList);
+    fetchData();
+  }, []);
 
   // State to track if the game has started
   const [gameStarted, setGameStarted] = useState(false);
@@ -16,6 +33,8 @@ export default function SixDegrees() {
   const [gameOver, setGameOver] = useState(false);
   const [validity, setValidity] = useState({});
   const [winner, setWinner] = useState(false);
+  const [connections, setConnections] = useState([]);
+  const [allConnections, setAllConnections] = useState([]);
 
   const [answers, setAnswers] = useState({
     first: "",
@@ -26,21 +45,6 @@ export default function SixDegrees() {
   });
 
   // API for getting Actor Data
-  const actorList = [
-    'Jack Black', 'Tom Hardy', 'Tom Holland', 'Jessica Biel', 
-    'Mark Wahlberg', 'Jeff Bridges', 'Kit Harington', 'Mark Ruffalo', 
-    'Tony Danza', 'Tim Allen', 'Selena Gomez', 'Mel Gibson', 
-    'Timothy Olyphant', 'Emile Hirsch', 'Maggie Smith', 'Brad Pitt',
-    'Denzel Washtington', 'Glen Powell', 'Tom Cruise', 'Chris Hemsworth',
-    'Timothee Chalamet', 'Samuel L. Jackson', 'Austin Butler', 'Channing Tatum',
-    'Zendaya', 'Chris Pratt', 'Sydney Sweeney', 'Dave Bautista', 'Willem Dafoe',
-    'Margot Robbie', 'Florence Pugh', 'Jason Stathem', 'Joaquin Phoenix', 
-    'Hugh Grant', 'Colin Farrell', 'Paul Dano', 'Miles Teller', 'Pedro Pascal',
-    'Matt Damon', 'Ben Affleck', 'Rebecca Ferguson', 'Christin Milioti',
-    'Kate Beckinsale', 'Marisa Tomei', 'Alan Ritchson', 'Ali Larter', 'Demi Moore',
-    'Billy Bob Thornton', 'Jon Hamm', 'John Cena', 'Courteney Cox', 'David Arquette',
-    'Martin Short', 'Peter Dinklage', 'Sylvester Stallone', 'Steve Martin'
-  ];
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -228,13 +232,19 @@ export default function SixDegrees() {
   };
 
   // Validation during checkAnswers function
+   // Does not work on first degree. Works on subsequent degrees
   const checkAnswers = async () => {
     if (gameOver) return;
   
     let currentValidity = {};
     let previousMovies = [];
     let connectedActor = null;
-    let isGameOver = false;
+    let finalActor = null;
+  
+    const connections = []; // Array to store all connections
+    const newConnections = [...connections];
+    const actor1Name = results[0].name; // e.g., Johnny Depp
+    const actor2Name = results[1].name; // e.g., John Hamm
   
     try {
       for (const degree of Object.keys(answers)) {
@@ -243,110 +253,231 @@ export default function SixDegrees() {
   
         const response = await axios.get(`https://www.johnboyes.dev:5000/api/search/${actorName}`);
         const actorMovies = response.data.acting_credits || [];
+        const actorMovieTitles = actorMovies.map((movie) => movie.title.toLowerCase());
+        const actor1MovieTitles = actor1Credits.map((movie) => movie.title.toLowerCase());
+        const actor2MovieTitles = actor2Credits.map((movie) => movie.title.toLowerCase());
+        const previousMovieTitles = previousMovies.map((movie) => movie.title.toLowerCase());
   
-        // Extract only movie titles for validation
-        const actorMovieTitles = actorMovies.map((movie) => movie.title);
-        const actor1MovieTitles = actor1Credits.map((movie) => movie.title);
-        const actor2MovieTitles = actor2Credits.map((movie) => movie.title);
-        const previousMovieTitles = previousMovies.map((movie) => movie.title);
+        const matchesWithActor1 = actorMovieTitles.filter((title) => actor1MovieTitles.includes(title));
+        const matchesWithActor2 = actorMovieTitles.filter((title) => actor2MovieTitles.includes(title));
+        const matchesWithPrevious = actorMovieTitles.filter((title) => previousMovieTitles.includes(title));
+
+
+        if (degree === "first") {
+          // Immediate win condition: actor connects both Actor1 and Actor2
+          if (matchesWithActor1.length > 0 && matchesWithActor2.length > 0) {
+            connections.push({
+              actor1: actor1Name,
+              actor2: actorName,
+              movies: matchesWithActor1,
+            });
+            connections.push({
+              actor1: actorName,
+              actor2: actor2Name,
+              movies: matchesWithActor2,
+            });
   
-        console.log("Actor Movies:", actorMovies);
-        console.log("Actor1 Movie Titles:", actor1MovieTitles);
-        console.log("Actor2 Movie Titles:", actor2MovieTitles);
-        console.log("Previous Movie Titles:", previousMovieTitles);
-  
-        // Validate against actor1Credits and actor2Credits
-        if (degree === "first" || degree === "second") {
-          const matchesActor1 = actorMovieTitles.some((title) => actor1MovieTitles.includes(title));
-          const matchesActor2 = actorMovieTitles.some((title) => actor2MovieTitles.includes(title));
-  
-          if (matchesActor1 && matchesActor2) {
-            // Successfully connected both actors
-            currentValidity[degree] = true;
-            setGameOver(true);
+            // setConnections(newConnections);
+            console.log("Game ends immediately with connection:", connections);
             setWinner(true);
+            setGameOver(true);
             return;
           }
   
-          if (matchesActor1 || matchesActor2) {
-            currentValidity[degree] = true;
-            connectedActor = matchesActor1 ? "actor2" : "actor1";
+          // Establish the FirstConnection
+          if (matchesWithActor1.length > 0) {
+            connectedActor = actor1Name; // Johnny Depp
+            finalActor = actor2Name; // John Hamm
             previousMovies = actorMovies;
+  
+            connections.push({
+              actor1: actor1Name,
+              actor2: actorName,
+              movies: matchesWithActor1,
+            });
+            
+            setAllConnections(connections);
+            console.log(connections);
+            console.log("First connection added:", connections[connections.length - 1]);
+            currentValidity[degree] = true;
           } else {
             currentValidity[degree] = false;
             break;
           }
         } else {
-          // If the first degree matches actor1
-          if (connectedActor === "actor1") {
-            // Check if the next degree matches actor2 and the last degree
-            const matchesActor2 = actorMovieTitles.some((title) => actor2MovieTitles.includes(title));
-            const matchesLastDegree = actorMovieTitles.some((title) => previousMovieTitles.includes(title));
+          // For subsequent degrees
+          if (matchesWithPrevious.length > 0) {
+            connections.push({
+              actor1: connections[connections.length - 1].actor2,
+              actor2: actorName,
+              movies: matchesWithPrevious,
+            });
   
-            if (matchesActor2 && matchesLastDegree) {
-              currentValidity[degree] = true;
-              setGameOver(true);
+            setAllConnections(connections);
+            console.log("New connection added:", connections[connections.length - 1]);
+            console.log(connections);
+  
+            // Check if this actor connects to the FinalActor
+            if (matchesWithActor2.length > 0) {
+              connections.push({
+                actor1: actorName,
+                actor2: finalActor,
+                movies: matchesWithActor2,
+              });
+  
+              console.log("Final connection added:", connections[connections.length - 1]);
+              console.log("All connections:", connections);
+              setAllConnections(connections);
               setWinner(true);
+              setGameOver(true);
               return;
             }
-          }
   
-          // If the first degree matches actor2
-          if (connectedActor === "actor2") {
-            // Check if the next degree matches actor1 and the previous degree
-            const matchesActor1 = actorMovieTitles.some((title) => actor1MovieTitles.includes(title));
-            const matchesPreviousDegree = actorMovieTitles.some((title) => previousMovieTitles.includes(title));
-  
-            if (matchesActor1 && matchesPreviousDegree) {
-              currentValidity[degree] = true;
-              setGameOver(true);
-              setWinner(true);
-              return;
-            }
-          }
-  
-          // Continue validating against previous degree's movies
-          const matchesPrevious = actorMovieTitles.some((title) => previousMovieTitles.includes(title));
-          const matchesRemainingActor = actorMovieTitles.some((title) =>
-            connectedActor === "actor1" ? actor1MovieTitles.includes(title) : actor2MovieTitles.includes(title)
-          );
-  
-          if (!matchesPrevious) {
+            previousMovies = actorMovies;
+            currentValidity[degree] = true;
+          } else {
             currentValidity[degree] = false;
-            isGameOver = true;
             break;
           }
-  
-          if (matchesRemainingActor) {
-            currentValidity[degree] = true;
-            setGameOver(true);
-            setWinner(true);
-            return;
-          }
-  
-          currentValidity[degree] = true;
-          previousMovies = actorMovies;
         }
       }
   
-      // Update guess count and game state
-      setGuessCount((prevGuessCount) => {
-        const nextGuessCount = prevGuessCount + 1;
-        if (nextGuessCount >= 10) {
-          setGameOver(true);
-          setWinner(false);
-        }
-        return nextGuessCount;
+      setGuessCount((prev) => {
+        const nextCount = prev + 1;
+        if (nextCount >= 10) setGameOver(true);
+        return nextCount;
       });
   
       setValidity(currentValidity);
-      if (isGameOver) setGameOver(true);
     } catch (error) {
-      console.error("Error validating answers:", error);
+      console.error("Error during validation:", error);
     }
   };
 
+  //
+  //
+  //
+  // Works to connect each degree, does not work to connect current degree to non-connected actor
+  // const checkAnswers = async () => {
+  //   if (gameOver) return;
+  
+  //   let currentValidity = {};
+  //   let previousMovies = [];
+  //   let connectedActor = null;
+  //   let isGameOver = false;
+  
+  //   try {
+  //     for (const degree of Object.keys(answers)) {
+  //       const actorName = answers[degree];
+  //       if (!actorName) break;
+  
+  //       const response = await axios.get(`https://www.johnboyes.dev:5000/api/search/${actorName}`);
+  //       const actorMovies = response.data.acting_credits || [];
+  
+  //       // Extract only movie titles for validation
+  //       const actorMovieTitles = actorMovies.map((movie) => movie.title);
+  //       const actor1MovieTitles = actor1Credits.map((movie) => movie.title);
+  //       const actor2MovieTitles = actor2Credits.map((movie) => movie.title);
+  //       const previousMovieTitles = previousMovies.map((movie) => movie.title);
+  
+  //       console.log("Actor Movies:", actorMovies);
+  //       console.log("Actor1 Movie Titles:", actor1MovieTitles);
+  //       console.log("Actor2 Movie Titles:", actor2MovieTitles);
+  //       console.log("Previous Movie Titles:", previousMovieTitles);
+  
+  //       // Validate against actor1Credits and actor2Credits
+  //       if (degree === "first" || degree === "second") {
+  //         const matchesActor1 = actorMovieTitles.some((title) => actor1MovieTitles.includes(title));
+  //         const matchesActor2 = actorMovieTitles.some((title) => actor2MovieTitles.includes(title));
+  
+  //         if (matchesActor1 && matchesActor2) {
+  //           // Successfully connected both actors
+  //           currentValidity[degree] = true;
+  //           setGameOver(true);
+  //           setWinner(true);
+  //           return;
+  //         }
+  
+  //         if (matchesActor1 || matchesActor2) {
+  //           currentValidity[degree] = true;
+  //           connectedActor = matchesActor1 ? "actor2" : "actor1";
+  //           previousMovies = actorMovies;
+  //         } else {
+  //           currentValidity[degree] = false;
+  //           break;
+  //         }
+  //       } else {
+  //         // If the first degree matches actor1
+  //         if (connectedActor === "actor1") {
+  //           // Check if the next degree matches actor2 and the last degree
+  //           const matchesActor2 = actorMovieTitles.some((title) => actor2MovieTitles.includes(title));
+  //           const matchesLastDegree = actorMovieTitles.some((title) => previousMovieTitles.includes(title));
+  
+  //           if (matchesActor2 && matchesLastDegree) {
+  //             currentValidity[degree] = true;
+  //             setGameOver(true);
+  //             setWinner(true);
+  //             return;
+  //           }
+  //         }
+  
+  //         // If the first degree matches actor2
+  //         if (connectedActor === "actor2") {
+  //           // Check if the next degree matches actor1 and the previous degree
+  //           const matchesActor1 = actorMovieTitles.some((title) => actor1MovieTitles.includes(title));
+  //           const matchesPreviousDegree = actorMovieTitles.some((title) => previousMovieTitles.includes(title));
+  
+  //           if (matchesActor1 && matchesPreviousDegree) {
+  //             currentValidity[degree] = true;
+  //             setGameOver(true);
+  //             setWinner(true);
+  //             return;
+  //           }
+  //         }
+  
+  //         // Continue validating against previous degree's movies
+  //         const matchesPrevious = actorMovieTitles.some((title) => previousMovieTitles.includes(title));
+  //         const matchesRemainingActor = actorMovieTitles.some((title) =>
+  //           connectedActor === "actor1" ? actor1MovieTitles.includes(title) : actor2MovieTitles.includes(title)
+  //         );
+  
+  //         if (!matchesPrevious) {
+  //           currentValidity[degree] = false;
+  //           isGameOver = true;
+  //           break;
+  //         }
+  
+  //         if (matchesRemainingActor) {
+  //           currentValidity[degree] = true;
+  //           setGameOver(true);
+  //           setWinner(true);
+  //           return;
+  //         }
+  
+  //         currentValidity[degree] = true;
+  //         previousMovies = actorMovies;
+  //       }
+  //     }
+  
+  //     // Update guess count and game state
+  //     setGuessCount((prevGuessCount) => {
+  //       const nextGuessCount = prevGuessCount + 1;
+  //       if (nextGuessCount >= 10) {
+  //         setGameOver(true);
+  //         setWinner(false);
+  //       }
+  //       return nextGuessCount;
+  //     });
+  
+  //     setValidity(currentValidity);
+  //     if (isGameOver) setGameOver(true);
+  //   } catch (error) {
+  //     console.error("Error validating answers:", error);
+  //   }
+  // };
+
   const resetGame = () => {
+    setConnections([]);
     setGuessCount(0);
     setGameOver(false);
     setWinner(false);
@@ -451,6 +582,12 @@ export default function SixDegrees() {
 
   // Handle start game
   const startGame = () => {
+    setConnections([]);
+    setGameOver(false);
+    setTimeUp(false);
+    setWinner(false);
+    setTimer(0);
+    setGuessCount(0);
     setGameStarted(true); // Hide description and show the form
     resetGame();
   };
@@ -498,7 +635,7 @@ export default function SixDegrees() {
     <div className="w-full max-w-xl my-6 mx-auto shadow-sm shadow-gray-600 dark:shadow-gray-900 rounded-xl p-8 pt-6 pb-8 mb-4
         bg-gradient-to-b from-slate-300 to-slate-300/80 border border-black
         dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:to-gray-700/80">
-      <span className='text-lg font-bold tracking-wide'>
+      <span className='text-xl font-bold tracking-wide'>
         {gameOver || timeUp ? "Game Over" : "You Won"}
       </span>
       <p className='p-2'>
@@ -507,13 +644,32 @@ export default function SixDegrees() {
             The game has ended! { winner ? "You Won!" : "You didn't make the connections. Try Again!"}
           </li>
           <li className="py-1">
-            Time: { timer }
+            Time Remaining: { timer  }
           </li>
           <li className="py-1">
             Guesses: { guessCount } / 10
           </li>
         </ol>
       </p>
+      <div className="connections p-2">
+
+      <span className="font-bold">Connections Made:</span>
+      
+      {allConnections.map((connection, index) => (
+        <div key={index} className="connection p-1">
+          <strong>Connection {index + 1}</strong> - {connection.actor1} - {connection.actor2}
+          <ul className="list-disc pl-6">
+            {connection.movies.map((movie, idx) => (
+              <li key={idx}>{movie}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+
+      </div>
+      <div className="text-center pb-6">
+        <span className="text-xl text-center font-bold">Thanks for playing!</span>
+      </div>
       <button 
         onClick={startGame} 
         className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

@@ -1,21 +1,16 @@
-const express = require('express');
-const axios = require('axios');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const fs = require('fs');
-const https = require('https');
+import express from 'express';
+import axios from 'axios';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import fs from 'fs';
+import https from 'https';
+
 dotenv.config();
 
 const app = express();
 const PORT = 5000;
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
-// Load SSL certificates (replace with your actual paths)
-const options = {
-  key: fs.readFileSync('/etc/letsencrypt/live/johnboyes.dev/privkey.pem'),  // SSL private key
-  cert: fs.readFileSync('/etc/letsencrypt/live/johnboyes.dev/fullchain.pem'), // SSL certificate
-  ca: fs.readFileSync('/etc/letsencrypt/live/johnboyes.dev/chain.pem')       // Optional: CA certificate chain
-};
 
 app.use(cors());
 app.use(express.json());
@@ -57,6 +52,6 @@ app.get('/api/search/:name', async (req, res) => {
 });
 
 // Create HTTPS server
-https.createServer(options, app).listen(PORT, '0.0.0.0', () => {
+https.createServer(app).listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on https://localhost:${PORT}`);
 });

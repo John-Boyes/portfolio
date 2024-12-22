@@ -7,7 +7,7 @@ function TMDB() {
 
     const searchActor = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/api/search/${actorName}`);
+            const response = await axios.get(`https://www.johnboyes.dev:5000/api/search/${actorName}`);
             setActorData([response.data]);
         } catch (error) {
             console.error(error);
