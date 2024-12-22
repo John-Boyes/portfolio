@@ -10,7 +10,7 @@ const app = express();
 const PORT = 5000;
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
-// Load SSL certificates (replace with your actual paths)
+// Load SSL certificates
 const options = {
   key: fs.readFileSync('/etc/letsencrypt/live/johnboyes.dev/privkey.pem'),  // SSL private key
   cert: fs.readFileSync('/etc/letsencrypt/live/johnboyes.dev/fullchain.pem'), // SSL certificate

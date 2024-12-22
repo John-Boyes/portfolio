@@ -1,28 +1,34 @@
-import express from 'express';
-import axios from 'axios';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import fs from 'fs';
-import https from 'https';
-import mysql from 'mysql2/promise';
-
+const express = require('express');
+const axios = require('axios');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const fs = require('fs');
+const https = require('https');
+const mysql = require('mysql2/promise');
 dotenv.config();
-
-const app = express();
-const PORT = 5000;
-const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
 // Configure MySQL connection
 const db = mysql.createPool({
-    host: '147.79.75.195',
+    host: '127.0.0.1',
     user: 'columbo',
     password: 'Y9R6otUX31PZiqgIvaFw',
     database: 'tmdb_cache_db',
 });
 
+const app = express();
+const PORT = 5000;
+const TMDB_API_KEY = process.env.TMDB_API_KEY;
+
+// Load SSL certificates
+const options = {
+  key: fs.readFileSync('/etc/letsencrypt/live/johnboyes.dev/privkey.pem'),  // SSL private key
+  cert: fs.readFileSync('/etc/letsencrypt/live/johnboyes.dev/fullchain.pem'), // SSL certificate
+  ca: fs.readFileSync('/etc/letsencrypt/live/johnboyes.dev/chain.pem')       // Optional: CA certificate chain
+};
 
 app.use(cors());
 app.use(express.json());
+
 
 // Search Actor and Fetch Details with Caching
 app.get('/api/search/:name', async (req, res) => {
@@ -93,6 +99,6 @@ app.get('/api/search/:name', async (req, res) => {
 });
 
 // Create HTTPS server
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+https.createServer(options, app).listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on https://localhost:${PORT}`);
 });
