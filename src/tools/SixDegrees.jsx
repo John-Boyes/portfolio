@@ -595,7 +595,7 @@ export default function SixDegrees() {
             with Actor 1, and if they were on screen with both actors you win the game. 
           </li>
           <li className="py-1">
-            Each subsequent degree you use must connect to the previous degree, and game ends when a connection is also made to the actor 2.
+            Each subsequent degree you use must connect to the previous degree, and the game ends when a connection is also made to the actor 2.
           </li>
           <li className="py-2">
             <strong>Example:</strong><br></br>
