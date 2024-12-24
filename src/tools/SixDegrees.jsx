@@ -592,18 +592,18 @@ export default function SixDegrees() {
           </li>
           <li className="py-1">
             The goal is to connect the actors in under six degrees of separation. The first degree must be an actor who was on screen
-            with either Actor 1 or Actor 2, and if they were on screen with both you win the game. 
+            with Actor 1, and if they were on screen with both actors you win the game. 
           </li>
           <li className="py-1">
-            Each subsequent degree you use must connect to the previous degree, and game ends when a connection is also made to the actor that was not tied to the first degree.
+            Each subsequent degree you use must connect to the previous degree, and game ends when a connection is also made to the actor 2.
           </li>
           <li className="py-2">
             <strong>Example:</strong><br></br>
-             Actor 1 &gt; First Degree &gt; Second Degree &gt; Third Degree &gt; Actor 2
+             Actor 1 &gt; First Degree &gt; Actor 2
           </li>
           <li className="py-2">
             <strong>Example:</strong><br></br> 
-            Actor 2 &gt; First Degree &gt; Second Degree &gt; Actor 1
+            Actor 1 &gt; First Degree &gt; Second Degree &gt; Actor 2
           </li>
         </ol>
       </p>
