@@ -7,6 +7,13 @@ export default [
         blurb: "A Movie Podcast with Nick Johnson and John Boyes",
     },
     {
+        title: 'Six Degrees Game',
+        imgUrl: '/assets/6d.png',
+        stack: ['React', 'Node', 'Express', 'MySQL', 'JavaScript', 'TailwindCSS', 'TMDB API'],
+        link: 'https://www.johnboyes.dev/tools/sixdegrees',
+        blurb: "The goal of the game is to connect two random actors within six degrees of separation. The game uses the TMDB API to pull in actor images and latest movie data. The game is built with React, Node, Express, and MySQL.",
+    },
+    {
         title: 'CRM Migration and Customizations',
         imgUrl: '/assets/Salesforce_Migration.png',
         stack: ['Salesforce.com', 'Access Database', 'Office Scripts', 'Salesforce Flow', 'SugarCRM', 'SAP CRM', 'PHP', 'Javascript'],
