@@ -55,7 +55,7 @@ export default function SixDegrees() {
       let titles1 = [];
       let titles2 = [];
       let attempts = 0;
-      let maxAttempts = 50; // Maximum retry attempts to avoid infinite loop
+      let maxAttempts = 100; // Maximum retry attempts to avoid infinite loop
   
       let actorsSelected = false; // Flag to indicate whether valid actors are selected
   
