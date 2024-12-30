@@ -10,7 +10,7 @@ export default [
         title: 'Six Degrees Game',
         imgUrl: '/assets/6d.png',
         stack: ['React', 'Node', 'Express', 'MySQL', 'JavaScript', 'TailwindCSS', 'TMDB API'],
-        link: 'https://www.johnboyes.dev/tools/sixdegrees',
+        link: 'https://www.johnboyes.dev/Tools/Six-Degrees',
         blurb: "The goal of the game is to connect two random actors within six degrees of separation. The game uses the TMDB API to pull in actor images and latest movie data. The game is built with React, Node, Express, and MySQL.",
     },
     {
