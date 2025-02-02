@@ -28,6 +28,9 @@ function Main() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  particlesJS.load('particles-js', '/assets/particles.json', function() {
+    console.log('callback - particles.js config loaded');
+  });
   return (
     <>
       <div className="
@@ -35,7 +38,8 @@ function Main() {
         dark:from-stone-800 dark:to-sky-900 text-stone-900 
           dark:text-stone-300 min-h-[calc(100vh-16)] font-inter mx-auto">
         <div className='max-w-5xl w-11/12 mx-auto'>
-          <Intro />
+        <div id="particles-js" className="absolute left-0 w-full h-full z-0"></div>
+            <Intro />
             <div id='Portfolio' class="section" >
             </div>
           <Portfolio />

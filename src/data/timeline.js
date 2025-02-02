@@ -1,5 +1,11 @@
 export default [
     {
+        year: '2024-Current',
+        title: 'Client Success Associate',
+        duration: '<1 Year',
+        details: 'Build internal tools using MySQL, PHP, Python, GO. Take ownership of client issues and work with the team to resolve them. Client implmentation, SOP and documentation generation, and process automation.',
+    },
+    {
         year: '2021-2024',
         title: 'Sr Manager of Projects and Technology',
         duration: '3 Years',

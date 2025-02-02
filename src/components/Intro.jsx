@@ -4,12 +4,13 @@ import { React, useEffect } from 'react'
 import AOS from 'aos'
 import "aos/dist/aos.css"
 
+
 function Intro() {
   useEffect(() => {
     AOS.init({duration:1200})
   })
   return (
-    <div className="flex items-center justify-center flex-col text-center py-6 min-h-full">
+    <div className="flex items-center justify-center flex-col text-center py-6 min-h-full z-50">
       <p className="font-bold text-xl md:text-2xl mb-3 dark:text-orange-500"
         data-aos="fade-up"
         >
