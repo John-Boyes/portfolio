@@ -19,6 +19,17 @@ const db = mysql.createPool({
     connectionTimeout: 10000, // 10 seconds
 });
 
+const db = mysql.createPool({
+    host: '127.0.0.1',
+    user: 'columbo',
+    password: 'Y9R6otUX31PZiqgIvaFw',
+    database: 'SixDegrees',
+    waitForConnections: true,
+    connectionLimit: 300, // Increase if necessary
+    queueLimit: 0, // Unlimited queue
+    connectionTimeout: 10000, // 10 seconds
+});
+
 const app = express();
 const PORT = 5000;
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
@@ -134,6 +145,17 @@ app.get('/api/search/:name', async (req, res) => {
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ message: 'Error fetching actor details' });
+    }
+});
+
+// Example endpoint to interact with SixDegrees database
+app.get('/api/sixdegrees/actors', async (req, res) => {
+    try {
+        const [rows] = await sixDegreesDb.query('SELECT primaryName FROM actors');
+        res.json(rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching data from SixDegrees database' });
     }
 });
 
