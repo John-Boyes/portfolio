@@ -19,7 +19,7 @@ const db = mysql.createPool({
     connectionTimeout: 10000, // 10 seconds
 });
 
-const db = mysql.createPool({
+const sixDegreesDb = mysql.createPool({
     host: '127.0.0.1',
     user: 'columbo',
     password: 'Y9R6otUX31PZiqgIvaFw',
@@ -151,7 +151,7 @@ app.get('/api/search/:name', async (req, res) => {
 // Example endpoint to interact with SixDegrees database
 app.get('/api/sixdegrees/actors', async (req, res) => {
     try {
-        const [rows] = await sixDegreesDb.query('SELECT primaryName FROM actors');
+        const [rows] = await sixDegreesDb.query('SELECT * FROM actors');
         res.json(rows);
     } catch (error) {
         console.error(error);

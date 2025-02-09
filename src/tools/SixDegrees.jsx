@@ -34,8 +34,10 @@ export default function SixDegrees() {
   useEffect(() => {
     const fetchActorList = async () => {
       try {
-        const response = await axios.get('https://www.johnboyes.dev:5000/api/SixDegrees/actors');
-        setActorList(response.data);
+        const response = await axios.get('https://www.johnboyes.dev:5000/api/sixdegrees/actors');
+        // Map the response to only include primaryName values
+        const actorNames = response.data.map(actor => actor.primaryName);
+        setActorList(actorNames);
       } catch (error) {
         console.error('Error fetching actor list:', error);
       }
