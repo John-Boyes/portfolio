@@ -678,6 +678,7 @@ export default function SixDegrees() {
     </div>
     );
 
+  // Display the actors to solve
   const chosenOnes = (
     <div className="flex flex-col overflow-auto">
       <div className="flex flex-col items-center justify-center">
@@ -733,7 +734,7 @@ export default function SixDegrees() {
           </div>
         ))}
       </div>
-      <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={resetGame}>Click to Load New Actors</button>
+      <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold mt-6 py-2 px-4 rounded' onClick={resetGame}>Click to Load New Actors</button>
     </div>
     </div>
   )

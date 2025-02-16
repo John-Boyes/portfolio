@@ -6,8 +6,18 @@ function RandomNumber() {
     const [shuffledChoices, setShuffledChoices] = useState([]);
     const [selectedChoice, setSelectedChoice] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [numberRange, setNumberRange] = useState('');
     const cancelButtonRef = useRef(null)
     
+    // Generate a number range from 1 to the input number
+    const generateNumberRange = () => {
+        const num = parseInt(numberRange);
+        if (!isNaN(num) && num > 0) {
+            const range = Array.from({ length: num }, (_, i) => (i + 1).toString());
+            setChoices(range.join('\n'));
+            setNumberRange(''); // Clear the input after generating
+        }
+    };
     
     // Split and filter choices, also removes any empty lines
     const getValidChoices = () => {
@@ -67,8 +77,7 @@ function RandomNumber() {
                         />
                 </div>
             </div>
-
-
+        
             {/* Shuffle Button */}
             <button className="mt-3 inline-block justify-center text-center py-2 px-4
                     bg-gradient-to-b from-slate-400 via-slate-300 via-slate-300 to-slate-400/80
@@ -88,6 +97,30 @@ function RandomNumber() {
                     onClick={pickRandomChoice} disabled={shuffledChoices.length === 0}>
                 Random Choice
             </button>
+            
+            {/* Number Range Generator */}
+            <div className='flex flex-row justify-center gap-2 mt-3'>
+                <input
+                    type="number"
+                    className="p-2 w-24 bg-gray-50 dark:bg-gray-900 border-2 
+                        border-slate-400 dark:border-gray-600 rounded-md focus:outline-none"
+                    placeholder="Enter #"
+                    value={numberRange}
+                    onChange={(e) => setNumberRange(e.target.value)}
+                    min="1"
+                />
+                <button 
+                    className="inline-block justify-center text-center py-2 px-4
+                        bg-gradient-to-b from-slate-400 via-slate-300 via-slate-300 to-slate-400/80
+                        dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:via-gray-700 dark:to-gray-700/80
+                        rounded-lg border-2 border-slate-400 dark:border-gray-600 font-semibold
+                        hover:bg-slate-700 dark:hover:bg-slate-300"
+                    onClick={generateNumberRange}
+                    disabled={!numberRange}>
+                    Generate Range
+                </button>
+            </div>
+
 
             {/* Modal for displaying the random choice */}
             <Transition.Root show={showModal} as={Fragment}>
