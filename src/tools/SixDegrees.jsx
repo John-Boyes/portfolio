@@ -31,13 +31,18 @@ export default function SixDegrees() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // Modify the initial actor list fetch to include birth/death years
   useEffect(() => {
     const fetchActorList = async () => {
       try {
         const response = await axios.get('https://www.johnboyes.dev:5000/api/sixdegrees/actors');
-        // Map the response to only include primaryName values
-        const actorNames = response.data.map(actor => actor.primaryName);
-        setActorList(actorNames);
+        // Map the response to include both name and birth/death years
+        const actorsWithDetails = response.data.map(actor => ({
+          primaryName: actor.primaryName,
+          birthYear: actor.birthYear,
+          deathYear: actor.deathYear
+        }));
+        setActorList(actorsWithDetails);
       } catch (error) {
         console.error('Error fetching actor list:', error);
       }
@@ -49,13 +54,24 @@ export default function SixDegrees() {
   const fetchActorData = async (actorName) => {
     try {
       const response = await axios.get(`https://www.johnboyes.dev:5000/api/search/${actorName}`);
-      return { name: actorName, data: response.data };
+      // Log the entire response to see the structure
+      console.log("API Response for", actorName, ":", response.data);
+      return { 
+        name: actorName, 
+        data: {
+          ...response.data,
+          // Map the fields if they have different names in your API
+          birthYear: response.data.birth_year || response.data.birthYear,
+          deathYear: response.data.death_year || response.data.deathYear
+        }
+      };
     } catch (error) {
       console.error(`Error fetching data for ${actorName}:`, error);
       return { name: actorName, data: null, error: true };
     }
   };
   
+  // Then modify the handleFetchData function to use this data
   const handleFetchData = async () => {
     setLoading(true);
     setResults([]); // Clear previous results
@@ -67,7 +83,7 @@ export default function SixDegrees() {
       let titles1 = [];
       let titles2 = [];
       let attempts = 0;
-      let maxAttempts = 100; // Maximum retry attempts to avoid infinite loop
+      let maxAttempts = 300; // Maximum retry attempts to avoid infinite loop
   
       let actorsSelected = false; // Flag to indicate whether valid actors are selected
   
@@ -87,8 +103,8 @@ export default function SixDegrees() {
         // Fetch data for both actors
         try {
           const [actor1Response, actor2Response] = await Promise.all([
-            fetchActorData(actor1),
-            fetchActorData(actor2)
+            fetchActorData(actor1.primaryName),
+            fetchActorData(actor2.primaryName)
           ]);
   
           console.log("Actor 1 Response:", actor1Response.data);
@@ -131,13 +147,47 @@ export default function SixDegrees() {
             const actor1Data = actor1Response.data || {};
             const actor2Data = actor2Response.data || {};
   
-            // Get the image URL if it exists, or use a default value
+            // Get the image URL and birth/death years if they exist
             const actor1ImageUrl = actor1Data.image_url || 'default_image_url';
             const actor2ImageUrl = actor2Data.image_url || 'default_image_url';
   
-            // Add the actors to the respective degree arrays
-            selectedActors.push({ name: actor1, credits: credits1, imageUrl: actor1ImageUrl });
-            selectedActors.push({ name: actor2, credits: credits2, imageUrl: actor2ImageUrl });
+            // Add these debug logs
+            console.log("Actor 1 Birth/Death:", {
+              name: actor1,
+              birthYear: actor1Data.birthYear,
+              deathYear: actor1Data.deathYear
+            });
+            console.log("Actor 2 Birth/Death:", {
+              name: actor2,
+              birthYear: actor2Data.birthYear,
+              deathYear: actor2Data.deathYear
+            });
+  
+            // Add the actors to the respective degree arrays with birth/death year data
+            // Add debug logging before parsing
+            console.log("Raw actor1 data:", {
+              birthYear: actor1Data.birthYear,
+              deathYear: actor1Data.deathYear,
+              type: {
+                birthYear: typeof actor1Data.birthYear,
+                deathYear: typeof actor1Data.deathYear
+              }
+            });
+            
+            selectedActors.push({ 
+              name: actor1.primaryName, 
+              credits: credits1, 
+              imageUrl: actor1ImageUrl,
+              birthYear: actor1.birthYear,
+              deathYear: actor1.deathYear
+            });
+            selectedActors.push({ 
+              name: actor2.primaryName, 
+              credits: credits2, 
+              imageUrl: actor2ImageUrl,
+              birthYear: actor2.birthYear,
+              deathYear: actor2.deathYear
+            });
   
             actorsSelected = true; // Set actors as selected
           }
@@ -501,6 +551,28 @@ export default function SixDegrees() {
     setGameStarted(true);
   };
 
+  // Update the calculateAge function
+const calculateAge = (birthYear, deathYear) => {
+  // Handle special case where deathYear is '\\N'
+  if (deathYear === '\\N') deathYear = null;
+  
+  // Convert string values to numbers
+  const birth = parseInt(birthYear);
+  const death = deathYear ? parseInt(deathYear) : null;
+  
+  // Return empty string if birthYear is invalid
+  if (!birth || isNaN(birth)) return '';
+  
+  const currentYear = new Date().getFullYear();
+  
+  if (death && !isNaN(death)) {
+    const age = death - birth;
+    return age > 0 ? `${age} ` : '';
+  }
+  
+  const age = currentYear - birth;
+  return age > 0 ? `${age}` : '';
+};
 
     // Main Game Screen
   const gameForm = (
@@ -539,7 +611,7 @@ export default function SixDegrees() {
                   placeholder="Search Actor"
                   value={answers[degree]}
                   onChange={handleChange}
-                  disabled={gameOver} // Disable inputs if the game is over
+                  disabled={gameOver}
                 />
               </div>
             ))}
@@ -683,7 +755,10 @@ export default function SixDegrees() {
     <div className="flex flex-col overflow-auto">
       <div className="flex flex-col items-center justify-center">
       <div className="flex flex-col sm:flex-row justify-center gap-12 overflow-hidden">
-        {results.map((actor, index) => (
+        {results.map((actor, index) => {
+          const ageDisplay = calculateAge(actor.birthYear, actor.deathYear);
+
+          return (
           <div key={index} className="rounded-xl border border-black md:max-w-xs xl:max-w-md
             bg-gradient-to-b from-slate-300 to-slate-300/80 
             dark:bg-gradient dark:from-gray-800 dark:via-gray-700 dark:via-gray-700 dark:to-gray-700/80
@@ -698,8 +773,18 @@ export default function SixDegrees() {
             
             <div className="w-full p-4 rounded-b-xl">
               <h3 className='text-lg md:text-xl mb-2 md:mb-3 font-semibold'>
-                {actor.name}
-              </h3>
+  {actor.name}
+  {ageDisplay && 
+    <span className="text-base font-normal">
+      , {ageDisplay}
+      {actor.deathYear && actor.deathYear !== '\\N' && 
+        <span className="text-sm italic text-gray-600 dark:text-gray-400">
+          (deceased)
+        </span>
+      }
+    </span>
+  }
+</h3>
               
               {/* Display error message if actor data fetch failed */}
               {actor.error ? (
@@ -732,7 +817,7 @@ export default function SixDegrees() {
               )}
             </div>
           </div>
-        ))}
+        )})}
       </div>
       <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold mt-6 py-2 px-4 rounded' onClick={resetGame}>Click to Load New Actors</button>
     </div>
